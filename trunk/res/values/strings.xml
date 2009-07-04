@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="hello">Hello World, PruebaAndroid! Joan</string>
+	<string name="app_name">Prueba Android</string>
+	<string name="user">Username:</string>
+	<string name="password">Password:</string>
+	<string name="confirm">OK</string>
+	<string name="test">Test</string>
+</resources>
