@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="hello">Hello World, PruebaAndroid! Joan</string>
-	<string name="app_name">Prueba Android</string>
+	
+	<string name="app_name">Android WISPr</string>
 	<string name="user">Username:</string>
 	<string name="password">Password:</string>
-	<string name="confirm">OK</string>
-	<string name="test">Test</string>
+	<string name="confirm">Save</string>
+	
+<string name="status">Connection Status:</string>
+<string name="status_connected">Connected</string>
+<string name="status_disconnected">Disconnected</string>
+<string name="status_error">Error</string>
 </resources>
