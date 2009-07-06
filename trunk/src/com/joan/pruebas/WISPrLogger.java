@@ -3,12 +3,9 @@ package com.joan.pruebas;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.FactoryConfigurationError;
@@ -16,26 +13,28 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
-public class WISPrLogger extends Service {
-	private static final String BLOCKED_URL = "http://www.hp.com";
+public class WISPrLogger {
+	private static final String BLOCKED_URL = "http://wifi.fon.com";
 
 	private static String TAG = WISPrLogger.class.getName();
 
 	public static final String WISPR_TAG_NAME = "WISPAccessGatewayParam";
-
-	public WISPrLogger() {
-
-	}
 
 	public String login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
@@ -47,6 +46,7 @@ public class WISPrLogger extends Service {
 				Log.d(TAG, "XML Found:" + WISPrXML);
 				WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
 				parseXML(WISPrXML, wisprInfo);
+
 				if (wisprInfo.getMesageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_INITIAL)
 						&& wisprInfo.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_NO_ERROR)) {
 					res = tryToLogin(user, password, wisprInfo);
@@ -62,17 +62,19 @@ public class WISPrLogger extends Service {
 		return res;
 	}
 
-	private String tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException, SAXException,
-			ParserConfigurationException, FactoryConfigurationError {
+	private String tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException,
+			SAXException, ParserConfigurationException, FactoryConfigurationError {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		String targetURL = wisprInfo.getLoginURL();
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("UserName", user);
 		data.put("Password", password);
 
-		String response = getUrlByPost(targetURL, data, null);
+		String response = getUrlByPost(targetURL, data);
 		if (response != null) {
+			Log.d(TAG, "got response:" + response);
 			response = getWISPrXML(response);
+			Log.d(TAG, "found xml:" + response);
 			WISPrResponseHandler wrh = new WISPrResponseHandler();
 			parseXML(response, wrh);
 			res = wrh.getResponseCode();
@@ -82,60 +84,39 @@ public class WISPrLogger extends Service {
 	}
 
 	private String getUrl(String url) throws IOException {
-		InputStream is = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
-			URL u = new URL(url);
-			URLConnection connection = u.openConnection();
-			connection.setUseCaches(false);
-			is = connection.getInputStream();
-			byte[] buf = new byte[4 * 1024]; // 4K buffer
-			int bytesRead;
-			while ((bytesRead = is.read(buf)) != -1) {
-				baos.write(buf, 0, bytesRead);
-			}
-		} finally {
-			if (is != null) {
-				is.close();
-			}
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpGet httpget = new HttpGet(url);
+		HttpResponse response = httpclient.execute(httpget);
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+			entity.writeTo(baos);
 		}
 
-		return new String(baos.toByteArray());
+		return baos.toString();
 	}
 
-	private String getUrlByPost(String url, Map<String, String> params, Map<String, String> props) throws IOException {
-		// Prepare the data
-		String data = "";
+	private String getUrlByPost(String url, Map<String, String> params) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		HttpClient httpclient = new DefaultHttpClient();
+
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		if (params != null) {
 			for (String paramName : params.keySet()) {
-				data += URLEncoder.encode(paramName, "UTF-8") + "=" + URLEncoder.encode(params.get(paramName), "UTF-8") + "&";
+				formparams.add(new BasicNameValuePair(paramName, params.get(paramName)));
 			}
 		}
 
-		// Send data
-		URL u = new URL(url);
-		URLConnection conn = u.openConnection();
-		if (props != null) {
-			for (String propName : props.keySet()) {
-				conn.setRequestProperty(propName, props.get(propName));
-			}
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
+		HttpPost httppost = new HttpPost(url);
+		httppost.setEntity(entity);
+		HttpResponse response = httpclient.execute(httppost);
+		HttpEntity responseEntity = response.getEntity();
+		if (responseEntity != null) {
+			responseEntity.writeTo(baos);
 		}
 
-		conn.setDoOutput(true);
-		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-		wr.write(data);
-		wr.flush();
-
-		// Get the response
-		InputStream is = conn.getInputStream();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		byte[] buf = new byte[4 * 1024]; // 4K buffer
-		int bytesRead;
-		while ((bytesRead = is.read(buf)) != -1) {
-			baos.write(buf, 0, bytesRead);
-		}
-
-		return new String(baos.toByteArray());
+		return baos.toString();
 	}
 
 	private String getWISPrXML(String source) {
@@ -150,18 +131,12 @@ public class WISPrLogger extends Service {
 		return res;
 	}
 
-	public void parseXML(String xml, ContentHandler handler) throws SAXException, IOException, ParserConfigurationException,
-			FactoryConfigurationError {
+	public void parseXML(String xml, ContentHandler handler) throws SAXException, IOException,
+			ParserConfigurationException, FactoryConfigurationError {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp = spf.newSAXParser();
 		XMLReader xr = sp.getXMLReader();
 		xr.setContentHandler(handler);
 		xr.parse(new InputSource(new ByteArrayInputStream(xml.getBytes())));
-	}
-
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

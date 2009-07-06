@@ -5,18 +5,18 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class WISPrResponseHandler extends DefaultHandler {
 	enum Tag {
-		WISPAccessGatewayParam, Redirect, ResponseCode, FONResponseCode, LogoffURL, ReplyMessage
+		WISPAccessGatewayParam, Redirect, ResponseCode, FONResponseCode, LogoffURL, ReplyMessage, AuthenticationPollReply, MessageType
 	}
 
 	private Tag actualTag;
 
-	private String responseCode;
+	private String responseCode = "";
 
-	private String fonResponseCode;
+	private String fonResponseCode = "";
 
-	private String logoffURL;
+	private String logoffURL = "";
 
-	private String replyMessage;
+	private String replyMessage = "";
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -27,29 +27,29 @@ public class WISPrResponseHandler extends DefaultHandler {
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
 		if (actualTag.equals(Tag.ResponseCode)) {
-			responseCode = chars;
+			responseCode += chars;
 		} else if (actualTag.equals(Tag.FONResponseCode)) {
-			fonResponseCode = chars;
+			fonResponseCode += chars;
 		} else if (actualTag.equals(Tag.LogoffURL)) {
-			logoffURL = chars;
+			logoffURL += chars;
 		} else if (actualTag.equals(Tag.ReplyMessage)) {
-			replyMessage = chars;
+			replyMessage += chars;
 		}
 	}
 
 	public String getResponseCode() {
-		return responseCode;
+		return responseCode.trim();
 	}
 
 	public String getFonResponseCode() {
-		return fonResponseCode;
+		return fonResponseCode.trim();
 	}
 
 	public String getLogoffURL() {
-		return logoffURL;
+		return logoffURL.trim();
 	}
 
 	public String getReplyMessage() {
-		return replyMessage;
+		return replyMessage.trim();
 	}
 }

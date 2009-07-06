@@ -10,15 +10,15 @@ public class WISPrInfoHandler extends DefaultHandler {
 
 	private Tag actualTag;
 
-	private String accessProcedure;
+	private String accessProcedure = "";
 
-	private String loginURL;
+	private String loginURL = "";
 
-	private String abortLoginURL;
+	private String abortLoginURL = "";
 
-	private String mesageType;
+	private String mesageType = "";
 
-	private String responseCode;
+	private String responseCode = "";
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -29,36 +29,49 @@ public class WISPrInfoHandler extends DefaultHandler {
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
 		if (actualTag.equals(Tag.AccessProcedure)) {
-			accessProcedure = chars;
+			accessProcedure += chars;
 		} else if (actualTag.equals(Tag.LoginURL)) {
-			loginURL = (loginURL == null) ? "" : loginURL;
 			loginURL += chars;
 		} else if (actualTag.equals(Tag.AbortLoginURL)) {
-			abortLoginURL = chars;
+			abortLoginURL += chars;
 		} else if (actualTag.equals(Tag.MessageType)) {
-			mesageType = chars;
+			mesageType += chars;
 		} else if (actualTag.equals(Tag.ResponseCode)) {
-			responseCode = chars;
+			responseCode += chars;
 		}
 	}
 
 	public String getAccessProcedure() {
-		return accessProcedure;
+		return accessProcedure.trim();
 	}
 
 	public String getLoginURL() {
-		return loginURL;
+		return loginURL.trim();
 	}
 
 	public String getAbortLoginURL() {
-		return abortLoginURL;
+		return abortLoginURL.trim();
 	}
 
 	public String getMesageType() {
-		return mesageType;
+		return mesageType.trim();
 	}
 
 	public String getResponseCode() {
-		return responseCode;
+		return responseCode.trim();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("WISPrInfoHandler{");
+		sb.append("accessProcedure: ").append(accessProcedure).append(", ");
+		sb.append("loginURL: ").append(loginURL).append(", ");
+		sb.append("abortLoginURL: ").append(abortLoginURL).append(", ");
+		sb.append("mesageType: ").append(mesageType).append(", ");
+		sb.append("responseCode: ").append(responseCode);
+		sb.append("}");
+
+		return sb.toString();
 	}
 }
