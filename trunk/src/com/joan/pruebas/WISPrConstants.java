@@ -32,4 +32,6 @@ public class WISPrConstants {
 	public static String WISPR_RESPONSE_CODE_AUTH_PENDING = "201";
 
 	public static String WISPR_RESPONSE_CODE_INTERNAL_ERROR = "255";
+
+	public static String WISPR_NOT_PRESENT = "1024";
 }

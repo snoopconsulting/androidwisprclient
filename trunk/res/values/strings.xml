@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
 	<string name="app_name">Android WISPr</string>
-	<string name="user">Username:</string>
-	<string name="password">Password:</string>
-	<string name="confirm">Save</string>
+	<string name="user">Username</string>
+	<string name="password">Password</string>
+	<string name="active">Active</string>
+
+	<string name="active_summary">Check to active FON Login</string>
+	<string name="user_summary">Your FON username</string>
+	<string name="password_summary">Your FON password</string>
+	<string name="notif_title">FON Connection</string>
+	<string name="notif_text">You are now conected to FON</string>
+	<string name="pref_active">pref.active</string>
+	<string name="pref_username">pref.username</string>
+	<string name="pref_password">pref.password</string>
+	<string name="notifications">Notifications</string>
+	<string name="pref_enableNotifications">pref.enableNotification</string>
+	<string name="enable_notifications">Enable Notifications</string>
+	<string name="notifications_summary">Receives notifications when you connect to a FON Spot</string>
+	<string name="pref_ringtone">pref.ringtone</string>
+	<string name="ringtone">Ringtone</string>
+	<string name="general">General Configuration</string>
 	
-<string name="status">Connection Status:</string>
-<string name="status_connected">Connected</string>
-<string name="status_disconnected">Disconnected</string>
-<string name="status_error">Error</string>
+	<string name="vibrate">Vibrate</string>
+	<string name="pref_vibrate">pref.vibrate</string>
+	<string name="vibrate_summary">Vibrate when you connect to a FON Spot</string>
+
+	<string name="status">Connection Status:</string>
+	<string name="status_connected">Connected</string>
+	<string name="status_disconnected">Disconnected</string>
+	<string name="status_error">Error</string>
 </resources>
