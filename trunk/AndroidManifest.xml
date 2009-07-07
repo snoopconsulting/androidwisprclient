@@ -14,10 +14,13 @@
 				<action android:name="android.net.wifi.STATE_CHANGE" />
 			</intent-filter>
 		</receiver>
+		
+		<service android:name=".WISPrLoggerService" />
 	</application>
 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.VIBRATE" />
 
 	<uses-sdk android:minSdkVersion="3" />
 </manifest> 
