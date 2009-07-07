@@ -1,6 +1,5 @@
 package com.joan.pruebas;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +9,6 @@ import java.util.Map;
 
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,10 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import android.util.Log;
 
@@ -40,12 +34,11 @@ public class WISPrLogger {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
 			String blockedUrlText = this.getUrl(BLOCKED_URL);
-			// Log.d(TAG, "Received blocked URL:" + blockedUrlText);
 			String WISPrXML = this.getWISPrXML(blockedUrlText);
 			if (WISPrXML != null) {
 				Log.d(TAG, "XML Found:" + WISPrXML);
 				WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
-				parseXML(WISPrXML, wisprInfo);
+				android.util.Xml.parse(WISPrXML, wisprInfo);
 
 				if (wisprInfo.getMesageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_INITIAL)
 						&& wisprInfo.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_NO_ERROR)) {
@@ -53,6 +46,7 @@ public class WISPrLogger {
 				}
 			} else {
 				Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
+				res = WISPrConstants.WISPR_NOT_PRESENT;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error trying to log", e);
@@ -72,11 +66,10 @@ public class WISPrLogger {
 
 		String response = getUrlByPost(targetURL, data);
 		if (response != null) {
-			Log.d(TAG, "got response:" + response);
 			response = getWISPrXML(response);
 			Log.d(TAG, "found xml:" + response);
 			WISPrResponseHandler wrh = new WISPrResponseHandler();
-			parseXML(response, wrh);
+			android.util.Xml.parse(response, wrh);
 			res = wrh.getResponseCode();
 		}
 
@@ -129,14 +122,5 @@ public class WISPrLogger {
 		}
 
 		return res;
-	}
-
-	public void parseXML(String xml, ContentHandler handler) throws SAXException, IOException,
-			ParserConfigurationException, FactoryConfigurationError {
-		SAXParserFactory spf = SAXParserFactory.newInstance();
-		SAXParser sp = spf.newSAXParser();
-		XMLReader xr = sp.getXMLReader();
-		xr.setContentHandler(handler);
-		xr.parse(new InputSource(new ByteArrayInputStream(xml.getBytes())));
 	}
 }
