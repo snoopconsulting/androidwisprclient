@@ -1,7 +1,5 @@
 package com.joan.wispr;
 
-import com.joan.pruebas.R;
-
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 

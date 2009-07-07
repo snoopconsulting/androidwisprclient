@@ -2,8 +2,6 @@ package com.joan.wispr;
 
 import java.util.Set;
 
-import com.joan.pruebas.R;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
