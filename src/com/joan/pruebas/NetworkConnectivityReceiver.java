@@ -2,16 +2,12 @@ package com.joan.pruebas;
 
 import java.util.Set;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -48,12 +44,14 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 					if (active) {
 						String userName = mPreferences.getString(context.getString(R.string.pref_username), "");
 						String password = mPreferences.getString(context.getString(R.string.pref_password), "");
-						Log.d(TAG, "credentials:" + userName + "/" + password);
 						Log.d(TAG, "Conectamos!!!! ahora habría que intentar hacer el WISPr");
-						WISPrLogger wl = new WISPrLogger();
-						String loginResult = wl.login(userName, password);
-						Log.d(TAG, "LoginResult:" + loginResult);
-						notifyConnectionResult(context, loginResult);
+						// TODO crear intent y llamar al servicio
+						Intent logIntent = new Intent(context, WISPrLoggerService.class);
+						logIntent.setAction("LOG");
+						logIntent.putExtra(context.getString(R.string.pref_username), userName);
+						logIntent.putExtra(context.getString(R.string.pref_password), password);
+						logIntent(logIntent);
+						context.startService(logIntent);
 					}
 				}
 			}
@@ -82,37 +80,5 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		ssid = ssid.toUpperCase();
 
 		return ssid.startsWith("FON_") || ssid.equals("BTFON") || ssid.equals("Neuf WiFi FON");
-	}
-
-	private void notifyConnectionResult(Context context, String result) {
-		int icon = R.drawable.icon;
-		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_enableNotifications),
-				false);
-		if (notificationsActive) {
-			String notificationTitle = context.getString(R.string.notif_title);
-			String notificationText = context.getString(R.string.notif_text);
-			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)) {
-				NotificationManager notificationManager = (NotificationManager) context
-						.getSystemService(Context.NOTIFICATION_SERVICE);
-				Log.d(TAG, "Got Notification Service");
-				Intent appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-				PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-
-				Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
-				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
-				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
-				if (vibrate) {
-					notification.vibrate = new long[] { 100, 250 };
-				}
-
-				String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
-				if (!ringtone.equals("")) {
-					notification.sound = Uri.parse(ringtone);
-				}
-
-				notificationManager.notify(1, notification);
-				Log.d(TAG, "Notification Sent");
-			}
-		}
 	}
 }
