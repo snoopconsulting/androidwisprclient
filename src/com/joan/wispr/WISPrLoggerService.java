@@ -2,8 +2,6 @@ package com.joan.wispr;
 
 import java.util.Set;
 
-import com.joan.pruebas.R;
-
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
