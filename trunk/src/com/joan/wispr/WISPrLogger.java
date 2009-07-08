@@ -37,7 +37,7 @@ public class WISPrLogger {
 			String blockedUrlText = this.getUrl(BLOCKED_URL);
 			String WISPrXML = this.getWISPrXML(blockedUrlText);
 			if (WISPrXML != null) {
-				Log.d(TAG, "XML Found:" + WISPrXML);
+				// Log.d(TAG, "XML Found:" + WISPrXML);
 				WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
 				android.util.Xml.parse(WISPrXML, wisprInfo);
 
@@ -46,7 +46,7 @@ public class WISPrLogger {
 					res = tryToLogin(user, password, wisprInfo);
 				}
 			} else {
-				Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
+				// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
 				res = WISPrConstants.WISPR_NOT_PRESENT;
 			}
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class WISPrLogger {
 		String response = getUrlByPost(targetURL, data);
 		if (response != null) {
 			response = getWISPrXML(response);
-			Log.d(TAG, "found xml:" + response);
+			// Log.d(TAG, "found xml:" + response);
 			WISPrResponseHandler wrh = new WISPrResponseHandler();
 			android.util.Xml.parse(response, wrh);
 			res = wrh.getResponseCode();
@@ -124,5 +124,4 @@ public class WISPrLogger {
 
 		return res;
 	}
-
 }
