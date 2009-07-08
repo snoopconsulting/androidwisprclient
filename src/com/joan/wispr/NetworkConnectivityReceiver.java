@@ -24,7 +24,6 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		Log.d(TAG, "Action Received: " + action + " From intent: " + intent);
-		logIntent(intent);
 
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 		if (networkInfo != null) {
@@ -35,22 +34,18 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 				String ssid = connectionInfo.getSSID();
 				String bssid = connectionInfo.getBSSID();
-				Log.d(TAG, "Conected SSID:" + ssid + ", bssid:" + bssid);
+				Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid);
 				if (isFonNetWork(ssid, bssid)) {
 
 					mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 					boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
-					Log.d(TAG, "Application active:" + active);
 					if (active) {
 						String userName = mPreferences.getString(context.getString(R.string.pref_username), "");
 						String password = mPreferences.getString(context.getString(R.string.pref_password), "");
-						Log.d(TAG, "Conectamos!!!! ahora habría que intentar hacer el WISPr");
-						// TODO crear intent y llamar al servicio
 						Intent logIntent = new Intent(context, WISPrLoggerService.class);
 						logIntent.setAction("LOG");
 						logIntent.putExtra(context.getString(R.string.pref_username), userName);
 						logIntent.putExtra(context.getString(R.string.pref_password), password);
-						logIntent(logIntent);
 						context.startService(logIntent);
 					}
 				}
