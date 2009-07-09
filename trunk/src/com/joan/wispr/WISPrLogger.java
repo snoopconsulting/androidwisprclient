@@ -23,6 +23,9 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
+import com.joan.wispr.handler.WISPrInfoHandler;
+import com.joan.wispr.handler.WISPrResponseHandler;
+
 public class WISPrLogger {
 
 	private static final String BLOCKED_URL = "http://wifi.fon.com";

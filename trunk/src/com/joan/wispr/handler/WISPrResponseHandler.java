@@ -1,4 +1,4 @@
-package com.joan.wispr;
+package com.joan.wispr.handler;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
