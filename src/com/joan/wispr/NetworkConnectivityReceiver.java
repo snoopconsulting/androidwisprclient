@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -27,14 +27,15 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 		if (networkInfo != null) {
-			State state = networkInfo.getState();
+			Log.d(TAG, "NetworkInfo:" + networkInfo);
 			String typeName = networkInfo.getTypeName();
-			if (state.equals(State.CONNECTED) && typeName.equals("WIFI")) {
+			if (networkInfo.isConnected() && typeName.equals("WIFI")) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo connectionInfo = wm.getConnectionInfo();
+				SupplicantState supplicantState = connectionInfo.getSupplicantState();
 				String ssid = connectionInfo.getSSID();
 				String bssid = connectionInfo.getBSSID();
-				Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid);
+				Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:" + supplicantState);
 				if (isFonNetWork(ssid, bssid)) {
 
 					mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -53,7 +54,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private void logIntent(Intent intent) {
+	protected void logIntent(Intent intent) {
 		Log.d(TAG, "intent.getAction:" + intent.getAction());
 		Log.d(TAG, "intent.getData():" + intent.getData());
 		Log.d(TAG, "intent.getDataString():" + intent.getDataString());

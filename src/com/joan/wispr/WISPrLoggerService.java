@@ -34,28 +34,36 @@ public class WISPrLoggerService extends IntentService {
 		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_enableNotifications),
 				false);
 		if (notificationsActive) {
-			String notificationTitle = context.getString(R.string.notif_title);
-			String notificationText = context.getString(R.string.notif_text);
+			String notificationTitle = null;
+			String notificationText = null;
+			NotificationManager notificationManager = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
+
+			Intent appIntent = null;
 			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)) {
-				NotificationManager notificationManager = (NotificationManager) context
-						.getSystemService(Context.NOTIFICATION_SERVICE);
-				Intent appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-				PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-
-				Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
-				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
-				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
-				if (vibrate) {
-					notification.vibrate = new long[] { 100, 250, 100, 500 };
-				}
-
-				String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
-				if (!ringtone.equals("")) {
-					notification.sound = Uri.parse(ringtone);
-				}
-
-				notificationManager.notify(1, notification);
+				notificationTitle = context.getString(R.string.notif_title_ok);
+				notificationText = context.getString(R.string.notif_text_ok);
+				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
+				notificationTitle = context.getString(R.string.notif_title_ko);
+				notificationText = context.getString(R.string.notif_text_ko) + " {" + result + "}";
+				appIntent = new Intent(context, AndroidWISPr.class);
 			}
+
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
+			Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+			notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
+			boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
+			if (vibrate) {
+				notification.vibrate = new long[] { 100, 250, 100, 500 };
+			}
+
+			String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
+			if (!ringtone.equals("")) {
+				notification.sound = Uri.parse(ringtone);
+			}
+
+			notificationManager.notify(1, notification);
 		}
 	}
 }
