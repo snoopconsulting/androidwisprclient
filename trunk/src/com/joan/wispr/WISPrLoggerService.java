@@ -50,20 +50,22 @@ public class WISPrLoggerService extends IntentService {
 				appIntent = new Intent(context, AndroidWISPr.class);
 			}
 
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-			Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
-			notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
-			boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
-			if (vibrate) {
-				notification.vibrate = new long[] { 100, 250, 100, 500 };
-			}
+			if (appIntent != null) {
+				PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
+				Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
+				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
+				if (vibrate) {
+					notification.vibrate = new long[] { 100, 250, 100, 500 };
+				}
 
-			String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
-			if (!ringtone.equals("")) {
-				notification.sound = Uri.parse(ringtone);
-			}
+				String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
+				if (!ringtone.equals("")) {
+					notification.sound = Uri.parse(ringtone);
+				}
 
-			notificationManager.notify(1, notification);
+				notificationManager.notify(1, notification);
+			}
 		}
 	}
 }
