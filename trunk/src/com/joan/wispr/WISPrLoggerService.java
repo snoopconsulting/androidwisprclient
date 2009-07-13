@@ -64,6 +64,7 @@ public class WISPrLoggerService extends IntentService {
 				if (!ringtone.equals("")) {
 					notification.sound = Uri.parse(ringtone);
 				}
+				notification.flags = notification.flags + Notification.FLAG_AUTO_CANCEL;
 
 				notificationManager.notify(1, notification);
 			}
