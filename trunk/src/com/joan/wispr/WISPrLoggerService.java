@@ -44,7 +44,8 @@ public class WISPrLoggerService extends IntentService {
 				notificationTitle = context.getString(R.string.notif_title_ok);
 				notificationText = context.getString(R.string.notif_text_ok);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
+			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)
+					&& !result.equals(WISPrConstants.ALREADY_CONNECTED)) {
 				notificationTitle = context.getString(R.string.notif_title_ko);
 				notificationText = context.getString(R.string.notif_text_ko) + " {" + result + "}";
 				appIntent = new Intent(context, AndroidWISPr.class);
