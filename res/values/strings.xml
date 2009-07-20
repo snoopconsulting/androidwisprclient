@@ -10,13 +10,15 @@
 	<string name="user_summary">Your FON username</string>
 	<string name="password_summary">Your FON password</string>
 	<string name="notif_title_ok">FON Connection</string>
-	<string name="notif_text_ok">You are now conected to FON</string>
+	<string name="notif_text_ok">Conected to %s</string>
 	<string name="notif_title_ko">FON Connection</string>
 	<string name="notif_text_ko">Error conecting to FON</string>
+	<string name="notif_default_ssid">FON</string>
 	
 	<string name="pref_active">pref.active</string>
 	<string name="pref_username">pref.username</string>
 	<string name="pref_password">pref.password</string>
+	<string name="pref_ssid">pref.ssid</string>
 	<string name="notifications">Notifications</string>
 	<string name="pref_enableNotifications">pref.enableNotification</string>
 	<string name="enable_notifications">Enable Notifications</string>

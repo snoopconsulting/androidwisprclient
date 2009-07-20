@@ -47,6 +47,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						logIntent.setAction("LOG");
 						logIntent.putExtra(context.getString(R.string.pref_username), userName);
 						logIntent.putExtra(context.getString(R.string.pref_password), password);
+						logIntent.putExtra(context.getString(R.string.pref_ssid), ssid);
 						context.startService(logIntent);
 					}
 				}
