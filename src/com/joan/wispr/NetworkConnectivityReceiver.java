@@ -36,7 +36,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 				String ssid = connectionInfo.getSSID();
 				String bssid = connectionInfo.getBSSID();
 				Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:" + supplicantState);
-				if (isFonNetWork(ssid, bssid)) {
+				if (FONUtil.isFonNetWork(ssid, bssid)) {
 
 					mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 					boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
@@ -71,11 +71,5 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		} else {
 			Log.d(TAG, "NO EXTRAS");
 		}
-	}
-
-	private boolean isFonNetWork(String ssid, String macAddress) {
-		ssid = ssid.toUpperCase();
-
-		return ssid.startsWith("FON_") || ssid.equals("BTFON") || ssid.equals("Neuf WiFi FON");
 	}
 }
