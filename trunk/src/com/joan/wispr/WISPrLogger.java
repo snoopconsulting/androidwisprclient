@@ -40,7 +40,7 @@ public class WISPrLogger {
 						res = tryToLogin(user, password, wisprInfo);
 					}
 				} else {
-					// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
+					Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
 			} else {

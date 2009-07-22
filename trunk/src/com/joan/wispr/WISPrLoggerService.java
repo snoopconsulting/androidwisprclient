@@ -34,8 +34,8 @@ public class WISPrLoggerService extends IntentService {
 		long[] vibratePattern = null;
 
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_enableNotifications),
-				false);
+		boolean notificationsActive = mPreferences.getBoolean(context
+				.getString(R.string.pref_connectionNotificationsEnable), false);
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
@@ -64,16 +64,16 @@ public class WISPrLoggerService extends IntentService {
 				PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
 				Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
 				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
-				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
+				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_connectionVibrate), false);
 				if (vibrate) {
 					notification.vibrate = vibratePattern;
 				}
 
-				String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
+				String ringtone = mPreferences.getString(context.getString(R.string.pref_connectionRingtone), "");
 				if (!ringtone.equals("")) {
 					notification.sound = Uri.parse(ringtone);
 				}
-				notification.flags = notification.flags + Notification.FLAG_AUTO_CANCEL;
+				notification.flags = notification.flags | Notification.FLAG_AUTO_CANCEL;
 
 				notificationManager.notify(1, notification);
 			}

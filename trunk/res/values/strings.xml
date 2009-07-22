@@ -14,22 +14,26 @@
 	<string name="notif_title_ko">FON Connection</string>
 	<string name="notif_text_ko">Error conecting to FON</string>
 	<string name="notif_default_ssid">FON</string>
-	
+
 	<string name="pref_active">pref.active</string>
 	<string name="pref_username">pref.username</string>
 	<string name="pref_password">pref.password</string>
 	<string name="pref_ssid">pref.ssid</string>
-	<string name="notifications">Notifications</string>
-	<string name="pref_enableNotifications">pref.enableNotification</string>
-	<string name="enable_notifications">Enable Notifications</string>
-	<string name="notifications_summary">Receives notifications when you connect to a FON Spot</string>
-	<string name="pref_ringtone">pref.ringtone</string>
+	<string name="pref_connectionNotificationsEnable">pref.connectionNotificationEnable</string>
+	<string name="pref_connectionRingtone">pref.connectionRingtone</string>
+	<string name="pref_connectionVibrate">pref.connectionVibrate</string>
+	<string name="pref_connectionAutoEnable">pref.connectionAutoEnable</string>
+
+	<string name="connectionNotifications">Notifications</string>
+	<string name="connectionNotificationsEnable">Enable Notifications</string>
+	<string name="connectionNotificationsSummary">Receives notifications when you connect to a FON Spot</string>
+	<string name="connectionNotificationsVibrate">Vibrate</string>
+	<string name="connectionNotificationsVibrateSummary">Vibrate when you connect to a FON Spot</string>
+	<string name="connectionAutoEnable">Auto Connect</string>
+	<string name="connectionAutoSummary">Automatically connect to any available FON Spot</string>
+
 	<string name="ringtone">Ringtone</string>
 	<string name="general">General Configuration</string>
-	
-	<string name="vibrate">Vibrate</string>
-	<string name="pref_vibrate">pref.vibrate</string>
-	<string name="vibrate_summary">Vibrate when you connect to a FON Spot</string>
 
 	<string name="status">Connection Status:</string>
 	<string name="status_connected">Connected</string>
