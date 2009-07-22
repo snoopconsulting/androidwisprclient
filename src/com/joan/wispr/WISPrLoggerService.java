@@ -31,6 +31,8 @@ public class WISPrLoggerService extends IntentService {
 
 	private void notifyConnectionResult(Context context, String result, String ssid) {
 		int icon = R.drawable.icon;
+		long[] vibratePattern = null;
+
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_enableNotifications),
 				false);
@@ -49,11 +51,13 @@ public class WISPrLoggerService extends IntentService {
 				notificationTitle = context.getString(R.string.notif_title_ok);
 				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+				vibratePattern = new long[] { 100, 250 };
 			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)
 					&& !result.equals(WISPrConstants.ALREADY_CONNECTED)) {
 				notificationTitle = context.getString(R.string.notif_title_ko);
 				notificationText = context.getString(R.string.notif_text_ko) + " {" + result + "}";
 				appIntent = new Intent(context, AndroidWISPr.class);
+				vibratePattern = new long[] { 100, 250, 100, 500 };
 			}
 
 			if (appIntent != null) {
@@ -62,7 +66,7 @@ public class WISPrLoggerService extends IntentService {
 				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
 				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_vibrate), false);
 				if (vibrate) {
-					notification.vibrate = new long[] { 100, 250, 100, 500 };
+					notification.vibrate = vibratePattern;
 				}
 
 				String ringtone = mPreferences.getString(context.getString(R.string.pref_ringtone), "");
