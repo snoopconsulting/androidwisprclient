@@ -1,5 +1,6 @@
 package com.joan.wispr;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
@@ -24,6 +25,9 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
 
+	private static List<SupplicantState> waitingStates = Arrays.asList(SupplicantState.COMPLETED,
+			SupplicantState.ASSOCIATING);
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Date now = new Date();
@@ -39,7 +43,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 
-				if (!connectionInfo.getSupplicantState().equals(SupplicantState.COMPLETED)) {
+				Log.d(TAG, "connectionInfo.getSupplicantState():" + connectionInfo.getSupplicantState());
+				if (!waitingStates.contains(connectionInfo.getSupplicantState())) {
 					ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
 					if (fonScanResult != null) {
 						Log.d(TAG, "Scan result found:" + fonScanResult);

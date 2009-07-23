@@ -5,7 +5,7 @@ public class FONUtil {
 		boolean res = false;
 		if (ssid != null) {
 			ssid = ssid.toUpperCase();
-			res = ssid.startsWith("FON_") || ssid.equals("BTFON") || ssid.equals("Neuf WiFi FON");
+			res = ssid.startsWith("FON_") || ssid.equals("BTFON") || ssid.equals("NEUF WIFI FON");
 		}
 		return res;
 	}
