@@ -1,6 +1,5 @@
 package com.joan.wispr;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
@@ -25,9 +24,6 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
 
-	private static List<SupplicantState> waitingStates = Arrays.asList(SupplicantState.COMPLETED,
-			SupplicantState.ASSOCIATING);
-
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Date now = new Date();
@@ -44,11 +40,13 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 
 				Log.d(TAG, "connectionInfo.getSupplicantState():" + connectionInfo.getSupplicantState());
-				if (!waitingStates.contains(connectionInfo.getSupplicantState())) {
+
+				if (connectionInfo.getSupplicantState().equals(SupplicantState.SCANNING)) {
 					ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
 					if (fonScanResult != null) {
 						Log.d(TAG, "Scan result found:" + fonScanResult);
-						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(), fonScanResult);
+						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
+								fonScanResult);
 						Log.d(TAG, "FON Network found:" + fonNetwork);
 						if (fonNetwork == null) {
 							fonNetwork = new WifiConfiguration();
@@ -75,7 +73,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks, ScanResult scanResult) {
+	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks,
+			ScanResult scanResult) {
 		boolean found = false;
 		WifiConfiguration wifiConfiguration = null;
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
@@ -110,6 +109,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		return scanResult;
 	}
 
+	// Comparator to order Scanresults from high signal level to low
 	class ScanResultComparator implements Comparator<ScanResult> {
 		public int compare(ScanResult scanResult1, ScanResult scanResult2) {
 			return scanResult2.level - scanResult1.level;
