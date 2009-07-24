@@ -5,12 +5,14 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class WISPrInfoHandler extends DefaultHandler {
 	enum Tag {
-		WISPAccessGatewayParam, Redirect, AccessProcedure, LoginURL, AbortLoginURL, MessageType, ResponseCode
+		WISPAccessGatewayParam, Redirect, AccessProcedure, LoginURL, AbortLoginURL, MessageType, ResponseCode, AccessLocation, LocationName
 	}
 
 	private Tag actualTag;
 
 	private String accessProcedure = "";
+
+	private String accessLocation = "";
 
 	private String loginURL = "";
 
@@ -19,6 +21,8 @@ public class WISPrInfoHandler extends DefaultHandler {
 	private String mesageType = "";
 
 	private String responseCode = "";
+
+	private String locationName = "";
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -38,6 +42,10 @@ public class WISPrInfoHandler extends DefaultHandler {
 			mesageType += chars;
 		} else if (actualTag.equals(Tag.ResponseCode)) {
 			responseCode += chars;
+		} else if (actualTag.equals(Tag.AccessLocation)) {
+			accessLocation += chars;
+		} else if (actualTag.equals(Tag.LocationName)) {
+			locationName += chars;
 		}
 	}
 
@@ -61,11 +69,21 @@ public class WISPrInfoHandler extends DefaultHandler {
 		return responseCode.trim();
 	}
 
+	public String getAccessLocation() {
+		return accessLocation.trim();
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("WISPrInfoHandler{");
 		sb.append("accessProcedure: ").append(accessProcedure).append(", ");
+		sb.append("accessLocation: ").append(accessLocation).append(", ");
+		sb.append("locationName: ").append(locationName).append(", ");
 		sb.append("loginURL: ").append(loginURL).append(", ");
 		sb.append("abortLoginURL: ").append(abortLoginURL).append(", ");
 		sb.append("mesageType: ").append(mesageType).append(", ");
