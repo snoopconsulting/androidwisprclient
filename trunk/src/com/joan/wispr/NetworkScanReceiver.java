@@ -80,7 +80,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 		while (!found && it.hasNext()) {
 			wifiConfiguration = it.next();
-			Log.d(TAG, wifiConfiguration.SSID + " equals " + scanResult.SSID);
+			Log.d(TAG, wifiConfiguration.SSID + " equals " + "\"" + scanResult.SSID + "\"");
 			if (wifiConfiguration.SSID != null) {
 				found = wifiConfiguration.SSID.equals("\"" + scanResult.SSID + "\"");
 			}
