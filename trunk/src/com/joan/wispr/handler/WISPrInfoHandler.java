@@ -5,7 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class WISPrInfoHandler extends DefaultHandler {
 	enum Tag {
-		WISPAccessGatewayParam, Redirect, AccessProcedure, LoginURL, AbortLoginURL, MessageType, ResponseCode, AccessLocation, LocationName
+		wispaccessgatewayparam, redirect, accessprocedure, loginurl, abortloginurl, messagetype, responsecode, accesslocation, locationname
 	}
 
 	private Tag actualTag;
@@ -26,25 +26,25 @@ public class WISPrInfoHandler extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
-		actualTag = Tag.valueOf(name.trim());
+		actualTag = Tag.valueOf(name.trim().toLowerCase());
 	}
 
 	@Override
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
-		if (actualTag.equals(Tag.AccessProcedure)) {
+		if (actualTag.equals(Tag.accessprocedure)) {
 			accessProcedure += chars;
-		} else if (actualTag.equals(Tag.LoginURL)) {
+		} else if (actualTag.equals(Tag.loginurl)) {
 			loginURL += chars;
-		} else if (actualTag.equals(Tag.AbortLoginURL)) {
+		} else if (actualTag.equals(Tag.abortloginurl)) {
 			abortLoginURL += chars;
-		} else if (actualTag.equals(Tag.MessageType)) {
+		} else if (actualTag.equals(Tag.messagetype)) {
 			mesageType += chars;
-		} else if (actualTag.equals(Tag.ResponseCode)) {
+		} else if (actualTag.equals(Tag.responsecode)) {
 			responseCode += chars;
-		} else if (actualTag.equals(Tag.AccessLocation)) {
+		} else if (actualTag.equals(Tag.accesslocation)) {
 			accessLocation += chars;
-		} else if (actualTag.equals(Tag.LocationName)) {
+		} else if (actualTag.equals(Tag.locationname)) {
 			locationName += chars;
 		}
 	}
