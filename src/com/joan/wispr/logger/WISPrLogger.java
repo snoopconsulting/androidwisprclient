@@ -1,4 +1,4 @@
-package com.joan.wispr;
+package com.joan.wispr.logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,23 +13,20 @@ import android.util.Log;
 
 import com.joan.wispr.handler.WISPrInfoHandler;
 import com.joan.wispr.handler.WISPrResponseHandler;
+import com.joan.wispr.util.HttpUtils;
+import com.joan.wispr.util.WISPrConstants;
+import com.joan.wispr.util.WISPrUtil;
 
-public class WISPrLogger {
-
-	private static final String BLOCKED_URL = "http://www.saltando.net/uploads/android.txt";
+public class WISPrLogger implements WebLogger {
 
 	private static String TAG = WISPrLogger.class.getName();
-
-	public static final String WISPR_TAG_NAME = "WISPAccessGatewayParam";
-
-	public static final String CONNECTED = "CONNECTED";
 
 	public String login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
 			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
 			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
-				String WISPrXML = this.getWISPrXML(blockedUrlText);
+				String WISPrXML = WISPrUtil.getWISPrXML(blockedUrlText);
 				if (WISPrXML != null) {
 					// Log.d(TAG, "XML Found:" + WISPrXML);
 					WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
@@ -65,22 +62,10 @@ public class WISPrLogger {
 
 		String response = HttpUtils.getUrlByPost(targetURL, data);
 		if (response != null) {
-			response = getWISPrXML(response);
+			response = WISPrUtil.getWISPrXML(response);
 			WISPrResponseHandler wrh = new WISPrResponseHandler();
 			android.util.Xml.parse(response, wrh);
 			res = wrh.getResponseCode();
-		}
-
-		return res;
-	}
-
-	private String getWISPrXML(String source) {
-		String res = null;
-		int start = source.indexOf("<" + WISPR_TAG_NAME);
-		int end = source.indexOf("</" + WISPR_TAG_NAME + ">") + WISPR_TAG_NAME.length() + 3;
-		if (start > -1 && end > -1) {
-			res = source.substring(start, end);
-			res = res.replace("&", "&amp;");
 		}
 
 		return res;

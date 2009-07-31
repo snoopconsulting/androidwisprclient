@@ -11,6 +11,11 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.joan.wispr.logger.NeufLogger;
+import com.joan.wispr.logger.WISPrLogger;
+import com.joan.wispr.logger.WebLogger;
+import com.joan.wispr.util.WISPrConstants;
+
 public class WISPrLoggerService extends IntentService {
 	private static String TAG = WISPrLoggerService.class.getName();
 
@@ -24,7 +29,13 @@ public class WISPrLoggerService extends IntentService {
 		String password = intent.getStringExtra(this.getString(R.string.pref_password));
 		String username = intent.getStringExtra(this.getString(R.string.pref_username));
 		String ssid = intent.getStringExtra(this.getString(R.string.pref_ssid));
-		WISPrLogger logger = new WISPrLogger();
+
+		WebLogger logger = null;
+		if (ssid.equalsIgnoreCase("NEUF WIFI FON")) {
+			logger = new NeufLogger();
+		} else {
+			logger = new WISPrLogger();
+		}
 		String result = logger.login(username, password);
 		notifyConnectionResult(this, result, ssid);
 	}

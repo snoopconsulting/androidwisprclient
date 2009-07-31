@@ -5,7 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class WISPrResponseHandler extends DefaultHandler {
 	enum Tag {
-		WISPAccessGatewayParam, Redirect, ResponseCode, FONResponseCode, LogoffURL, ReplyMessage, AuthenticationPollReply, MessageType
+		wispaccessgatewayparam, redirect, responsecode, fonresponsecode, logoffurl, replymessage, authenticationpollreply, messagetype, authenticationreply
 	}
 
 	private Tag actualTag;
@@ -18,22 +18,26 @@ public class WISPrResponseHandler extends DefaultHandler {
 
 	private String replyMessage = "";
 
+	private String messageType = "";
+
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
-		actualTag = Tag.valueOf(name.trim());
+		actualTag = Tag.valueOf(name.trim().toLowerCase());
 	}
 
 	@Override
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
-		if (actualTag.equals(Tag.ResponseCode)) {
+		if (actualTag.equals(Tag.responsecode)) {
 			responseCode += chars;
-		} else if (actualTag.equals(Tag.FONResponseCode)) {
+		} else if (actualTag.equals(Tag.fonresponsecode)) {
 			fonResponseCode += chars;
-		} else if (actualTag.equals(Tag.LogoffURL)) {
+		} else if (actualTag.equals(Tag.logoffurl)) {
 			logoffURL += chars;
-		} else if (actualTag.equals(Tag.ReplyMessage)) {
+		} else if (actualTag.equals(Tag.replymessage)) {
 			replyMessage += chars;
+		} else if (actualTag.equals(Tag.messagetype)) {
+			messageType += chars;
 		}
 	}
 
@@ -51,5 +55,9 @@ public class WISPrResponseHandler extends DefaultHandler {
 
 	public String getReplyMessage() {
 		return replyMessage.trim();
+	}
+
+	public String getMessageType() {
+		return messageType;
 	}
 }

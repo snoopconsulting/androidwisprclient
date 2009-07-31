@@ -1,4 +1,4 @@
-package com.joan.wispr;
+package com.joan.wispr.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

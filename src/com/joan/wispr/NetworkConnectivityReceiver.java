@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.joan.wispr.util.FONUtil;
+
 public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkConnectivityReceiver.class.getName();
 
