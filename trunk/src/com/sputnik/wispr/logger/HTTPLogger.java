@@ -1,4 +1,4 @@
-package com.joan.wispr.logger;
+package com.sputnik.wispr.logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;

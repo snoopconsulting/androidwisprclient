@@ -1,4 +1,4 @@
-package com.joan.wispr;
+package com.sputnik.wispr;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -11,10 +11,13 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.joan.wispr.logger.NeufLogger;
-import com.joan.wispr.logger.WISPrLogger;
-import com.joan.wispr.logger.WebLogger;
-import com.joan.wispr.util.WISPrConstants;
+import com.joan.wispr.R;
+import com.joan.wispr.R.drawable;
+import com.joan.wispr.R.string;
+import com.sputnik.wispr.logger.NeufLogger;
+import com.sputnik.wispr.logger.WISPrLogger;
+import com.sputnik.wispr.logger.WebLogger;
+import com.sputnik.wispr.util.WISPrConstants;
 
 public class WISPrLoggerService extends IntentService {
 	private static String TAG = WISPrLoggerService.class.getName();

@@ -1,11 +1,11 @@
-package com.joan.wispr.logger;
+package com.sputnik.wispr.logger;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.joan.wispr.util.HttpUtils;
-import com.joan.wispr.util.WISPrConstants;
+import com.sputnik.wispr.util.HttpUtils;
+import com.sputnik.wispr.util.WISPrConstants;
 
 public class BTFonLogger extends HTTPLogger {
 

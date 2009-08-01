@@ -1,4 +1,4 @@
-package com.joan.wispr;
+package com.sputnik.wispr;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -17,7 +17,9 @@ import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.joan.wispr.util.FONUtil;
+import com.joan.wispr.R;
+import com.joan.wispr.R.string;
+import com.sputnik.wispr.util.FONUtil;
 
 public class NetworkScanReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkScanReceiver.class.getName();

@@ -1,4 +1,4 @@
-package com.joan.wispr.util;
+package com.sputnik.wispr.util;
 
 public class WISPrConstants {
 	public static String WISPR_MESSAGE_TYPE_INITIAL = "100";

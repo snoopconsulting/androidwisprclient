@@ -1,4 +1,4 @@
-package com.joan.wispr.util;
+package com.sputnik.wispr.util;
 
 public class WISPrUtil {
 	public static final String WISPR_TAG_NAME = "WISPAccessGatewayParam";
