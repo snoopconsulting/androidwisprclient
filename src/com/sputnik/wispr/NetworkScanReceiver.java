@@ -17,8 +17,6 @@ import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.joan.wispr.R;
-import com.joan.wispr.R.string;
 import com.sputnik.wispr.util.FONUtil;
 
 public class NetworkScanReceiver extends BroadcastReceiver {
@@ -49,8 +47,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 					ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
 					if (fonScanResult != null) {
 						Log.d(TAG, "Scan result found:" + fonScanResult);
-						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
-								fonScanResult);
+						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(), fonScanResult);
 						Log.d(TAG, "FON Network found:" + fonNetwork);
 						if (fonNetwork == null) {
 							fonNetwork = new WifiConfiguration();
@@ -77,8 +74,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks,
-			ScanResult scanResult) {
+	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks, ScanResult scanResult) {
 		boolean found = false;
 		WifiConfiguration wifiConfiguration = null;
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();

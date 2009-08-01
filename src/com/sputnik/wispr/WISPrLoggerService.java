@@ -11,9 +11,6 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.joan.wispr.R;
-import com.joan.wispr.R.drawable;
-import com.joan.wispr.R.string;
 import com.sputnik.wispr.logger.NeufLogger;
 import com.sputnik.wispr.logger.WISPrLogger;
 import com.sputnik.wispr.logger.WebLogger;
@@ -48,13 +45,11 @@ public class WISPrLoggerService extends IntentService {
 		long[] vibratePattern = null;
 
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean notificationsActive = mPreferences.getBoolean(context
-				.getString(R.string.pref_connectionNotificationsEnable), false);
+		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_connectionNotificationsEnable), false);
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
-			NotificationManager notificationManager = (NotificationManager) context
-					.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			if (ssid == null) {
 				ssid = context.getString(R.string.notif_default_ssid);
