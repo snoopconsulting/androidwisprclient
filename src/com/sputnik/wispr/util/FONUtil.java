@@ -1,4 +1,4 @@
-package com.joan.wispr.util;
+package com.sputnik.wispr.util;
 
 public class FONUtil {
 	public static boolean isFonNetWork(String ssid, String bssid) {

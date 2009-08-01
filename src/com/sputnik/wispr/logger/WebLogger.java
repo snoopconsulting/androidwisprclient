@@ -1,4 +1,4 @@
-package com.joan.wispr.logger;
+package com.sputnik.wispr.logger;
 
 public interface WebLogger {
 	public static final String CONNECTED = "CONNECTED";

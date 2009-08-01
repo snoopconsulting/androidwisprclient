@@ -1,4 +1,4 @@
-package com.joan.wispr.logger;
+package com.sputnik.wispr.logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,11 +11,11 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
-import com.joan.wispr.handler.WISPrInfoHandler;
-import com.joan.wispr.handler.WISPrResponseHandler;
-import com.joan.wispr.util.HttpUtils;
-import com.joan.wispr.util.WISPrConstants;
-import com.joan.wispr.util.WISPrUtil;
+import com.sputnik.wispr.handler.WISPrInfoHandler;
+import com.sputnik.wispr.handler.WISPrResponseHandler;
+import com.sputnik.wispr.util.HttpUtils;
+import com.sputnik.wispr.util.WISPrConstants;
+import com.sputnik.wispr.util.WISPrUtil;
 
 public class WISPrLogger implements WebLogger {
 
