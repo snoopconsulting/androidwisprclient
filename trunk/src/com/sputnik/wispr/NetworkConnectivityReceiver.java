@@ -30,8 +30,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 		if (networkInfo != null) {
 			Log.d(TAG, "NetworkInfo:" + networkInfo);
-			String typeName = networkInfo.getTypeName();
-			if (networkInfo.isConnected() && typeName.equals("WIFI")) {
+			if (networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI")) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 				SupplicantState supplicantState = connectionInfo.getSupplicantState();

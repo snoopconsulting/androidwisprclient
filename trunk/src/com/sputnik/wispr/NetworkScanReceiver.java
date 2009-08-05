@@ -26,6 +26,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
 
+	private static SharedPreferences prefs;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Date now = new Date();
@@ -34,7 +36,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
 			lastCalled = now;
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+			initPrefs(context);
 			boolean autoConnectEnabled = prefs.getBoolean(context.getString(R.string.pref_connectionAutoEnable), false);
 
 			if (autoConnectEnabled) {
@@ -47,7 +49,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 					ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
 					if (fonScanResult != null) {
 						Log.d(TAG, "Scan result found:" + fonScanResult);
-						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(), fonScanResult);
+						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
+								fonScanResult);
 						Log.d(TAG, "FON Network found:" + fonNetwork);
 						if (fonNetwork == null) {
 							fonNetwork = new WifiConfiguration();
@@ -68,13 +71,20 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 						Log.d(TAG, "Trying to connect");
 					}
 				}
-			} else {
-				Log.d(TAG, "Events to close, ignoring.");
 			}
+		} else {
+			Log.d(TAG, "Events to close, ignoring.");
 		}
 	}
 
-	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks, ScanResult scanResult) {
+	private void initPrefs(Context context) {
+		if (prefs == null) {
+			prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		}
+	}
+
+	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks,
+			ScanResult scanResult) {
 		boolean found = false;
 		WifiConfiguration wifiConfiguration = null;
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
