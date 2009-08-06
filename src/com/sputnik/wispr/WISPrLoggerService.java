@@ -41,7 +41,7 @@ public class WISPrLoggerService extends IntentService {
 	}
 
 	private void notifyConnectionResult(Context context, String result, String ssid) {
-		int icon = R.drawable.icon;
+		int icon = R.drawable.f;
 		long[] vibratePattern = null;
 
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
