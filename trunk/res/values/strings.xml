@@ -6,7 +6,7 @@
 	<string name="active">Active</string>
 	<string name="wisprLogServiceName">wisprLogServiceName</string>
 
-	<string name="active_summary">Check to active FON Login</string>
+	<string name="active_summary">Check to active automatic FON Login</string>
 	<string name="user_summary">Your FON username</string>
 	<string name="password_summary">Your FON password</string>
 	<string name="notif_title_ok">FON Access</string>
@@ -31,12 +31,15 @@
 	<string name="connectionNotificationsVibrateSummary">Vibrate when you connect to a FON Spot</string>
 	<string name="connectionAutoEnable">Auto Connect</string>
 	<string name="connectionAutoSummary">Automatically connect to any available FON Spot</string>
+	<string name="connectionRingtoneSummary">Sounds when you connect to a FON Spot</string>
 
 	<string name="ringtone">Ringtone</string>
-	<string name="general">General Configuration</string>
+	<string name="general">Login Configuration</string>
 
 	<string name="status">Connection Status:</string>
 	<string name="status_connected">Connected</string>
 	<string name="status_disconnected">Disconnected</string>
 	<string name="status_error">Error</string>
+	
+	<string name="menu_close">Close</string>
 </resources>
