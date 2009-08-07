@@ -95,7 +95,7 @@ public class NeufLogger extends HTTPLogger {
 				start = meta.indexOf("URL=");
 				if (start > -1) {
 					start += 4;
-					meta = meta.substring(start);
+					meta = new String(meta.substring(start));
 				}
 			}
 		}
@@ -110,7 +110,7 @@ public class NeufLogger extends HTTPLogger {
 
 		int end = html.indexOf("</form>", start) + 7;
 		if (start > -1 && end > -1) {
-			String htmlForm = html.substring(start, end);
+			String htmlForm = new String(html.substring(start, end));
 			data.put("challenge", getValue(htmlForm, "challenge"));
 			data.put("nb4", getValue(htmlForm, "nb4"));
 			data.put("userurl", getValue(htmlForm, "userurl"));
