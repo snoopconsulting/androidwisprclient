@@ -26,7 +26,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
 
-	private static SharedPreferences prefs;
+	private static SharedPreferences mPreferences;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -36,8 +36,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
 			lastCalled = now;
-			initPrefs(context);
-			boolean autoConnectEnabled = prefs.getBoolean(context.getString(R.string.pref_connectionAutoEnable), false);
+			initPreferences(context);
+			boolean autoConnectEnabled = mPreferences.getBoolean(context.getString(R.string.pref_connectionAutoEnable), false);
 
 			if (autoConnectEnabled) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -77,9 +77,9 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private void initPrefs(Context context) {
-		if (prefs == null) {
-			prefs = PreferenceManager.getDefaultSharedPreferences(context);
+	private void initPreferences(Context context) {
+		if (mPreferences == null) {
+			mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		}
 	}
 

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -27,26 +26,22 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 		Log.d(TAG, "Action Received: " + action + " From intent: " + intent);
 
-		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-		if (networkInfo != null) {
-			Log.d(TAG, "NetworkInfo:" + networkInfo);
-			if (networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI")) {
-				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				WifiInfo connectionInfo = wm.getConnectionInfo();
-				SupplicantState supplicantState = connectionInfo.getSupplicantState();
-				String ssid = connectionInfo.getSSID();
-				String bssid = connectionInfo.getBSSID();
-				Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:" + supplicantState);
-				if (FONUtil.isFonNetWork(ssid, bssid)) {
-
-					mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-					boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
-					if (active) {
-						String userName = mPreferences.getString(context.getString(R.string.pref_username), "");
-						String password = mPreferences.getString(context.getString(R.string.pref_password), "");
+		if (isExpectedIntent(intent)) {
+			WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			WifiInfo connectionInfo = wm.getConnectionInfo();
+			String ssid = connectionInfo.getSSID();
+			String bssid = connectionInfo.getBSSID();
+			Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:" + connectionInfo.getSupplicantState());
+			if (FONUtil.isFonNetWork(ssid, bssid)) {
+				initPreferences(context);
+				boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
+				if (active) {
+					String username = mPreferences.getString(context.getString(R.string.pref_username), "");
+					String password = mPreferences.getString(context.getString(R.string.pref_password), "");
+					if (username.length() > 0 && password.length() > 0) {
 						Intent logIntent = new Intent(context, WISPrLoggerService.class);
 						logIntent.setAction("LOG");
-						logIntent.putExtra(context.getString(R.string.pref_username), userName);
+						logIntent.putExtra(context.getString(R.string.pref_username), username);
 						logIntent.putExtra(context.getString(R.string.pref_password), password);
 						logIntent.putExtra(context.getString(R.string.pref_ssid), ssid);
 						context.startService(logIntent);
@@ -54,6 +49,18 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 				}
 			}
 		}
+	}
+
+	private void initPreferences(Context context) {
+		if (mPreferences == null) {
+			mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		}
+	}
+
+	private boolean isExpectedIntent(Intent intent) {
+		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+		Log.d(TAG, "NetworkInfo:" + networkInfo);
+		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI"));
 	}
 
 	protected void logIntent(Intent intent) {
