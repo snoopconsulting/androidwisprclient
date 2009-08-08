@@ -7,6 +7,7 @@ import java.util.Map;
 import com.sputnik.wispr.util.HttpUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 
+//TODO Not finished yet
 public class BTFonLogger extends HTTPLogger {
 
 	@Override
