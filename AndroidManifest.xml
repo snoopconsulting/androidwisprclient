@@ -12,6 +12,7 @@
 		<receiver android:name=".NetworkConnectivityReceiver" android:enabled="true">
 			<intent-filter>
 				<action android:name="android.net.wifi.STATE_CHANGE" />
+				<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
 			</intent-filter>
 		</receiver>
 
@@ -22,6 +23,7 @@
 		</receiver>
 
 		<service android:name=".WISPrLoggerService" />
+		<service android:name=".NotificationCleaningService" />
 	</application>
 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
