@@ -49,16 +49,22 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						context.startService(logIntent);
 					}
 				}
+			} else {
+				cleanNotification(context);
 			}
 		} else if (isDisconnectedIntent(intent)) {
 			Log.d(TAG, "Disconnected");
-			initPreferences(context);
-			boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
-			if (active) {
-				Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
-				cleaningIntent.setAction("CLEAN");
-				context.startService(cleaningIntent);
-			}
+			cleanNotification(context);
+		}
+	}
+
+	private void cleanNotification(Context context) {
+		initPreferences(context);
+		boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
+		if (active) {
+			Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
+			cleaningIntent.setAction("CLEAN");
+			context.startService(cleaningIntent);
 		}
 	}
 
