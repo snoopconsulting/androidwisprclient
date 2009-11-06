@@ -45,44 +45,70 @@ public class WISPrLoggerService extends IntentService {
 		long[] vibratePattern = null;
 
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_connectionNotificationsEnable), false);
+		boolean notificationsActive = mPreferences.getBoolean(context
+				.getString(R.string.pref_connectionNotificationsEnable), false);
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			if (ssid == null) {
 				ssid = context.getString(R.string.notif_default_ssid);
 			}
 
 			Intent appIntent = null;
+			Notification notification = null;
+			PendingIntent pendingIntent = null;
+			boolean useRingtone = true;
+			boolean useVibration = true;
+
 			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)) {
 				notificationTitle = context.getString(R.string.notif_title_ok);
 				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
 				vibratePattern = new long[] { 100, 250 };
-			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)
-					&& !result.equals(WISPrConstants.ALREADY_CONNECTED)) {
+
+				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
+				notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+				notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+			} else if (result.equals(WISPrConstants.ALREADY_CONNECTED)) {
+				notificationTitle = context.getString(R.string.notif_title_ok);
+				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
+				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
+				notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+				notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+				useRingtone = false;
+				useVibration = false;
+			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
 				notificationTitle = context.getString(R.string.notif_title_ko);
 				notificationText = context.getString(R.string.notif_text_ko) + " {" + result + "}";
 				appIntent = new Intent(context, AndroidWISPr.class);
 				vibratePattern = new long[] { 100, 250, 100, 500 };
+
+				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
+				notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+				notification.flags = notification.flags | Notification.FLAG_AUTO_CANCEL;
 			}
 
 			if (appIntent != null) {
-				PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-				Notification notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
 				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
-				boolean vibrate = mPreferences.getBoolean(context.getString(R.string.pref_connectionVibrate), false);
-				if (vibrate) {
-					notification.vibrate = vibratePattern;
+
+				if (useVibration) {
+					boolean vibrate = mPreferences
+							.getBoolean(context.getString(R.string.pref_connectionVibrate), false);
+					if (vibrate) {
+						notification.vibrate = vibratePattern;
+					}
 				}
 
-				String ringtone = mPreferences.getString(context.getString(R.string.pref_connectionRingtone), "");
-				if (!ringtone.equals("")) {
-					notification.sound = Uri.parse(ringtone);
+				if (useRingtone) {
+					String ringtone = mPreferences.getString(context.getString(R.string.pref_connectionRingtone), "");
+					if (!ringtone.equals("")) {
+						notification.sound = Uri.parse(ringtone);
+					}
 				}
-				notification.flags = notification.flags | Notification.FLAG_AUTO_CANCEL;
 
 				notificationManager.notify(1, notification);
 			}
