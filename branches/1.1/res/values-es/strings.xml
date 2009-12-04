@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">FON Access</string>
+	<string name="user">Email</string>
+	<string name="password">Contraseña</string>
+	<string name="active">Activa</string>
+
+	<string name="active_summary">Selecciona para activar el login automático</string>
+	<string name="user_summary">Tu email de acceso a FON</string>
+	<string name="password_summary">Tu password de FON</string>
+	<string name="notif_title_ok">FON Access</string>
+	<string name="notif_text_ok">Conectado a %s</string>
+	<string name="notif_title_ko">FON Access</string>
+	<string name="notif_text_ko">Error conectando a FON {%s}</string>
+	<string name="notif_default_ssid">FON</string>
+
+	<string name="pref_active">pref.active</string>
+	<string name="pref_username">pref.username</string>
+	<string name="pref_password">pref.password</string>
+	<string name="pref_ssid">pref.ssid</string>
+	<string name="pref_connectionNotificationsEnable">pref.connectionNotificationEnable</string>
+	<string name="pref_connectionRingtone">pref.connectionRingtone</string>
+	<string name="pref_connectionVibrate">pref.connectionVibrate</string>
+	<string name="pref_connectionAutoEnable">pref.connectionAutoEnable</string>
+
+	<string name="connectionNotifications">Notificaciones</string>
+	<string name="connectionNotificationsEnable">Activar Notificaciones</string>
+	<string name="connectionNotificationsSummary">Recibe notificaciones cuando te conectes a FON</string>
+	<string name="connectionNotificationsVibrate">Vibrar</string>
+	<string name="connectionNotificationsVibrateSummary">Vibrar cuando te conectes a FON</string>
+	<string name="connectionAutoEnable">Auto Conexión</string>
+	<string name="connectionAutoSummary">Connecta automaticamente cuando estés cerca de un punto FON</string>
+	<string name="connectionRingtoneSummary">Suena cuando te conectes a FON</string>
+
+	<string name="ringtone">Sonido</string>
+	<string name="general">Configuración de acceso</string>
+
+	<string name="status">Connection Status:</string>
+	<string name="status_connected">Conectado</string>
+	<string name="status_disconnected">Disconectado</string>
+	<string name="status_error">Error</string>
+	
+	<string name="menu_close">Cerrar</string>
+</resources>
