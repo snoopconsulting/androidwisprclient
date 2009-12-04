@@ -45,18 +45,21 @@ public class WISPrLoggerService extends IntentService {
 		long[] vibratePattern = null;
 
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean notificationsActive = mPreferences.getBoolean(context.getString(R.string.pref_connectionNotificationsEnable), false);
+		boolean notificationsActive = mPreferences.getBoolean(context
+				.getString(R.string.pref_connectionNotificationsEnable), false);
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			if (ssid == null) {
 				ssid = context.getString(R.string.notif_default_ssid);
 			}
 
 			Intent appIntent = null;
-			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)) {
+			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)
+					|| result.equals(WISPrConstants.ALREADY_CONNECTED)) {
 				notificationTitle = context.getString(R.string.notif_title_ok);
 				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
@@ -64,8 +67,9 @@ public class WISPrLoggerService extends IntentService {
 			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)
 					&& !result.equals(WISPrConstants.ALREADY_CONNECTED)) {
 				notificationTitle = context.getString(R.string.notif_title_ko);
-				notificationText = context.getString(R.string.notif_text_ko) + " {" + result + "}";
-				appIntent = new Intent(context, AndroidWISPr.class);
+				notificationText = String.format(context.getString(R.string.notif_text_ko), result);
+				// appIntent = new Intent(context, AndroidWISPr.class);
+				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://wifi.fon.com"));
 				vibratePattern = new long[] { 100, 250, 100, 500 };
 			}
 
