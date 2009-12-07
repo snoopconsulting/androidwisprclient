@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -26,12 +27,13 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 		Log.d(TAG, "Action Received: " + action + " From intent: " + intent);
 
-		if (isExpectedIntent(intent)) {
+		if (isConnectedIntent(intent)) {
 			WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			WifiInfo connectionInfo = wm.getConnectionInfo();
 			String ssid = connectionInfo.getSSID();
 			String bssid = connectionInfo.getBSSID();
-			Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:" + connectionInfo.getSupplicantState());
+			Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:"
+					+ connectionInfo.getSupplicantState());
 			if (FONUtil.isFonNetWork(ssid, bssid)) {
 				initPreferences(context);
 				boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
@@ -47,7 +49,22 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						context.startService(logIntent);
 					}
 				}
+			} else {
+				cleanNotification(context);
 			}
+		} else if (isDisconnectedIntent(intent)) {
+			Log.d(TAG, "Disconnected");
+			cleanNotification(context);
+		}
+	}
+
+	private void cleanNotification(Context context) {
+		initPreferences(context);
+		boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
+		if (active) {
+			Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
+			cleaningIntent.setAction("CLEAN");
+			context.startService(cleaningIntent);
 		}
 	}
 
@@ -57,10 +74,28 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private boolean isExpectedIntent(Intent intent) {
+	private boolean isConnectedIntent(Intent intent) {
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 		Log.d(TAG, "NetworkInfo:" + networkInfo);
 		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI"));
+	}
+
+	private boolean isDisconnectedIntent(Intent intent) {
+		boolean res = false;
+		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+
+		Log.d(TAG, "NetworkInfo:" + networkInfo);
+		if (networkInfo != null) {
+			State state = networkInfo.getState();
+			res = (state.equals(NetworkInfo.State.DISCONNECTING) || state.equals(NetworkInfo.State.DISCONNECTED))
+					&& networkInfo.getTypeName().equals("WIFI");
+		} else {
+			int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
+			if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
+				res = true;
+			}
+		}
+		return res;
 	}
 
 	protected void logIntent(Intent intent) {
