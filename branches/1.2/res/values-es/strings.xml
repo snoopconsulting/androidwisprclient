@@ -18,10 +18,10 @@
 	<string name="connectionNotificationsEnable">Activar Notificaciones</string>
 	<string name="connectionNotificationsSummary">Recibe notificaciones cuando te conectes a FON</string>
 	<string name="connectionNotificationsVibrate">Vibrar</string>
-	<string name="connectionNotificationsVibrateSummary">Vibrar cuando te conectes a FON</string>
+	<string name="connectionNotificationsVibrateSummary">Haz que tu teléfono vibre cuando te conectes a FON</string>
 	<string name="connectionAutoEnable">Auto Conexión</string>
 	<string name="connectionAutoSummary">Connecta automaticamente cuando estés cerca de un punto FON</string>
-	<string name="connectionRingtoneSummary">Suena cuando te conectes a FON</string>
+	<string name="connectionRingtoneSummary">Haz que tu teléfono suene cuando te conectes a FON</string>
 
 	<string name="ringtone">Sonido</string>
 	<string name="general">Configuración de acceso</string>
