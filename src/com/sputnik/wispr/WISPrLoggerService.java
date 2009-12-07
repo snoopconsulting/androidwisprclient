@@ -63,7 +63,8 @@ public class WISPrLoggerService extends IntentService {
 			boolean useRingtone = true;
 			boolean useVibration = true;
 
-			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)) {
+			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)
+					|| result.equals(WISPrConstants.ALREADY_CONNECTED)) {
 				notificationTitle = context.getString(R.string.notif_title_ok);
 				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
@@ -83,7 +84,7 @@ public class WISPrLoggerService extends IntentService {
 				useVibration = false;
 			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
 				notificationTitle = context.getString(R.string.notif_title_ko);
-				notificationText = context.getString(R.string.notif_text_ko) + " {" + result + "}";
+				notificationText = String.format(context.getString(R.string.notif_text_ko), result);
 				appIntent = new Intent(context, AndroidWISPr.class);
 				vibratePattern = new long[] { 100, 250, 100, 500 };
 
