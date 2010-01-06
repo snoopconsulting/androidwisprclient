@@ -18,6 +18,7 @@
 	<string name="pref_username">pref.username</string>
 	<string name="pref_password">pref.password</string>
 	<string name="pref_ssid">pref.ssid</string>
+	<string name="pref_bssid">pref.bssid</string>
 	<string name="pref_connectionNotificationsEnable">pref.connectionNotificationEnable</string>
 	<string name="pref_connectionRingtone">pref.connectionRingtone</string>
 	<string name="pref_connectionVibrate">pref.connectionVibrate</string>
@@ -39,6 +40,6 @@
 	<string name="status_connected">Connected</string>
 	<string name="status_disconnected">Disconnected</string>
 	<string name="status_error">Error</string>
-	
+
 	<string name="menu_close">Close</string>
 </resources>

@@ -120,7 +120,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<ScanResult> it = scanResults.iterator();
 		while (!found && it.hasNext()) {
 			scanResult = it.next();
-			found = FONUtil.isFonNetWork(scanResult.SSID, scanResult.BSSID);
+			found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
 		}
 		if (!found) {
 			scanResult = null;

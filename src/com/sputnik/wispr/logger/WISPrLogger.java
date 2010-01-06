@@ -37,7 +37,7 @@ public class WISPrLogger implements WebLogger {
 						res = tryToLogin(user, password, wisprInfo);
 					}
 				} else {
-					Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
+					// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
 			} else {
@@ -47,15 +47,17 @@ public class WISPrLogger implements WebLogger {
 			Log.e(TAG, "Error trying to log", e);
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
-		Log.d(TAG, "WISPR Login Result: " + res);
+		// Log.d(TAG, "WISPR Login Result: " + res);
 
 		return res;
 	}
 
 	private String tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException,
 			SAXException, ParserConfigurationException, FactoryConfigurationError {
+
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		String targetURL = wisprInfo.getLoginURL();
+		Log.d(TAG, "Trying to Log " + targetURL);
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("UserName", user);
 		data.put("Password", password);

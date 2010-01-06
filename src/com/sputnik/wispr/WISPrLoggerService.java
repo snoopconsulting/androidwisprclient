@@ -14,6 +14,7 @@ import android.util.Log;
 import com.sputnik.wispr.logger.NeufLogger;
 import com.sputnik.wispr.logger.WISPrLogger;
 import com.sputnik.wispr.logger.WebLogger;
+import com.sputnik.wispr.util.FONUtil;
 import com.sputnik.wispr.util.WISPrConstants;
 
 public class WISPrLoggerService extends IntentService {
@@ -29,9 +30,10 @@ public class WISPrLoggerService extends IntentService {
 		String password = intent.getStringExtra(this.getString(R.string.pref_password));
 		String username = intent.getStringExtra(this.getString(R.string.pref_username));
 		String ssid = intent.getStringExtra(this.getString(R.string.pref_ssid));
+		String bssid = intent.getStringExtra(this.getString(R.string.pref_bssid));
 
 		WebLogger logger = null;
-		if (ssid.equalsIgnoreCase("NEUF WIFI FON")) {
+		if (FONUtil.isNeufBox(ssid, bssid)) {
 			logger = new NeufLogger();
 		} else {
 			logger = new WISPrLogger();
