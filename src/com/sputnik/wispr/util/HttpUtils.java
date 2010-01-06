@@ -9,27 +9,37 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
 
 public class HttpUtils {
+	static HttpParams defaultHttpParams = new BasicHttpParams();
+
+	static {
+		defaultHttpParams.setParameter(CoreProtocolPNames.USER_AGENT, "wispr");
+	}
+
 	public static String getUrl(String url) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		HttpClient httpclient = new DefaultHttpClient();
+		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
+		httpclient.setCookieStore(null);
 		HttpGet httpget = new HttpGet(url);
-		HttpResponse response = httpclient.execute(httpget);
-		HttpEntity entity = response.getEntity();
+		HttpEntity entity = httpclient.execute(httpget).getEntity();
 		if (entity != null) {
 			entity.writeTo(baos);
 		}
 
-		return baos.toString().trim();
+		String result = baos.toString().trim();
+		baos.close();
+
+		return result;
 	}
 
 	public static String getUrlByPost(String url, Map<String, String> params) throws IOException {
@@ -39,16 +49,18 @@ public class HttpUtils {
 	public static String getUrlByPost(String url, Map<String, String> params, Map<String, String> headers)
 			throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		HttpClient httpclient = new DefaultHttpClient();
+		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
+		httpclient.setCookieStore(null);
 
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formParams = new ArrayList<NameValuePair>();
 		if (params != null) {
-			for (String paramName : params.keySet()) {
-				formparams.add(new BasicNameValuePair(paramName, params.get(paramName)));
+			Set<Entry<String, String>> paramsSet = params.entrySet();
+			for (Entry<String, String> entry : paramsSet) {
+				formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
 			}
 		}
 
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formParams, "UTF-8");
 		HttpPost httppost = new HttpPost(url);
 		httppost.setEntity(entity);
 
@@ -59,12 +71,14 @@ public class HttpUtils {
 			}
 		}
 
-		HttpResponse response = httpclient.execute(httppost);
-		HttpEntity responseEntity = response.getEntity();
+		HttpEntity responseEntity = httpclient.execute(httppost).getEntity();
 		if (responseEntity != null) {
 			responseEntity.writeTo(baos);
 		}
 
-		return baos.toString();
+		String result = baos.toString().trim();
+		baos.close();
+
+		return result;
 	}
 }
