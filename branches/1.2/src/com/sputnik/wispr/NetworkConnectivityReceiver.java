@@ -27,6 +27,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 		Log.d(TAG, "Action Received: " + action + " From intent: " + intent);
 
+		// We look if we are connected
 		if (isConnectedIntent(intent)) {
 			WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			WifiInfo connectionInfo = wm.getConnectionInfo();
@@ -34,22 +35,28 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 			String bssid = connectionInfo.getBSSID();
 			Log.d(TAG, "Conected. SSID:" + ssid + ", bssid:" + bssid + ", supplicantState:"
 					+ connectionInfo.getSupplicantState());
-			if (FONUtil.isFonNetWork(ssid, bssid)) {
+
+			// We look if it's a FON Access Point
+			if (FONUtil.isSupportedNetwork(ssid, bssid)) {
 				initPreferences(context);
 				boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
 				if (active) {
 					String username = mPreferences.getString(context.getString(R.string.pref_username), "");
 					String password = mPreferences.getString(context.getString(R.string.pref_password), "");
 					if (username.length() > 0 && password.length() > 0) {
+						// If the application is active and we have username and password we launch
+						// the login intent
 						Intent logIntent = new Intent(context, WISPrLoggerService.class);
 						logIntent.setAction("LOG");
 						logIntent.putExtra(context.getString(R.string.pref_username), username);
 						logIntent.putExtra(context.getString(R.string.pref_password), password);
 						logIntent.putExtra(context.getString(R.string.pref_ssid), ssid);
+						logIntent.putExtra(context.getString(R.string.pref_bssid), bssid);
 						context.startService(logIntent);
 					}
 				}
 			} else {
+				Log.d(TAG, "Not a FON Access Point");
 				cleanNotification(context);
 			}
 		} else if (isDisconnectedIntent(intent)) {
@@ -95,24 +102,27 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 				res = true;
 			}
 		}
+
 		return res;
 	}
 
 	protected void logIntent(Intent intent) {
-		Log.d(TAG, "intent.getAction:" + intent.getAction());
-		Log.d(TAG, "intent.getData():" + intent.getData());
-		Log.d(TAG, "intent.getDataString():" + intent.getDataString());
-		Log.d(TAG, "intent.getScheme():" + intent.getScheme());
-		Log.d(TAG, "intent.getType():" + intent.getType());
-		Bundle extras = intent.getExtras();
-		if (extras != null && extras.size() > 0) {
-			Set<String> keys = extras.keySet();
-			for (String key : keys) {
-				Object value = extras.get(key);
-				Log.d(TAG, "EXTRA: {" + key + "::" + value + "}");
+		if (Log.isLoggable(TAG, Log.DEBUG)) {
+			Log.d(TAG, "intent.getAction():" + intent.getAction());
+			Log.d(TAG, "intent.getData():" + intent.getData());
+			Log.d(TAG, "intent.getDataString():" + intent.getDataString());
+			Log.d(TAG, "intent.getScheme():" + intent.getScheme());
+			Log.d(TAG, "intent.getType():" + intent.getType());
+			Bundle extras = intent.getExtras();
+			if (extras != null && extras.size() > 0) {
+				Set<String> keys = extras.keySet();
+				for (String key : keys) {
+					Object value = extras.get(key);
+					Log.d(TAG, "EXTRA: {" + key + "::" + value + "}");
+				}
+			} else {
+				Log.d(TAG, "NO EXTRAS");
 			}
-		} else {
-			Log.d(TAG, "NO EXTRAS");
 		}
 	}
 }
