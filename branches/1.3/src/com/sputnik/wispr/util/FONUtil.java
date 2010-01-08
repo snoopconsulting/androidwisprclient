@@ -2,7 +2,8 @@ package com.sputnik.wispr.util;
 
 public class FONUtil {
 	public static boolean isSupportedNetwork(String ssid, String bssid) {
-		boolean res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid);
+		boolean res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid)
+				|| isBtHub(ssid, bssid);
 
 		return res;
 	}
