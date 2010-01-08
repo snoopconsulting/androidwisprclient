@@ -13,8 +13,10 @@ import com.sputnik.wispr.util.WISPrConstants;
 public class BTFonLogger extends HTTPLogger {
 	private static String TAG = BTFonLogger.class.getName();
 
+	private static String networkPrefix = "BTFON";
+
 	public BTFonLogger() {
-		targetURL = "https://www.btfon.com/welcome/bt";
+		targetURL = "https://www.btopenzone.com:8443/ante";
 	}
 
 	@Override
@@ -24,15 +26,14 @@ public class BTFonLogger extends HTTPLogger {
 			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
 			if (!blockedUrlText.equals(CONNECTED)) {
 				Map<String, String> postParams = new HashMap<String, String>();
-				postParams.clear();
-				postParams.put("username", "BTFON/" + user);
-				postParams.put("password", password);
-				String post = HttpUtils.getUrlByPost("https://www.btopenzone.com:8443/ante", postParams);
-				Log.d(TAG, "Got:" + post);
+				postParams.put(userParam, networkPrefix + "/" + user);
+				postParams.put(passwordParam, password);
+				HttpUtils.getUrlByPost(targetURL, postParams);
 
 				Log.d(TAG, "Verifying if now we have connection");
 				blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
-				Log.d(TAG, "Got:" + blockedUrlText);
+
+				// Log.d(TAG, "Got:" + blockedUrlText);
 				if (blockedUrlText.equals(CONNECTED)) {
 					res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
 				}
@@ -43,8 +44,6 @@ public class BTFonLogger extends HTTPLogger {
 			Log.e(TAG, "Error trying to log", e);
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
-
-		Log.d(TAG, "Result:" + res);
 
 		return res;
 	}
