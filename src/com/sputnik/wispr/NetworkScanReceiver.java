@@ -2,8 +2,10 @@ package com.sputnik.wispr;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,7 +39,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
 			lastCalled = now;
 			initPreferences(context);
-			boolean autoConnectEnabled = mPreferences.getBoolean(context.getString(R.string.pref_connectionAutoEnable), false);
+			boolean autoConnectEnabled = mPreferences.getBoolean(context.getString(R.string.pref_connectionAutoEnable),
+					false);
 
 			if (autoConnectEnabled) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -46,29 +49,36 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				Log.d(TAG, "connectionInfo.getSupplicantState():" + connectionInfo.getSupplicantState());
 
 				if (connectionInfo.getSupplicantState().equals(SupplicantState.SCANNING)) {
-					ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
-					if (fonScanResult != null) {
-						Log.d(TAG, "Scan result found:" + fonScanResult);
-						WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
-								fonScanResult);
-						Log.d(TAG, "FON Network found:" + fonNetwork);
-						if (fonNetwork == null) {
-							fonNetwork = new WifiConfiguration();
-							fonNetwork.BSSID = fonScanResult.BSSID;
-							fonNetwork.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-							fonNetwork.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-							fonNetwork.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+					if (!isAnyPreferedNetworkAvailable(wm)) {
+						ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
+						if (fonScanResult != null) {
+							Log.d(TAG, "Scan result found:" + fonScanResult);
+							WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
+									fonScanResult);
+							Log.d(TAG, "FON Network found:" + fonNetwork);
+							if (fonNetwork == null) {
+								fonNetwork = new WifiConfiguration();
+								fonNetwork.BSSID = fonScanResult.BSSID;
+								fonNetwork.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+								fonNetwork.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+								fonNetwork.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
 
-							fonNetwork.networkId = wm.addNetwork(fonNetwork);
-							wm.saveConfiguration();
-							fonNetwork.SSID = "\"" + fonScanResult.SSID + "\"";
-							int updateNetworkResult = wm.updateNetwork(fonNetwork);
-							Log.d(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
+								fonNetwork.networkId = wm.addNetwork(fonNetwork);
+								wm.saveConfiguration();
+								fonNetwork.SSID = "\"" + fonScanResult.SSID + "\"";
+								int updateNetworkResult = wm.updateNetwork(fonNetwork);
+								Log.d(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
+								if (updateNetworkResult < 0) {
+									cleanWiFiConfigurations(wm);
+								}
+							}
+
+							wm.enableNetwork(fonNetwork.networkId, true);
+							lastCalled = new Date();
+							Log.d(TAG, "Trying to connect");
 						}
-
-						wm.enableNetwork(fonNetwork.networkId, true);
-						lastCalled = new Date();
-						Log.d(TAG, "Trying to connect");
+					} else {
+						Log.d(TAG, "Not connecting because a prefered network is available");
 					}
 				}
 			}
@@ -110,13 +120,44 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<ScanResult> it = scanResults.iterator();
 		while (!found && it.hasNext()) {
 			scanResult = it.next();
-			found = FONUtil.isFonNetWork(scanResult.SSID, scanResult.BSSID);
+			found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
 		}
 		if (!found) {
 			scanResult = null;
 		}
 
 		return scanResult;
+	}
+
+	private boolean isAnyPreferedNetworkAvailable(WifiManager wm) {
+		List<ScanResult> scanResults = wm.getScanResults();
+		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
+		Set<String> scanResultsKeys = new HashSet<String>();
+		for (ScanResult scanResult : scanResults) {
+			scanResultsKeys.add(scanResult.SSID);
+			Log.d(TAG, "Adding scanResultKey:" + scanResult.SSID);
+		}
+
+		Set<String> wifiConfigurationsKeys = new HashSet<String>();
+		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
+			wifiConfigurationsKeys.add(wifiConfiguration.SSID);
+			Log.d(TAG, "Adding wifiConfigurationsKey:" + wifiConfiguration.SSID);
+		}
+		scanResultsKeys.retainAll(wifiConfigurationsKeys);
+
+		Log.d(TAG, "PreferedNetworksAvailable:" + scanResultsKeys.size());
+
+		return !scanResultsKeys.isEmpty();
+	}
+
+	private void cleanWiFiConfigurations(WifiManager wm) {
+		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
+		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
+			if (wifiConfiguration.SSID == null) {
+				Log.d(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
+				wm.removeNetwork(wifiConfiguration.networkId);
+			}
+		}
 	}
 
 	// Comparator to order Scanresults from high signal level to low
