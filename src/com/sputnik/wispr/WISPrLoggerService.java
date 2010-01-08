@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.sputnik.wispr.logger.BTFonLogger;
 import com.sputnik.wispr.logger.NeufLogger;
 import com.sputnik.wispr.logger.WISPrLogger;
 import com.sputnik.wispr.logger.WebLogger;
@@ -35,6 +36,8 @@ public class WISPrLoggerService extends IntentService {
 		WebLogger logger = null;
 		if (FONUtil.isNeufBox(ssid, bssid)) {
 			logger = new NeufLogger();
+		} else if (FONUtil.isBtHub(ssid, bssid)) {
+			logger = new BTFonLogger();
 		} else {
 			logger = new WISPrLogger();
 		}
