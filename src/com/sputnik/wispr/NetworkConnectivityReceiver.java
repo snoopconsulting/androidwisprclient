@@ -98,7 +98,8 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 					&& networkInfo.getTypeName().equals("WIFI");
 		} else {
 			int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
-			if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
+			Log.d(TAG, "wifiState:" + wifiState);
+			if (wifiState == WifiManager.WIFI_STATE_DISABLED || wifiState == WifiManager.WIFI_STATE_DISABLING) {
 				res = true;
 			}
 		}
