@@ -53,7 +53,13 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						logIntent.putExtra(context.getString(R.string.pref_ssid), ssid);
 						logIntent.putExtra(context.getString(R.string.pref_bssid), bssid);
 						context.startService(logIntent);
+					} else {
+						Log.d(TAG, "Not a FON Access Point");
+						cleanNotification(context);
 					}
+				} else {
+					Log.d(TAG, "Not a FON Access Point");
+					cleanNotification(context);
 				}
 			} else {
 				Log.d(TAG, "Not a FON Access Point");
@@ -70,7 +76,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
 		if (active) {
 			Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
-			cleaningIntent.setAction("CLEAN");
+			cleaningIntent.setAction(NotificationCleaningService.ACTION_CLEAN);
 			context.startService(cleaningIntent);
 		}
 	}
@@ -84,7 +90,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private boolean isConnectedIntent(Intent intent) {
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 		Log.d(TAG, "NetworkInfo:" + networkInfo);
-		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI"));
+		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
 	}
 
 	private boolean isDisconnectedIntent(Intent intent) {
