@@ -1,6 +1,5 @@
 package com.sputnik.wispr.logger;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,14 +8,13 @@ import android.util.Log;
 import com.sputnik.wispr.util.HttpUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 
-// TODO Not finished yet
-public class BTFonLogger extends HTTPLogger {
-	private static String TAG = BTFonLogger.class.getName();
+public class LivedoorLogger extends HTTPLogger {
+	private static String TAG = LivedoorLogger.class.getName();
 
-	private static final String NETWORK_PREFIX = "BTFON";
+	private static final String NETWORK_SUFIX = "@fon";
 
-	public BTFonLogger() {
-		targetURL = "https://www.btopenzone.com:8443/ante";
+	public LivedoorLogger() {
+		targetURL = "https://vauth.lw.livedoor.com/fauth/index";
 	}
 
 	@Override
@@ -25,12 +23,14 @@ public class BTFonLogger extends HTTPLogger {
 		try {
 			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
 			if (!blockedUrlText.equals(CONNECTED)) {
-				Map<String, String> postParams = new HashMap<String, String>();
-				postParams.put(userParam, NETWORK_PREFIX + "/" + user);
-				postParams.put(passwordParam, password);
-				HttpUtils.getUrlByPost(targetURL, postParams);
+				Map<String, String> loginParams = new HashMap<String, String>();
+				loginParams.put("sn", "009");
+				loginParams.put("original_url", BLOCKED_URL);
+				loginParams.put("name", user + NETWORK_SUFIX);
+				loginParams.put("password", password);
+				// Log.d(TAG, "loginParams:" + loginParams);
 
-				Log.d(TAG, "Verifying if now we have connection");
+				HttpUtils.getUrlByPost(targetURL, loginParams);
 				blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
 
 				// Log.d(TAG, "Got:" + blockedUrlText);
@@ -40,11 +40,12 @@ public class BTFonLogger extends HTTPLogger {
 			} else {
 				res = WISPrConstants.ALREADY_CONNECTED;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Log.e(TAG, "Error trying to log", e);
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
 
 		return res;
 	}
+
 }
