@@ -38,9 +38,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
 			lastCalled = now;
-			initPreferences(context);
-			boolean autoConnectEnabled = mPreferences.getBoolean(context.getString(R.string.pref_connectionAutoEnable),
-					false);
+			boolean autoConnectEnabled = getPreferences(context).getBoolean(
+					context.getString(R.string.pref_connectionAutoEnable), false);
 
 			if (autoConnectEnabled) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -87,10 +86,12 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private void initPreferences(Context context) {
+	private SharedPreferences getPreferences(Context context) {
 		if (mPreferences == null) {
 			mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		}
+
+		return mPreferences;
 	}
 
 	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks,
