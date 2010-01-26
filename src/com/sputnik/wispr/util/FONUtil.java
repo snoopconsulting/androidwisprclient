@@ -32,7 +32,7 @@ public class FONUtil {
 	public static boolean isBtHub(String ssid, String bssid) {
 		boolean res = false;
 		if (ssid.equalsIgnoreCase("BTFON")) {
-			res = !bssid.startsWith("00:18:84");
+			res = (bssid != null) && !bssid.startsWith("00:18:84");
 		}
 
 		return res;

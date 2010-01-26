@@ -3,7 +3,6 @@ package com.sputnik.wispr.logger;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO Not finished yet
 public class BTFonLogger extends SimpleHTTPLogger {
 	protected static String TAG = BTFonLogger.class.getName();
 
