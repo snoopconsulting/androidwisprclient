@@ -9,7 +9,9 @@ public class WISPrUtil {
 		int end = source.indexOf("</" + WISPR_TAG_NAME + ">", start) + WISPR_TAG_NAME.length() + 3;
 		if (start > -1 && end > -1) {
 			res = new String(source.substring(start, end));
-			res = res.replace("&", "&amp;");
+			if (!res.contains("&amp;")) {
+				res = res.replace("&", "&amp;");
+			}
 		}
 
 		return res;
