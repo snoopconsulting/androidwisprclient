@@ -121,7 +121,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 			Log.d(TAG, "intent.getScheme():" + intent.getScheme());
 			Log.d(TAG, "intent.getType():" + intent.getType());
 			Bundle extras = intent.getExtras();
-			if (extras != null && extras.size() > 0) {
+			if (extras != null && !extras.isEmpty()) {
 				for (String key : extras.keySet()) {
 					Object value = extras.get(key);
 					Log.d(TAG, "EXTRA: {" + key + "::" + value + "}");

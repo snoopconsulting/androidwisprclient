@@ -131,22 +131,27 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 	}
 
 	private boolean isAnyPreferedNetworkAvailable(WifiManager wm) {
-		List<ScanResult> scanResults = wm.getScanResults();
-		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		Set<String> scanResultsKeys = new HashSet<String>();
-		for (ScanResult scanResult : scanResults) {
-			scanResultsKeys.add(scanResult.SSID);
-			Log.d(TAG, "Adding scanResultKey:" + scanResult.SSID);
-		}
 
-		Set<String> wifiConfigurationsKeys = new HashSet<String>();
-		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
-			wifiConfigurationsKeys.add(wifiConfiguration.SSID);
-			Log.d(TAG, "Adding wifiConfigurationsKey:" + wifiConfiguration.SSID);
-		}
-		scanResultsKeys.retainAll(wifiConfigurationsKeys);
+		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
+		if (!configuredNetworks.isEmpty()) {
+			List<ScanResult> scanResults = wm.getScanResults();
+			if (!scanResults.isEmpty()) {
+				for (ScanResult scanResult : scanResults) {
+					scanResultsKeys.add(scanResult.SSID);
+					Log.v(TAG, "Adding scanResultKey:" + scanResult.SSID);
+				}
 
-		Log.d(TAG, "PreferedNetworksAvailable:" + scanResultsKeys.size());
+				Set<String> wifiConfigurationsKeys = new HashSet<String>();
+				for (WifiConfiguration wifiConfiguration : configuredNetworks) {
+					wifiConfigurationsKeys.add(wifiConfiguration.SSID);
+					Log.v(TAG, "Adding wifiConfigurationsKey:" + wifiConfiguration.SSID);
+				}
+				scanResultsKeys.retainAll(wifiConfigurationsKeys);
+
+				Log.v(TAG, "PreferedNetworksAvailable:" + scanResultsKeys.size());
+			}
+		}
 
 		return !scanResultsKeys.isEmpty();
 	}
