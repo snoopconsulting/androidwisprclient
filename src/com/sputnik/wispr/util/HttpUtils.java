@@ -60,9 +60,9 @@ public class HttpUtils {
 			}
 		}
 
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formParams, "UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formParams, "UTF-8");
 		HttpPost httppost = new HttpPost(url);
-		httppost.setEntity(entity);
+		httppost.setEntity(postEntity);
 
 		if (headers != null) {
 			Set<Entry<String, String>> headersSet = headers.entrySet();

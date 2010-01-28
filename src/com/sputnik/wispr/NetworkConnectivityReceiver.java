@@ -1,7 +1,5 @@
 package com.sputnik.wispr;
 
-import java.util.Set;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,11 +36,10 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 
 			// We look if it's a FON Access Point
 			if (FONUtil.isSupportedNetwork(ssid, bssid)) {
-				initPreferences(context);
-				boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
+				boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
 				if (active) {
-					String username = mPreferences.getString(context.getString(R.string.pref_username), "");
-					String password = mPreferences.getString(context.getString(R.string.pref_password), "");
+					String username = getPreferences(context).getString(context.getString(R.string.pref_username), "");
+					String password = getPreferences(context).getString(context.getString(R.string.pref_password), "");
 					if (username.length() > 0 && password.length() > 0) {
 						// If the application is active and we have username and password we launch
 						// the login intent
@@ -53,7 +50,13 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						logIntent.putExtra(context.getString(R.string.pref_ssid), ssid);
 						logIntent.putExtra(context.getString(R.string.pref_bssid), bssid);
 						context.startService(logIntent);
+					} else {
+						Log.d(TAG, "Username & Password not available");
+						cleanNotification(context);
 					}
+				} else {
+					Log.d(TAG, "Application inactive");
+					cleanNotification(context);
 				}
 			} else {
 				Log.d(TAG, "Not a FON Access Point");
@@ -66,39 +69,43 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	}
 
 	private void cleanNotification(Context context) {
-		initPreferences(context);
-		boolean active = mPreferences.getBoolean(context.getString(R.string.pref_active), false);
+		boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
 		if (active) {
+			Log.d(TAG, "Cleaning Notificacion Icon");
 			Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
-			cleaningIntent.setAction("CLEAN");
+			cleaningIntent.setAction(NotificationCleaningService.ACTION_CLEAN);
 			context.startService(cleaningIntent);
 		}
 	}
 
-	private void initPreferences(Context context) {
+	private SharedPreferences getPreferences(Context context) {
 		if (mPreferences == null) {
 			mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		}
+
+		return mPreferences;
 	}
 
 	private boolean isConnectedIntent(Intent intent) {
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 		Log.d(TAG, "NetworkInfo:" + networkInfo);
-		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI"));
+
+		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
 	}
 
 	private boolean isDisconnectedIntent(Intent intent) {
 		boolean res = false;
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-
 		Log.d(TAG, "NetworkInfo:" + networkInfo);
+
 		if (networkInfo != null) {
 			State state = networkInfo.getState();
 			res = (state.equals(NetworkInfo.State.DISCONNECTING) || state.equals(NetworkInfo.State.DISCONNECTED))
-					&& networkInfo.getTypeName().equals("WIFI");
+					&& (networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
 		} else {
 			int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
-			if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
+			Log.d(TAG, "wifiState:" + wifiState);
+			if (wifiState == WifiManager.WIFI_STATE_DISABLED || wifiState == WifiManager.WIFI_STATE_DISABLING) {
 				res = true;
 			}
 		}
@@ -114,9 +121,8 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 			Log.d(TAG, "intent.getScheme():" + intent.getScheme());
 			Log.d(TAG, "intent.getType():" + intent.getType());
 			Bundle extras = intent.getExtras();
-			if (extras != null && extras.size() > 0) {
-				Set<String> keys = extras.keySet();
-				for (String key : keys) {
+			if (extras != null && !extras.isEmpty()) {
+				for (String key : extras.keySet()) {
 					Object value = extras.get(key);
 					Log.d(TAG, "EXTRA: {" + key + "::" + value + "}");
 				}
