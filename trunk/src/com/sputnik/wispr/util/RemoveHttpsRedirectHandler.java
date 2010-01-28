@@ -10,6 +10,10 @@ import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
 
+/**
+ * Make all redirects to go to http in stead of http<b>s</b><br/>
+ * Only used for testing purposes
+ */
 public class RemoveHttpsRedirectHandler extends DefaultRedirectHandler {
 	private static String TAG = RemoveHttpsRedirectHandler.class.getName();
 
@@ -18,7 +22,7 @@ public class RemoveHttpsRedirectHandler extends DefaultRedirectHandler {
 		String uri = super.getLocationURI(response, context).toString();
 		if (uri.startsWith("https")) {
 			uri = uri.replaceFirst("https", "http");
-			Log.d(TAG, "Removing https from redirec:" + uri);
+			Log.d(TAG, "Removing https from redirect:" + uri);
 		}
 		URI notSafeUri = null;
 		try {

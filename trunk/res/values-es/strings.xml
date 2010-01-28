@@ -12,7 +12,6 @@
 	<string name="notif_text_ok">Conectado a %s</string>
 	<string name="notif_title_ko">FON Access</string>
 	<string name="notif_text_ko">Error conectando a FON {%s}</string>
-	<string name="notif_default_ssid">FON</string>
 
 	<string name="connectionNotifications">Notificaciones</string>
 	<string name="connectionNotificationsEnable">Activar Notificaciones</string>
