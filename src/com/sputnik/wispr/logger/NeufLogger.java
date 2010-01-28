@@ -27,8 +27,8 @@ public class NeufLogger extends HTTPLogger {
 			if (!blockedUrlText.equals(CONNECTED)) {
 
 				Map<String, String> refererParams = parseForm(blockedUrlText);
-				if (refererParams.size() > 0) {
-					Log.d(TAG, "refererParams:" + refererParams);
+				if (!refererParams.isEmpty()) {
+					Log.v(TAG, "refererParams:" + refererParams);
 
 					Map<String, String> loginParams = new HashMap<String, String>();
 					loginParams.put("lang", "fr");
@@ -39,18 +39,18 @@ public class NeufLogger extends HTTPLogger {
 					loginParams.put("nb4", refererParams.get("nb4") + "&challenge" + refererParams.get("challenge"));
 					loginParams.put("ARCHI", refererParams.get("ARCHI"));
 
-					Log.d(TAG, "loginParams:" + loginParams);
+					Log.v(TAG, "loginParams:" + loginParams);
 
 					loginParams.put(userParam, user);
 					loginParams.put(passwordParam, password);
 					String result = HttpUtils.getUrlByPost(targetURL, loginParams);
-					Log.d(TAG, "Login result:" + result);
+					Log.v(TAG, "Login result:" + result);
 
 					String metaRefresh = getMetaRefresh(result);
 					if (metaRefresh != null) {
-						Log.d(TAG, "meta refresh:" + metaRefresh);
+						Log.v(TAG, "meta refresh:" + metaRefresh);
 						result = HttpUtils.getUrl(metaRefresh);
-						Log.d(TAG, "Login result after refresh:" + result);
+						Log.v(TAG, "Login result after refresh:" + result);
 						if (hasLoginSuceeded(result)) {
 							res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
 						} else {
@@ -58,7 +58,7 @@ public class NeufLogger extends HTTPLogger {
 						}
 					}
 				} else {
-					Log.d(TAG, "Form NOT FOUND : " + blockedUrlText);
+					Log.v(TAG, "Form NOT FOUND : " + blockedUrlText);
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
 			} else {

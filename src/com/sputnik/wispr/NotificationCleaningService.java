@@ -10,6 +10,8 @@ public class NotificationCleaningService extends IntentService {
 
 	private static String TAG = NotificationCleaningService.class.getName();
 
+	public static final String ACTION_CLEAN = "CLEAN";
+
 	public NotificationCleaningService() {
 		super(TAG);
 	}
@@ -17,7 +19,7 @@ public class NotificationCleaningService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "Handling disconection intent: " + intent);
-		if (intent.getAction().equals("CLEAN")) {
+		if (intent.getAction().equals(ACTION_CLEAN)) {
 			cleanNotification(this, intent);
 		}
 	}
