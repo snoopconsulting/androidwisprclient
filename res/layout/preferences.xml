@@ -5,10 +5,10 @@
 			android:summary="@string/active_summary" android:defaultValue="true" />
 
 		<EditTextPreference android:key="@string/pref_username" android:title="@string/user"
-			android:summary="@string/user_summary" />
+			android:summary="@string/user_summary" android:inputType="textEmailAddress" />
 
 		<EditTextPreference android:key="@string/pref_password" android:title="@string/password"
-			android:summary="@string/password_summary" android:password="true" />
+			android:summary="@string/password_summary" android:inputType="textPassword" />
 
 		<CheckBoxPreference android:key="@string/pref_connectionAutoEnable" android:title="@string/connectionAutoEnable"
 			android:defaultValue="false" android:summary="@string/connectionAutoSummary" />
