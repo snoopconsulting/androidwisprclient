@@ -21,6 +21,10 @@ public class WISPrLogger implements WebLogger {
 
 	private static String TAG = WISPrLogger.class.getName();
 
+	protected String userParam = "UserName";
+
+	protected String passwordParam = "Password";
+
 	public String login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
@@ -54,13 +58,12 @@ public class WISPrLogger implements WebLogger {
 
 	private String tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException,
 			SAXException, ParserConfigurationException, FactoryConfigurationError {
-
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		String targetURL = wisprInfo.getLoginURL();
 		Log.d(TAG, "Trying to Log " + targetURL);
 		Map<String, String> data = new HashMap<String, String>();
-		data.put("UserName", user);
-		data.put("Password", password);
+		data.put(userParam, user);
+		data.put(passwordParam, password);
 
 		String response = HttpUtils.getUrlByPost(targetURL, data);
 		if (response != null) {
