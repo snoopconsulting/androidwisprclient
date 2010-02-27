@@ -32,7 +32,7 @@ public class WISPrLogger implements WebLogger {
 					WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
 					android.util.Xml.parse(WISPrXML, wisprInfo);
 
-					if (wisprInfo.getMesageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_INITIAL)
+					if (wisprInfo.getMessageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_INITIAL)
 							&& wisprInfo.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_NO_ERROR)) {
 						res = tryToLogin(user, password, wisprInfo);
 					}
