@@ -34,7 +34,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Date now = new Date();
 
-		Log.d(TAG, "Action Received: " + intent.getAction() + " From intent: " + intent);
+		// Log.d(TAG, "Action Received: " + intent.getAction() + " From intent: " + intent);
 
 		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
 			lastCalled = now;
@@ -45,16 +45,17 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 
-				Log.d(TAG, "connectionInfo.getSupplicantState():" + connectionInfo.getSupplicantState());
+				// Log.d(TAG, "connectionInfo.getSupplicantState():" +
+				// connectionInfo.getSupplicantState());
 
 				if (connectionInfo.getSupplicantState().equals(SupplicantState.SCANNING)) {
 					if (!isAnyPreferedNetworkAvailable(wm)) {
 						ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
 						if (fonScanResult != null) {
-							Log.d(TAG, "Scan result found:" + fonScanResult);
+							// Log.d(TAG, "Scan result found:" + fonScanResult);
 							WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
 									fonScanResult);
-							Log.d(TAG, "FON Network found:" + fonNetwork);
+							// Log.d(TAG, "FON Network found:" + fonNetwork);
 							if (fonNetwork == null) {
 								fonNetwork = new WifiConfiguration();
 								fonNetwork.BSSID = fonScanResult.BSSID;
@@ -66,7 +67,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 								wm.saveConfiguration();
 								fonNetwork.SSID = "\"" + fonScanResult.SSID + "\"";
 								int updateNetworkResult = wm.updateNetwork(fonNetwork);
-								Log.d(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
+								Log.v(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
 								if (updateNetworkResult < 0) {
 									cleanWiFiConfigurations(wm);
 								}
@@ -82,7 +83,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				}
 			}
 		} else {
-			Log.d(TAG, "Events to close, ignoring.");
+			// Log.d(TAG, "Events to close, ignoring.");
 		}
 	}
 
@@ -101,7 +102,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 		while (!found && it.hasNext()) {
 			wifiConfiguration = it.next();
-			Log.d(TAG, wifiConfiguration.SSID + " equals " + "\"" + scanResult.SSID + "\"");
+			Log.v(TAG, wifiConfiguration.SSID + " equals " + "\"" + scanResult.SSID + "\"");
 			if (wifiConfiguration.SSID != null) {
 				found = wifiConfiguration.SSID.equals("\"" + scanResult.SSID + "\"");
 			}
@@ -160,7 +161,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
 			if (wifiConfiguration.SSID == null) {
-				Log.d(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
+				Log.v(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
 				wm.removeNetwork(wifiConfiguration.networkId);
 			}
 		}
