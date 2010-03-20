@@ -23,7 +23,7 @@ public class HttpUtils {
 	static HttpParams defaultHttpParams = new BasicHttpParams();
 
 	static {
-		defaultHttpParams.setParameter(CoreProtocolPNames.USER_AGENT, "wispr");
+		defaultHttpParams.setParameter(CoreProtocolPNames.USER_AGENT, "FON Access; wispr");
 	}
 
 	public static String getUrl(String url) throws IOException {
