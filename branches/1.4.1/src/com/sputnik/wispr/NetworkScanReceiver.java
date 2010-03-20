@@ -1,7 +1,6 @@
 package com.sputnik.wispr;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +23,7 @@ import com.sputnik.wispr.util.FONUtil;
 public class NetworkScanReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkScanReceiver.class.getName();
 
-	private static Date lastCalled;
+	private static long lastCalled = -1;
 
 	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
 
@@ -32,11 +31,11 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Date now = new Date();
+		long now = System.currentTimeMillis();
 
 		// Log.d(TAG, "Action Received: " + intent.getAction() + " From intent: " + intent);
 
-		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
+		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS * 1000)) {
 			lastCalled = now;
 			boolean autoConnectEnabled = getPreferences(context).getBoolean(
 					context.getString(R.string.pref_connectionAutoEnable), false);
@@ -74,7 +73,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 							}
 
 							wm.enableNetwork(fonNetwork.networkId, true);
-							lastCalled = new Date();
+							lastCalled = System.currentTimeMillis();
 							Log.d(TAG, "Trying to connect");
 						}
 					} else {
