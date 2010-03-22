@@ -25,7 +25,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	private static long lastCalled = -1;
 
-	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
+	private static final int MIN_PERIOD_BTW_CALLS = 10 * 1000;// 10 Seconds
 
 	private static SharedPreferences mPreferences;
 
@@ -35,7 +35,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		// Log.d(TAG, "Action Received: " + intent.getAction() + " From intent: " + intent);
 
-		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS * 1000)) {
+		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS)) {
 			lastCalled = now;
 			boolean autoConnectEnabled = getPreferences(context).getBoolean(
 					context.getString(R.string.pref_connectionAutoEnable), false);
