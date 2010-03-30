@@ -44,6 +44,7 @@ public class WISPrLoggerService extends IntentService {
 		} else {
 			logger = new WISPrLogger();
 		}
+
 		String result = logger.login(username, password);
 		notifyConnectionResult(this, result, ssid);
 	}

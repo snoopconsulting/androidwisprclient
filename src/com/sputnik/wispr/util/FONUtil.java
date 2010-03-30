@@ -5,7 +5,7 @@ public class FONUtil {
 
 	public static boolean isSupportedNetwork(String ssid, String bssid) {
 		boolean res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid)
-				|| isBtHub(ssid, bssid) || isLivedoor(ssid, bssid);
+				|| isBtHub(ssid, bssid) || isLivedoor(ssid, bssid) || isSBPublicFonera(ssid, bssid);
 
 		return res;
 	}
@@ -16,6 +16,10 @@ public class FONUtil {
 
 	public static boolean isFonera(String ssid, String bssid) {
 		return ssid.toUpperCase().startsWith("FON_") && !isLivedoor(ssid, bssid);
+	}
+
+	public static boolean isSBPublicFonera(String ssid, String bssid) {
+		return ssid.equalsIgnoreCase("FON");
 	}
 
 	public static boolean isBtFonera(String ssid, String bssid) {

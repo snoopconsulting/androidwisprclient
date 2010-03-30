@@ -25,7 +25,7 @@ public class NotificationCleaningService extends IntentService {
 	}
 
 	private void cleanNotification(Context context, Intent intent) {
-		NotificationManager notificationManager = (NotificationManager) this
+		NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		notificationManager.cancel(1);
