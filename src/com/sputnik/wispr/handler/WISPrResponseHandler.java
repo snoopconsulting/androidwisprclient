@@ -58,6 +58,20 @@ public class WISPrResponseHandler extends DefaultHandler {
 	}
 
 	public String getMessageType() {
-		return messageType;
+		return messageType.trim();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("WISPrResponseHandler{");
+		sb.append("responseCode: ").append(responseCode).append(", ");
+		sb.append("fonResponseCode: ").append(fonResponseCode).append(", ");
+		sb.append("logoffURL: ").append(logoffURL).append(", ");
+		sb.append("replyMessage: ").append(replyMessage).append(", ");
+		sb.append("messageType: ").append(messageType);
+		sb.append("}");
+
+		return sb.toString();
 	}
 }
