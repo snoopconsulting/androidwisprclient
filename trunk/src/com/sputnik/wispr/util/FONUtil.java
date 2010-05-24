@@ -11,7 +11,7 @@ public class FONUtil {
 	}
 
 	public static boolean isNeufBox(String ssid, String bssid) {
-		return ssid.equalsIgnoreCase("NEUF WIFI FON");
+		return ssid.equalsIgnoreCase("NEUF WIFI FON") || ssid.equalsIgnoreCase("SFR WIFI FON");
 	}
 
 	public static boolean isFonera(String ssid, String bssid) {
