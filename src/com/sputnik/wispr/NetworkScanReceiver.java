@@ -118,13 +118,15 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		ScanResult scanResult = null;
 		boolean found = false;
 
-		Iterator<ScanResult> it = scanResults.iterator();
-		while (!found && it.hasNext()) {
-			scanResult = it.next();
-			found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
-		}
-		if (!found) {
-			scanResult = null;
+		if (scanResults != null) {
+			Iterator<ScanResult> it = scanResults.iterator();
+			while (!found && it.hasNext()) {
+				scanResult = it.next();
+				found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
+			}
+			if (!found) {
+				scanResult = null;
+			}
 		}
 
 		return scanResult;
@@ -136,7 +138,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		if (!configuredNetworks.isEmpty()) {
 			List<ScanResult> scanResults = wm.getScanResults();
-			if (!scanResults.isEmpty()) {
+			if (scanResults != null && !scanResults.isEmpty()) {
 				for (ScanResult scanResult : scanResults) {
 					scanResultsKeys.add(scanResult.SSID);
 					Log.v(TAG, "Adding scanResultKey:" + scanResult.SSID);
