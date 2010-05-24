@@ -3,6 +3,7 @@ package com.sputnik.wispr.logger;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public abstract class HTTPLogger implements WebLogger {
 		String[] params = query.split("&");
 		for (String param : params) {
 			String[] split = param.split("=");
-			res.put(split[0], split[1]);
+			res.put(split[0], URLDecoder.decode(split[1]));
 		}
 		return res;
 	}

@@ -28,7 +28,7 @@ public class WISPrLoggerService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.d(TAG, "starting service, received intent:" + intent);
+		Log.v(TAG, "starting service, received intent:" + intent);
 		String password = intent.getStringExtra(this.getString(R.string.pref_password));
 		String username = intent.getStringExtra(this.getString(R.string.pref_username));
 		String ssid = intent.getStringExtra(this.getString(R.string.pref_ssid));
@@ -44,6 +44,7 @@ public class WISPrLoggerService extends IntentService {
 		} else {
 			logger = new WISPrLogger();
 		}
+
 		String result = logger.login(username, password);
 		notifyConnectionResult(this, result, ssid);
 	}

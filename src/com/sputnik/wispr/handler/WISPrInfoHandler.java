@@ -18,7 +18,7 @@ public class WISPrInfoHandler extends DefaultHandler {
 
 	private String abortLoginURL = "";
 
-	private String mesageType = "";
+	private String messageType = "";
 
 	private String responseCode = "";
 
@@ -39,7 +39,7 @@ public class WISPrInfoHandler extends DefaultHandler {
 		} else if (actualTag.equals(Tag.abortloginurl)) {
 			abortLoginURL += chars;
 		} else if (actualTag.equals(Tag.messagetype)) {
-			mesageType += chars;
+			messageType += chars;
 		} else if (actualTag.equals(Tag.responsecode)) {
 			responseCode += chars;
 		} else if (actualTag.equals(Tag.accesslocation)) {
@@ -61,8 +61,8 @@ public class WISPrInfoHandler extends DefaultHandler {
 		return abortLoginURL.trim();
 	}
 
-	public String getMesageType() {
-		return mesageType.trim();
+	public String getMessageType() {
+		return messageType.trim();
 	}
 
 	public String getResponseCode() {
@@ -74,7 +74,7 @@ public class WISPrInfoHandler extends DefaultHandler {
 	}
 
 	public String getLocationName() {
-		return locationName;
+		return locationName.trim();
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class WISPrInfoHandler extends DefaultHandler {
 		sb.append("locationName: ").append(locationName).append(", ");
 		sb.append("loginURL: ").append(loginURL).append(", ");
 		sb.append("abortLoginURL: ").append(abortLoginURL).append(", ");
-		sb.append("mesageType: ").append(mesageType).append(", ");
+		sb.append("messageType: ").append(messageType).append(", ");
 		sb.append("responseCode: ").append(responseCode);
 		sb.append("}");
 
