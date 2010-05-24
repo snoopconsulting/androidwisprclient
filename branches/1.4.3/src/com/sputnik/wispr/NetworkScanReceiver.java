@@ -138,7 +138,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		if (!configuredNetworks.isEmpty()) {
 			List<ScanResult> scanResults = wm.getScanResults();
-			if (!scanResults.isEmpty()) {
+			if (scanResults != null && !scanResults.isEmpty()) {
 				for (ScanResult scanResult : scanResults) {
 					scanResultsKeys.add(scanResult.SSID);
 					Log.v(TAG, "Adding scanResultKey:" + scanResult.SSID);
