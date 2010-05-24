@@ -18,14 +18,14 @@ public class NotificationCleaningService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.d(TAG, "Handling disconection intent: " + intent);
+		Log.v(TAG, "Handling disconection intent: " + intent);
 		if (intent.getAction().equals(ACTION_CLEAN)) {
 			cleanNotification(this, intent);
 		}
 	}
 
 	private void cleanNotification(Context context, Intent intent) {
-		NotificationManager notificationManager = (NotificationManager) this
+		NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		notificationManager.cancel(1);
