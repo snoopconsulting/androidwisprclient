@@ -1,7 +1,6 @@
 package com.sputnik.wispr;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -24,19 +23,19 @@ import com.sputnik.wispr.util.FONUtil;
 public class NetworkScanReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkScanReceiver.class.getName();
 
-	private static Date lastCalled;
+	private static long lastCalled = -1;
 
-	private static final int MIN_PERIOD_BTW_CALLS = 10;// 10 Seconds
+	private static final int MIN_PERIOD_BTW_CALLS = 10 * 1000;// 10 Seconds
 
 	private static SharedPreferences mPreferences;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Date now = new Date();
+		long now = System.currentTimeMillis();
 
-		Log.d(TAG, "Action Received: " + intent.getAction() + " From intent: " + intent);
+		// Log.d(TAG, "Action Received: " + intent.getAction() + " From intent: " + intent);
 
-		if (lastCalled == null || (now.getTime() - lastCalled.getTime() > MIN_PERIOD_BTW_CALLS * 1000)) {
+		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS)) {
 			lastCalled = now;
 			boolean autoConnectEnabled = getPreferences(context).getBoolean(
 					context.getString(R.string.pref_connectionAutoEnable), false);
@@ -45,16 +44,17 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 
-				Log.d(TAG, "connectionInfo.getSupplicantState():" + connectionInfo.getSupplicantState());
+				// Log.d(TAG, "connectionInfo.getSupplicantState():" +
+				// connectionInfo.getSupplicantState());
 
 				if (connectionInfo.getSupplicantState().equals(SupplicantState.SCANNING)) {
 					if (!isAnyPreferedNetworkAvailable(wm)) {
 						ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
 						if (fonScanResult != null) {
-							Log.d(TAG, "Scan result found:" + fonScanResult);
+							// Log.d(TAG, "Scan result found:" + fonScanResult);
 							WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
 									fonScanResult);
-							Log.d(TAG, "FON Network found:" + fonNetwork);
+							// Log.d(TAG, "FON Network found:" + fonNetwork);
 							if (fonNetwork == null) {
 								fonNetwork = new WifiConfiguration();
 								fonNetwork.BSSID = fonScanResult.BSSID;
@@ -66,14 +66,14 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 								wm.saveConfiguration();
 								fonNetwork.SSID = "\"" + fonScanResult.SSID + "\"";
 								int updateNetworkResult = wm.updateNetwork(fonNetwork);
-								Log.d(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
+								Log.v(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
 								if (updateNetworkResult < 0) {
 									cleanWiFiConfigurations(wm);
 								}
 							}
 
 							wm.enableNetwork(fonNetwork.networkId, true);
-							lastCalled = new Date();
+							lastCalled = System.currentTimeMillis();
 							Log.d(TAG, "Trying to connect");
 						}
 					} else {
@@ -82,7 +82,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				}
 			}
 		} else {
-			Log.d(TAG, "Events to close, ignoring.");
+			// Log.d(TAG, "Events to close, ignoring.");
 		}
 	}
 
@@ -101,7 +101,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 		while (!found && it.hasNext()) {
 			wifiConfiguration = it.next();
-			Log.d(TAG, wifiConfiguration.SSID + " equals " + "\"" + scanResult.SSID + "\"");
+			Log.v(TAG, wifiConfiguration.SSID + " equals " + "\"" + scanResult.SSID + "\"");
 			if (wifiConfiguration.SSID != null) {
 				found = wifiConfiguration.SSID.equals("\"" + scanResult.SSID + "\"");
 			}
@@ -118,13 +118,15 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		ScanResult scanResult = null;
 		boolean found = false;
 
-		Iterator<ScanResult> it = scanResults.iterator();
-		while (!found && it.hasNext()) {
-			scanResult = it.next();
-			found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
-		}
-		if (!found) {
-			scanResult = null;
+		if (scanResults != null) {
+			Iterator<ScanResult> it = scanResults.iterator();
+			while (!found && it.hasNext()) {
+				scanResult = it.next();
+				found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
+			}
+			if (!found) {
+				scanResult = null;
+			}
 		}
 
 		return scanResult;
@@ -136,7 +138,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		if (!configuredNetworks.isEmpty()) {
 			List<ScanResult> scanResults = wm.getScanResults();
-			if (!scanResults.isEmpty()) {
+			if (scanResults != null && !scanResults.isEmpty()) {
 				for (ScanResult scanResult : scanResults) {
 					scanResultsKeys.add(scanResult.SSID);
 					Log.v(TAG, "Adding scanResultKey:" + scanResult.SSID);
@@ -160,7 +162,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
 			if (wifiConfiguration.SSID == null) {
-				Log.d(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
+				Log.v(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
 				wm.removeNetwork(wifiConfiguration.networkId);
 			}
 		}
