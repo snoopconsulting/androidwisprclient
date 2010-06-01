@@ -4,8 +4,12 @@ public class FONUtil {
 	private static final String FON_MAC_PREFIX = "00:18:84";
 
 	public static boolean isSupportedNetwork(String ssid, String bssid) {
-		boolean res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid)
-				|| isBtHub(ssid, bssid) || isLivedoor(ssid, bssid) || isSBPublicFonera(ssid, bssid);
+		boolean res = false;
+
+		if (ssid != null) {
+			res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid) || isBtHub(ssid, bssid)
+					|| isLivedoor(ssid, bssid) || isSBPublicFonera(ssid, bssid);
+		}
 
 		return res;
 	}
