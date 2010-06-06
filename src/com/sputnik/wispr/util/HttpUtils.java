@@ -1,6 +1,5 @@
 package com.sputnik.wispr.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,26 +17,27 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 public class HttpUtils {
-	static HttpParams defaultHttpParams = new BasicHttpParams();
+	private static final String UTF8 = "UTF-8";
+
+	private static HttpParams defaultHttpParams = new BasicHttpParams();
 
 	static {
 		defaultHttpParams.setParameter(CoreProtocolPNames.USER_AGENT, "FON Access; wispr");
 	}
 
 	public static String getUrl(String url) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String result = null;
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 		HttpGet httpget = new HttpGet(url);
 		HttpEntity entity = httpclient.execute(httpget).getEntity();
-		if (entity != null) {
-			entity.writeTo(baos);
-		}
 
-		String result = baos.toString().trim();
-		baos.close();
+		if (entity != null) {
+			result = EntityUtils.toString(entity).trim();
+		}
 
 		return result;
 	}
@@ -48,7 +48,7 @@ public class HttpUtils {
 
 	public static String getUrlByPost(String url, Map<String, String> params, Map<String, String> headers)
 			throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String result = null;
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 
@@ -60,7 +60,7 @@ public class HttpUtils {
 			}
 		}
 
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formParams, "UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formParams, UTF8);
 		HttpPost httppost = new HttpPost(url);
 		httppost.setEntity(postEntity);
 
@@ -73,11 +73,8 @@ public class HttpUtils {
 
 		HttpEntity responseEntity = httpclient.execute(httppost).getEntity();
 		if (responseEntity != null) {
-			responseEntity.writeTo(baos);
+			result = EntityUtils.toString(responseEntity).trim();
 		}
-
-		String result = baos.toString().trim();
-		baos.close();
 
 		return result;
 	}
