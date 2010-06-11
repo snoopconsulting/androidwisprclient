@@ -1,6 +1,7 @@
 package com.sputnik.wispr.util;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,13 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
+import android.util.Log;
+
 public class HttpUtils {
+	private static final int DEFAULT_MAX_RETRIES = 3;
+
+	private static String TAG = HttpUtils.class.getName();
+
 	private static final String UTF8 = "UTF-8";
 
 	private static HttpParams defaultHttpParams = new BasicHttpParams();
@@ -29,26 +36,44 @@ public class HttpUtils {
 	}
 
 	public static String getUrl(String url) throws IOException {
+		return getUrl(url, DEFAULT_MAX_RETRIES);
+	}
+
+	public static String getUrl(String url, int maxRetries) throws IOException {
 		String result = null;
+		int retries = 0;
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 		HttpGet httpget = new HttpGet(url);
-		HttpEntity entity = httpclient.execute(httpget).getEntity();
+		while (retries < maxRetries && result == null) {
+			try {
+				retries++;
+				HttpEntity entity = httpclient.execute(httpget).getEntity();
 
-		if (entity != null) {
-			result = EntityUtils.toString(entity).trim();
+				if (entity != null) {
+					result = EntityUtils.toString(entity).trim();
+				}
+			} catch (SocketException se) {
+				// ignored, retriyng
+				Log.v(TAG, "SocketException, retrying");
+			}
 		}
 
 		return result;
 	}
 
-	public static String getUrlByPost(String url, Map<String, String> params) throws IOException {
-		return getUrlByPost(url, params, null);
+	public static String getUrlByPost(String url, Map<String, String> params, int maxRetries) throws IOException {
+		return getUrlByPost(url, params, null, maxRetries);
 	}
 
-	public static String getUrlByPost(String url, Map<String, String> params, Map<String, String> headers)
-			throws IOException {
+	public static String getUrlByPost(String url, Map<String, String> params) throws IOException {
+		return getUrlByPost(url, params, DEFAULT_MAX_RETRIES);
+	}
+
+	public static String getUrlByPost(String url, Map<String, String> params, Map<String, String> headers,
+			int maxRetries) throws IOException {
 		String result = null;
+		int retries = 0;
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 
@@ -71,9 +96,17 @@ public class HttpUtils {
 			}
 		}
 
-		HttpEntity responseEntity = httpclient.execute(httppost).getEntity();
-		if (responseEntity != null) {
-			result = EntityUtils.toString(responseEntity).trim();
+		while (retries < maxRetries && result == null) {
+			try {
+				retries++;
+				HttpEntity responseEntity = httpclient.execute(httppost).getEntity();
+				if (responseEntity != null) {
+					result = EntityUtils.toString(responseEntity).trim();
+				}
+			} catch (SocketException se) {
+				// ignored, retriyng
+				Log.v(TAG, "SocketException, retrying");
+			}
 		}
 
 		return result;
