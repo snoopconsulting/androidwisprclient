@@ -45,7 +45,7 @@ public class HttpUtils {
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 		HttpGet httpget = new HttpGet(url);
-		while (retries < maxRetries && result == null) {
+		while (retries <= maxRetries && result == null) {
 			try {
 				retries++;
 				HttpEntity entity = httpclient.execute(httpget).getEntity();
@@ -54,8 +54,11 @@ public class HttpUtils {
 					result = EntityUtils.toString(entity).trim();
 				}
 			} catch (SocketException se) {
-				// ignored, retriyng
-				Log.v(TAG, "SocketException, retrying");
+				if (retries > maxRetries) {
+					throw se;
+				} else {
+					Log.v(TAG, "SocketException, retrying " + retries);
+				}
 			}
 		}
 
@@ -104,8 +107,11 @@ public class HttpUtils {
 					result = EntityUtils.toString(responseEntity).trim();
 				}
 			} catch (SocketException se) {
-				// ignored, retriyng
-				Log.v(TAG, "SocketException, retrying");
+				if (retries > maxRetries) {
+					throw se;
+				} else {
+					Log.v(TAG, "SocketException, retrying " + retries);
+				}
 			}
 		}
 
