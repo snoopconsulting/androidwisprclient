@@ -68,10 +68,14 @@ public class WISPrLogger implements WebLogger {
 		String response = HttpUtils.getUrlByPost(targetURL, data);
 		if (response != null) {
 			response = WISPrUtil.getWISPrXML(response);
-			// Log.d(TAG, "WISPr response:" + response);
-			WISPrResponseHandler wrh = new WISPrResponseHandler();
-			android.util.Xml.parse(response, wrh);
-			res = wrh.getResponseCode();
+			if (response != null) {
+				// Log.d(TAG, "WISPr response:" + response);
+				WISPrResponseHandler wrh = new WISPrResponseHandler();
+				android.util.Xml.parse(response, wrh);
+				res = wrh.getResponseCode();
+			} else {
+				res = WISPrConstants.WISPR_NOT_PRESENT;
+			}
 		}
 
 		return res;
