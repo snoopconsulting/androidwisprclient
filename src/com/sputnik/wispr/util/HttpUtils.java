@@ -110,11 +110,31 @@ public class HttpUtils {
 				if (retries > maxRetries) {
 					throw se;
 				} else {
-					Log.v(TAG, "SocketException, retrying " + retries);
+					Log.v(TAG, "SocketException, retrying " + retries, se);
 				}
 			}
 		}
 
 		return result;
+	}
+
+	public static String getMetaRefresh(String html) {
+		String meta = null;
+		int start = html.toLowerCase().indexOf("<meta http-equiv=\"refresh\" content=\"");
+		if (start > -1) {
+			start += 36;
+
+			int end = html.indexOf('"', start);
+			if (end > -1) {
+				meta = html.substring(start, end);
+				start = meta.toLowerCase().indexOf("url=");
+				if (start > -1) {
+					start += 4;
+					meta = new String(meta.substring(start));
+				}
+			}
+		}
+
+		return meta;
 	}
 }
