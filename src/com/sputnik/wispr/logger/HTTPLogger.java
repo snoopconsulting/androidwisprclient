@@ -1,6 +1,5 @@
 package com.sputnik.wispr.logger;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -8,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
-
-import com.sputnik.wispr.util.HttpUtils;
 
 public abstract class HTTPLogger implements WebLogger {
 	protected static String TAG = HTTPLogger.class.getName();
@@ -32,10 +29,5 @@ public abstract class HTTPLogger implements WebLogger {
 			res.put(split[0], URLDecoder.decode(split[1]));
 		}
 		return res;
-	}
-
-	protected boolean haveConnection() throws IOException {
-		String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
-		return blockedUrlText.equals(CONNECTED);
 	}
 }

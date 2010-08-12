@@ -46,7 +46,7 @@ public class NeufLogger extends HTTPLogger {
 					String result = HttpUtils.getUrlByPost(targetURL, loginParams);
 					Log.v(TAG, "Login result:" + result);
 
-					String metaRefresh = getMetaRefresh(result);
+					String metaRefresh = HttpUtils.getMetaRefresh(result);
 					if (metaRefresh != null) {
 						Log.v(TAG, "meta refresh:" + metaRefresh);
 						result = HttpUtils.getUrl(metaRefresh);
@@ -81,26 +81,6 @@ public class NeufLogger extends HTTPLogger {
 		android.util.Xml.parse(xml, wrh);
 
 		return (wrh.getReplyMessage().equals("Authentication Success"));
-	}
-
-	private String getMetaRefresh(String html) {
-		String meta = null;
-		int start = html.indexOf("<meta http-equiv=\"refresh\" content=\"");
-		if (start > -1) {
-			start += 36;
-
-			int end = html.indexOf('"', start);
-			if (end > -1) {
-				meta = html.substring(start, end);
-				start = meta.indexOf("URL=");
-				if (start > -1) {
-					start += 4;
-					meta = new String(meta.substring(start));
-				}
-			}
-		}
-
-		return meta;
 	}
 
 	private Map<String, String> parseForm(String html) {

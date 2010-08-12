@@ -50,7 +50,9 @@ public class WISPrLoggerService extends IntentService {
 	}
 
 	private void notifyConnectionResult(Context context, String result, String ssid) {
-		int icon = R.drawable.f;
+		int icon_ok = R.drawable.f;
+		int icon_ko = R.drawable.f_error;
+
 		long[] vibratePattern = null;
 
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -75,30 +77,30 @@ public class WISPrLoggerService extends IntentService {
 			if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)
 					|| result.equals(WISPrConstants.ALREADY_CONNECTED)) {
 				notificationTitle = context.getString(R.string.notif_title_ok);
-				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
+				notificationText = context.getString(R.string.notif_text_ok, ssid);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
 				vibratePattern = new long[] { 100, 250 };
 
 				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-				notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+				notification = new Notification(icon_ok, notificationTitle, System.currentTimeMillis());
 				notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-			} else if (result.equals(WISPrConstants.ALREADY_CONNECTED)) {
-				notificationTitle = context.getString(R.string.notif_title_ok);
-				notificationText = String.format(context.getString(R.string.notif_text_ok), ssid);
-				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-				notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
-				notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-				useRingtone = false;
-				useVibration = false;
 			} else if (!result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
+				String resultDesc = result;
+				if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_FAILED)) {
+					resultDesc = context.getString(R.string.notif_error_100);
+				} else if (result.equals(WISPrConstants.WISPR_NOT_PRESENT)) {
+					resultDesc = context.getString(R.string.notif_error_1024);
+				} else if (result.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
+					resultDesc = context.getString(R.string.notif_error_255);
+				}
+
 				notificationTitle = context.getString(R.string.notif_title_ko);
-				notificationText = String.format(context.getString(R.string.notif_text_ko), result);
+				notificationText = context.getString(R.string.notif_text_ko, resultDesc);
 				appIntent = new Intent(context, AndroidWISPr.class);
 				vibratePattern = new long[] { 100, 250, 100, 500 };
 
 				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
-				notification = new Notification(icon, notificationTitle, System.currentTimeMillis());
+				notification = new Notification(icon_ko, notificationTitle, System.currentTimeMillis());
 				notification.flags = notification.flags | Notification.FLAG_AUTO_CANCEL;
 			}
 

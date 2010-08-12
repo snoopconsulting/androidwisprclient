@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.sputnik.wispr.handler.WISPrInfoHandler;
 import com.sputnik.wispr.handler.WISPrResponseHandler;
+import com.sputnik.wispr.util.FONUtil;
 import com.sputnik.wispr.util.HttpUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 import com.sputnik.wispr.util.WISPrUtil;
@@ -57,7 +58,7 @@ public class WISPrLogger implements WebLogger {
 	}
 
 	private String tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException,
-			SAXException, ParserConfigurationException, FactoryConfigurationError {
+			ParserConfigurationException, FactoryConfigurationError {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		String targetURL = wisprInfo.getLoginURL();
 		Log.d(TAG, "Trying to Log " + targetURL);
@@ -65,13 +66,29 @@ public class WISPrLogger implements WebLogger {
 		data.put(userParam, user);
 		data.put(passwordParam, password);
 
-		String response = HttpUtils.getUrlByPost(targetURL, data);
-		if (response != null) {
-			response = WISPrUtil.getWISPrXML(response);
-			// Log.d(TAG, "WISPr response:" + response);
-			WISPrResponseHandler wrh = new WISPrResponseHandler();
-			android.util.Xml.parse(response, wrh);
-			res = wrh.getResponseCode();
+		String htmlResponse = HttpUtils.getUrlByPost(targetURL, data);
+		// Log.d(TAG, "WISPR Reponse:" + htmlResponse);
+		if (htmlResponse != null) {
+			String response = WISPrUtil.getWISPrXML(htmlResponse);
+			if (response != null) {
+				// Log.d(TAG, "WISPr response:" + response);
+				WISPrResponseHandler wrh = new WISPrResponseHandler();
+				try {
+					android.util.Xml.parse(response, wrh);
+					res = wrh.getResponseCode();
+				} catch (SAXException saxe) {
+					res = WISPrConstants.WISPR_NOT_PRESENT;
+				}
+			} else {
+				res = WISPrConstants.WISPR_NOT_PRESENT;
+			}
+		}
+
+		// If we dont find the WISPR Response or we cannot parse it, we check if we have connection
+		if (res.equals(WISPrConstants.WISPR_NOT_PRESENT)) {
+			if (FONUtil.haveConnection()) {
+				res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
+			}
 		}
 
 		return res;
