@@ -20,7 +20,7 @@ public class NeufLogger extends HTTPLogger {
 	}
 
 	@Override
-	public String login(String user, String password) {
+	public LoggerResult login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
 			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
@@ -69,7 +69,7 @@ public class NeufLogger extends HTTPLogger {
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
 
-		return res;
+		return new LoggerResult(res, null);
 	}
 
 	private boolean hasLoginSuceeded(String html) throws SAXException {

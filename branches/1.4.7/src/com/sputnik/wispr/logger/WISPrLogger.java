@@ -20,14 +20,16 @@ import com.sputnik.wispr.util.WISPrUtil;
 
 public class WISPrLogger implements WebLogger {
 
-	private static String TAG = WISPrLogger.class.getName();
+	private static final String TAG = WISPrLogger.class.getName();
+
+	private static final String DEFAULT_LOGOFF_URL = "http://192.168.182.1:3990/logoff";
 
 	protected String userParam = "UserName";
 
 	protected String passwordParam = "Password";
 
-	public String login(String user, String password) {
-		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
+	public LoggerResult login(String user, String password) {
+		LoggerResult res = new LoggerResult(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR, null);
 		try {
 			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
 			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
@@ -43,23 +45,24 @@ public class WISPrLogger implements WebLogger {
 					}
 				} else {
 					// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
-					res = WISPrConstants.WISPR_NOT_PRESENT;
+					res = new LoggerResult(WISPrConstants.WISPR_NOT_PRESENT, null);
 				}
 			} else {
-				res = WISPrConstants.ALREADY_CONNECTED;
+				res = new LoggerResult(WISPrConstants.ALREADY_CONNECTED, DEFAULT_LOGOFF_URL);
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error trying to log", e);
-			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
+			res = new LoggerResult(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR, null);
 		}
 		// Log.d(TAG, "WISPR Login Result: " + res);
 
 		return res;
 	}
 
-	private String tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException,
+	private LoggerResult tryToLogin(String user, String password, WISPrInfoHandler wisprInfo) throws IOException,
 			ParserConfigurationException, FactoryConfigurationError {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
+		String logOffUrl = null;
 		String targetURL = wisprInfo.getLoginURL();
 		Log.d(TAG, "Trying to Log " + targetURL);
 		Map<String, String> data = new HashMap<String, String>();
@@ -76,6 +79,7 @@ public class WISPrLogger implements WebLogger {
 				try {
 					android.util.Xml.parse(response, wrh);
 					res = wrh.getResponseCode();
+					logOffUrl = wrh.getLogoffURL();
 				} catch (SAXException saxe) {
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
@@ -91,6 +95,6 @@ public class WISPrLogger implements WebLogger {
 			}
 		}
 
-		return res;
+		return new LoggerResult(res, logOffUrl);
 	}
 }

@@ -28,6 +28,7 @@
 
 		<service android:name=".WISPrLoggerService" />
 		<service android:name=".NotificationCleaningService" />
+		<service android:name=".LogOffService" />
 	</application>
 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
