@@ -4,6 +4,7 @@
 	<string name="user">Username</string>
 	<string name="password">Password</string>
 	<string name="active">Active</string>
+	<string name="logOff">LogOff</string>
 
 	<string name="active_summary">Check to active automatic FON Login</string>
 	<string name="user_summary">Your FON username</string>
@@ -26,6 +27,8 @@
 	<string name="pref_connectionRingtone">pref.connectionRingtone</string>
 	<string name="pref_connectionVibrate">pref.connectionVibrate</string>
 	<string name="pref_connectionAutoEnable">pref.connectionAutoEnable</string>
+	<string name="pref_logOffUrl">pref.logOffUrl</string>
+	<string name="pref_logOff">pref.logOff</string>
 
 	<string name="connectionNotifications">Notifications</string>
 	<string name="connectionNotificationsEnable">Enable Notifications</string>

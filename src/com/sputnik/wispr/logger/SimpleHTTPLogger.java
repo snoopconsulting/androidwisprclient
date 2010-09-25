@@ -17,7 +17,7 @@ public abstract class SimpleHTTPLogger extends HTTPLogger {
 	}
 
 	@Override
-	public String login(String user, String password) {
+	public LoggerResult login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
 			if (!FONUtil.haveConnection()) {
@@ -38,7 +38,7 @@ public abstract class SimpleHTTPLogger extends HTTPLogger {
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
 
-		return res;
+		return new LoggerResult(res, null);
 	}
 
 	abstract public Map<String, String> getPostParameters(String user, String password);

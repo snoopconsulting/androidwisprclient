@@ -17,7 +17,7 @@ public abstract class HTTPLogger implements WebLogger {
 
 	protected String passwordParam = "password";
 
-	public abstract String login(String user, String password);
+	public abstract LoggerResult login(String user, String password);
 
 	protected Map<String, String> parseUrl(String url) throws MalformedURLException {
 		Log.d(TAG, "url to parse:" + url);
