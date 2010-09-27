@@ -34,4 +34,5 @@
 	<string name="status_error">Error</string>
 	
 	<string name="menu_close">Cerrar</string>
+	<string name="menu_logOff">Desconectar</string>
 </resources>

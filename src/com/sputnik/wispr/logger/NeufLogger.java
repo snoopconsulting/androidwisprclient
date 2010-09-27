@@ -69,7 +69,7 @@ public class NeufLogger extends HTTPLogger {
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
 
-		return new LoggerResult(res, null);
+		return new LoggerResult(res, getLogOffUrl());
 	}
 
 	private boolean hasLoginSuceeded(String html) throws SAXException {
@@ -112,5 +112,10 @@ public class NeufLogger extends HTTPLogger {
 		}
 
 		return res;
+	}
+
+	@Override
+	protected String getLogOffUrl() {
+		return "http://192.168.2.1:3990/logoff";
 	}
 }

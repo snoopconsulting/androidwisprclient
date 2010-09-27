@@ -6,7 +6,6 @@ public class LoggerResult {
 	protected String logOffUrl;
 
 	public LoggerResult(String result, String logOffUrl) {
-		super();
 		this.result = result;
 		this.logOffUrl = logOffUrl;
 	}

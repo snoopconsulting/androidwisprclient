@@ -38,8 +38,8 @@ public abstract class SimpleHTTPLogger extends HTTPLogger {
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
 
-		return new LoggerResult(res, null);
+		return new LoggerResult(res, getLogOffUrl());
 	}
 
-	abstract public Map<String, String> getPostParameters(String user, String password);
+	abstract protected Map<String, String> getPostParameters(String user, String password);
 }
