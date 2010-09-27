@@ -30,4 +30,6 @@ public abstract class HTTPLogger implements WebLogger {
 		}
 		return res;
 	}
+
+	abstract protected String getLogOffUrl();
 }

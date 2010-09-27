@@ -26,5 +26,4 @@
 			android:key="@string/pref_connectionVibrate" android:defaultValue="false" android:title="@string/connectionNotificationsVibrate"
 			android:summary="@string/connectionNotificationsVibrateSummary" />
 	</PreferenceCategory>
-	<Preference android:key="@string/pref_logOff" android:title="@string/logOff" />
 </PreferenceScreen>  
