@@ -3,7 +3,7 @@
 	<string name="app_name">FON Access</string>
 	<string name="user">Email</string>
 	<string name="password">Contraseña</string>
-	<string name="active">Activa</string>
+	<string name="active">Activo</string>
 
 	<string name="active_summary">Selecciona para activar el login automático</string>
 	<string name="user_summary">Tu email de acceso a FON</string>
