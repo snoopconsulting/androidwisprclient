@@ -28,9 +28,9 @@
 	<string name="ringtone">Sonido</string>
 	<string name="general">Configuración de acceso</string>
 
-	<string name="status">Connection Status:</string>
+	<string name="status">Estado de la conexión:</string>
 	<string name="status_connected">Conectado</string>
-	<string name="status_disconnected">Disconectado</string>
+	<string name="status_disconnected">Desconectado</string>
 	<string name="status_error">Error</string>
 	
 	<string name="menu_close">Cerrar</string>
