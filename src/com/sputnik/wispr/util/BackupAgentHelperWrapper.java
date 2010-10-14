@@ -8,6 +8,7 @@ import android.app.backup.BackupDataOutput;
 import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.Context;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 
 /**
  * A wrapper class for the Android 2.2+ BackupHelper class. It marshalls all calls to the helper to
@@ -17,6 +18,7 @@ import android.os.ParcelFileDescriptor;
  * @author erickok
  */
 public class BackupAgentHelperWrapper extends BackupAgentHelper {
+	private static String TAG = BackupAgentHelperWrapper.class.getName();
 
 	private BackupAgentHelper instance = null;
 
@@ -37,12 +39,14 @@ public class BackupAgentHelperWrapper extends BackupAgentHelper {
 			} finally {
 				checkAvailability = false;
 			}
+			Log.d(TAG, "isAvailable:" + isAvailable);
 		}
 	}
 
 	public BackupAgentHelperWrapper() {
 		if (isAvailable) {
 			instance = new BackupAgentHelper();
+			Log.d(TAG, "instance:" + instance);
 		}
 	}
 
@@ -93,6 +97,7 @@ public class BackupAgentHelperWrapper extends BackupAgentHelper {
 	public String getPackageName() {
 		String pkgName = null;
 		if (isAvailable) {
+			Log.d(TAG, "getPackageName@instance:" + instance);
 			pkgName = instance.getPackageName();
 		}
 		return pkgName;
