@@ -69,13 +69,10 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	}
 
 	private void cleanNotification(Context context) {
-		boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
-		if (active) {
-			Log.d(TAG, "Cleaning Notificacion Icon");
-			Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
-			cleaningIntent.setAction(NotificationCleaningService.ACTION_CLEAN);
-			context.startService(cleaningIntent);
-		}
+		Log.d(TAG, "Cleaning Notificacion Icon");
+		Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
+		cleaningIntent.setAction(NotificationCleaningService.ACTION_CLEAN);
+		context.startService(cleaningIntent);
 	}
 
 	private SharedPreferences getPreferences(Context context) {

@@ -13,7 +13,7 @@ public class LivedoorLogger extends SimpleHTTPLogger {
 	}
 
 	@Override
-	public Map<String, String> getPostParameters(String user, String password) {
+	protected Map<String, String> getPostParameters(String user, String password) {
 		Map<String, String> loginParams = new HashMap<String, String>();
 		loginParams.put("sn", "009");
 		loginParams.put("original_url", BLOCKED_URL);
@@ -21,5 +21,10 @@ public class LivedoorLogger extends SimpleHTTPLogger {
 		loginParams.put("password", password);
 
 		return loginParams;
+	}
+
+	@Override
+	protected String getLogOffUrl() {
+		return null;
 	}
 }
