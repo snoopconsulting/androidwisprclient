@@ -47,4 +47,13 @@ public class FONUtil {
 		String blockedUrlText = HttpUtils.getUrl(WebLogger.BLOCKED_URL);
 		return blockedUrlText.equals(WebLogger.CONNECTED);
 	}
+
+	public static String cleanSSID(String SSID) {
+		String res = null;
+		if (SSID != null) {
+			res = SSID.replace("\"", "");
+		}
+
+		return res;
+	}
 }
