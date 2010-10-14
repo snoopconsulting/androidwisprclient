@@ -64,7 +64,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 								fonNetwork.networkId = wm.addNetwork(fonNetwork);
 								wm.saveConfiguration();
-								fonNetwork.SSID = "\"" + fonScanResult.SSID + "\"";
+								fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
 								int updateNetworkResult = wm.updateNetwork(fonNetwork);
 								Log.v(TAG, "New FON Network:" + updateNetworkResult + "::" + fonNetwork);
 								if (updateNetworkResult < 0) {
@@ -75,11 +75,11 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 							wm.enableNetwork(fonNetwork.networkId, true);
 							lastCalled = System.currentTimeMillis();
 							Log.d(TAG, "Trying to connect");
-						}
+						}// No FON Signal Available
 					} else {
 						Log.d(TAG, "Not connecting because a prefered network is available");
 					}
-				}
+				}// Not Scanning State
 			}
 		} else {
 			// Log.d(TAG, "Events to close, ignoring.");
@@ -101,9 +101,9 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 		while (!found && it.hasNext()) {
 			wifiConfiguration = it.next();
-			Log.v(TAG, wifiConfiguration.SSID + " equals " + "\"" + scanResult.SSID + "\"");
+			Log.v(TAG, FONUtil.cleanSSID(wifiConfiguration.SSID) + " equals " + FONUtil.cleanSSID(scanResult.SSID));
 			if (wifiConfiguration.SSID != null) {
-				found = wifiConfiguration.SSID.equals("\"" + scanResult.SSID + "\"");
+				found = FONUtil.cleanSSID(wifiConfiguration.SSID).equals(FONUtil.cleanSSID(scanResult.SSID));
 			}
 		}
 
@@ -122,7 +122,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 			Iterator<ScanResult> it = scanResults.iterator();
 			while (!found && it.hasNext()) {
 				scanResult = it.next();
-				found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
+				found = FONUtil.isSupportedNetwork(FONUtil.cleanSSID(scanResult.SSID), scanResult.BSSID);
 			}
 			if (!found) {
 				scanResult = null;
@@ -134,28 +134,29 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 	private boolean isAnyPreferedNetworkAvailable(WifiManager wm) {
 		Set<String> scanResultsKeys = new HashSet<String>();
+		boolean found = false;
 
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
-		if (!configuredNetworks.isEmpty()) {
+		if (configuredNetworks != null && !configuredNetworks.isEmpty()) {
 			List<ScanResult> scanResults = wm.getScanResults();
 			if (scanResults != null && !scanResults.isEmpty()) {
 				for (ScanResult scanResult : scanResults) {
-					scanResultsKeys.add(scanResult.SSID);
-					Log.v(TAG, "Adding scanResultKey:" + scanResult.SSID);
+					scanResultsKeys.add(FONUtil.cleanSSID(scanResult.SSID));
+					Log.v(TAG, "Adding scanResultKey:" + FONUtil.cleanSSID(scanResult.SSID));
 				}
 
-				Set<String> wifiConfigurationsKeys = new HashSet<String>();
-				for (WifiConfiguration wifiConfiguration : configuredNetworks) {
-					wifiConfigurationsKeys.add(wifiConfiguration.SSID);
-					Log.v(TAG, "Adding wifiConfigurationsKey:" + wifiConfiguration.SSID);
-				}
-				scanResultsKeys.retainAll(wifiConfigurationsKeys);
+				Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 
-				Log.v(TAG, "PreferedNetworksAvailable:" + scanResultsKeys.size());
+				while (!found && it.hasNext()) {
+					WifiConfiguration wifiConfiguration = it.next();
+					found = scanResultsKeys.contains(FONUtil.cleanSSID(wifiConfiguration.SSID));
+					Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID)
+							+ (found ? " mactch" : " NO match"));
+				}
 			}
 		}
 
-		return !scanResultsKeys.isEmpty();
+		return found;
 	}
 
 	private void cleanWiFiConfigurations(WifiManager wm) {
