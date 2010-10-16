@@ -151,7 +151,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 					WifiConfiguration wifiConfiguration = it.next();
 					found = scanResultsKeys.contains(FONUtil.cleanSSID(wifiConfiguration.SSID));
 					Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID)
-							+ (found ? " mactch" : " NO match"));
+							+ (found ? " match" : " NO match"));
 				}
 			}
 		}
