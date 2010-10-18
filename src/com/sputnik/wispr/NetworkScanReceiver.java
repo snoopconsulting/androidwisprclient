@@ -37,10 +37,12 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS)) {
 			lastCalled = now;
+			boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
+
 			boolean autoConnectEnabled = getPreferences(context).getBoolean(
 					context.getString(R.string.pref_connectionAutoEnable), false);
 
-			if (autoConnectEnabled) {
+			if (autoConnectEnabled && active) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo connectionInfo = wm.getConnectionInfo();
 
@@ -80,7 +82,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 						Log.d(TAG, "Not connecting because a prefered network is available");
 					}
 				}// Not Scanning State
-			}
+			} // Not Active in preferences
 		} else {
 			// Log.d(TAG, "Events to close, ignoring.");
 		}
@@ -140,6 +142,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		if (configuredNetworks != null && !configuredNetworks.isEmpty()) {
 			List<ScanResult> scanResults = wm.getScanResults();
 			if (scanResults != null && !scanResults.isEmpty()) {
+				// We load the SSIDs of the available networks
 				for (ScanResult scanResult : scanResults) {
 					scanResultsKeys.add(FONUtil.cleanSSID(scanResult.SSID));
 					Log.v(TAG, "Adding scanResultKey:" + FONUtil.cleanSSID(scanResult.SSID));
@@ -147,11 +150,14 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 				Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 
+				// We look for the Known networks
 				while (!found && it.hasNext()) {
 					WifiConfiguration wifiConfiguration = it.next();
-					found = scanResultsKeys.contains(FONUtil.cleanSSID(wifiConfiguration.SSID));
-					Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID)
-							+ (found ? " match" : " NO match"));
+					if (!FONUtil.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
+						found = scanResultsKeys.contains(FONUtil.cleanSSID(wifiConfiguration.SSID));
+						Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID)
+								+ (found ? " match" : " NO match"));
+					}
 				}
 			}
 		}
