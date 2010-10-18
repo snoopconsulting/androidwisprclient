@@ -69,7 +69,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 								}
 							}
 
-							wm.enableNetwork(fonNetwork.networkId, true);
+							wm.enableNetwork(fonNetwork.networkId, false);
 							wm.saveConfiguration();
 							lastCalled = System.currentTimeMillis();
 							Log.d(TAG, "Trying to connect");
