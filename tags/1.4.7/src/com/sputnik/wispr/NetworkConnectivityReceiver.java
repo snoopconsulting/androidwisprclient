@@ -85,7 +85,6 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 
 	private boolean isConnectedIntent(Intent intent) {
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-		Log.d(TAG, "NetworkInfo:" + networkInfo);
 
 		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
 	}
