@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -35,16 +37,16 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS)) {
 			lastCalled = now;
-			boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
+			boolean activeEnabled = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
 
 			boolean autoConnectEnabled = getPreferences(context).getBoolean(
 					context.getString(R.string.pref_connectionAutoEnable), false);
 
-			if (autoConnectEnabled && active) {
+			if (autoConnectEnabled && activeEnabled) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
 				if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-					if (!isAnyPreferedNetworkAvailable(wm)) {
+					if (!isAlreadyConnected(wm) && !isAnyPreferedNetworkAvailable(wm)) {
 						ScanResult fonScanResult = getFonNetwork(wm);
 						if (fonScanResult != null) {
 							// Log.d(TAG, "Scan result found:" + fonScanResult);
@@ -70,17 +72,17 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 							}
 
 							wm.enableNetwork(fonNetwork.networkId, false);
-							wm.saveConfiguration();
-							lastCalled = System.currentTimeMillis();
+							// wm.saveConfiguration();
 							Log.d(TAG, "Trying to connect");
 						}// No FON Signal Available
 					} else {
-						Log.d(TAG, "Not connecting because a prefered network is available");
+						Log.d(TAG, "Not connecting because a prefered network is available OR it's already connected");
 					}
+					lastCalled = System.currentTimeMillis();
 				}// Not Scanning State
 			} // Not Active in preferences
 		} else {
-			// Log.d(TAG, "Events to close, ignoring.");
+			Log.v(TAG, "Events to close, ignoring.");
 		}
 	}
 
@@ -90,6 +92,23 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		}
 
 		return mPreferences;
+	}
+
+	private boolean isAlreadyConnected(WifiManager wm) {
+		boolean alreadyConnected = false;
+		WifiInfo connectionInfo = wm.getConnectionInfo();
+		if (connectionInfo != null) {
+			SupplicantState supplicantState = connectionInfo.getSupplicantState();
+			if (supplicantState != null) {
+				alreadyConnected = supplicantState.equals(SupplicantState.ASSOCIATING)
+						|| supplicantState.equals(SupplicantState.ASSOCIATED)
+						|| supplicantState.equals(SupplicantState.COMPLETED)
+						|| supplicantState.equals(SupplicantState.FOUR_WAY_HANDSHAKE)
+						|| supplicantState.equals(SupplicantState.GROUP_HANDSHAKE);
+			}
+		}
+
+		return alreadyConnected;
 	}
 
 	private WifiConfiguration lookupConfigurationByScanResult(List<WifiConfiguration> configuredNetworks,
