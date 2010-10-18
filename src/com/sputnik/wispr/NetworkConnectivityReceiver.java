@@ -51,25 +51,25 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						logIntent.putExtra(context.getString(R.string.pref_bssid), bssid);
 						context.startService(logIntent);
 					} else {
-						Log.d(TAG, "Username & Password not available");
+						Log.v(TAG, "Username & Password not available");
 						cleanNotification(context);
 					}
 				} else {
-					Log.d(TAG, "Application inactive");
+					Log.v(TAG, "Application inactive");
 					cleanNotification(context);
 				}
 			} else {
-				Log.d(TAG, "Not a FON Access Point");
+				Log.v(TAG, "Not a FON Access Point");
 				cleanNotification(context);
 			}
 		} else if (isDisconnectedIntent(intent)) {
-			Log.d(TAG, "Disconnected");
+			Log.v(TAG, "Disconnected");
 			cleanNotification(context);
 		}
 	}
 
 	private void cleanNotification(Context context) {
-		Log.d(TAG, "Cleaning Notificacion Icon");
+		Log.v(TAG, "Cleaning Notificacion Icon");
 		Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
 		cleaningIntent.setAction(NotificationCleaningService.ACTION_CLEAN);
 		context.startService(cleaningIntent);
@@ -93,7 +93,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private boolean isDisconnectedIntent(Intent intent) {
 		boolean res = false;
 		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-		Log.d(TAG, "NetworkInfo:" + networkInfo);
+		// Log.d(TAG, "NetworkInfo:" + networkInfo);
 
 		if (networkInfo != null) {
 			State state = networkInfo.getState();
@@ -101,7 +101,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 					&& (networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
 		} else {
 			int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
-			Log.d(TAG, "wifiState:" + wifiState);
+			// Log.d(TAG, "wifiState:" + wifiState);
 			if (wifiState == WifiManager.WIFI_STATE_DISABLED || wifiState == WifiManager.WIFI_STATE_DISABLING) {
 				res = true;
 			}
