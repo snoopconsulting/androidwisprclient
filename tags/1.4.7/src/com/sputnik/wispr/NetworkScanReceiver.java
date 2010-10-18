@@ -167,8 +167,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 						wm.removeNetwork(wifiConfiguration.networkId);
 					} else if (!FONUtil.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
 						found = scanResultsKeys.contains(FONUtil.cleanSSID(wifiConfiguration.SSID));
-						Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID)
-								+ (found ? " match" : " NO match"));
+						// Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID) +
+						// (found ? " match" : " NO match"));
 					}
 				}
 			}
