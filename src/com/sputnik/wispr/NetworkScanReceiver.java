@@ -11,9 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -44,14 +42,10 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 			if (autoConnectEnabled && active) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				WifiInfo connectionInfo = wm.getConnectionInfo();
 
-				// Log.d(TAG, "connectionInfo.getSupplicantState():" +
-				// connectionInfo.getSupplicantState());
-
-				if (connectionInfo.getSupplicantState().equals(SupplicantState.SCANNING)) {
+				if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
 					if (!isAnyPreferedNetworkAvailable(wm)) {
-						ScanResult fonScanResult = getFonNetwork(wm.getScanResults());
+						ScanResult fonScanResult = getFonNetwork(wm);
 						if (fonScanResult != null) {
 							// Log.d(TAG, "Scan result found:" + fonScanResult);
 							WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
@@ -63,6 +57,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 								fonNetwork.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
 								fonNetwork.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
 								fonNetwork.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+								fonNetwork.status = WifiConfiguration.Status.ENABLED;
 
 								fonNetwork.networkId = wm.addNetwork(fonNetwork);
 								wm.saveConfiguration();
@@ -75,6 +70,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 							}
 
 							wm.enableNetwork(fonNetwork.networkId, true);
+							wm.saveConfiguration();
 							lastCalled = System.currentTimeMillis();
 							Log.d(TAG, "Trying to connect");
 						}// No FON Signal Available
@@ -116,15 +112,16 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		return wifiConfiguration;
 	}
 
-	private ScanResult getFonNetwork(List<ScanResult> scanResults) {
+	private ScanResult getFonNetwork(WifiManager wm) {
 		ScanResult scanResult = null;
 		boolean found = false;
 
+		List<ScanResult> scanResults = wm.getScanResults();
 		if (scanResults != null) {
 			Iterator<ScanResult> it = scanResults.iterator();
 			while (!found && it.hasNext()) {
 				scanResult = it.next();
-				found = FONUtil.isSupportedNetwork(FONUtil.cleanSSID(scanResult.SSID), scanResult.BSSID);
+				found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
 			}
 			if (!found) {
 				scanResult = null;
