@@ -1,6 +1,5 @@
 package com.sputnik.wispr;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -175,22 +174,5 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		}
 
 		return found;
-	}
-
-	private void cleanWiFiConfigurations(WifiManager wm) {
-		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
-		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
-			if (wifiConfiguration.SSID == null) {
-				Log.v(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
-				wm.removeNetwork(wifiConfiguration.networkId);
-			}
-		}
-	}
-
-	// Comparator to order Scanresults from high signal level to low
-	class ScanResultComparator implements Comparator<ScanResult> {
-		public int compare(ScanResult scanResult1, ScanResult scanResult2) {
-			return scanResult2.level - scanResult1.level;
-		}
 	}
 }
