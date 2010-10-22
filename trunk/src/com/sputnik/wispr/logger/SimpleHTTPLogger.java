@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.util.Log;
 
+import com.sputnik.wispr.util.FONUtil;
 import com.sputnik.wispr.util.HttpUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 
@@ -16,17 +17,17 @@ public abstract class SimpleHTTPLogger extends HTTPLogger {
 	}
 
 	@Override
-	public String login(String user, String password) {
+	public LoggerResult login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
-			if (!haveConnection()) {
+			if (!FONUtil.haveConnection()) {
 				Map<String, String> postParams = getPostParameters(user, password);
 				Log.d(TAG, "Posting username & password");
 				HttpUtils.getUrlByPost(targetURL, postParams);
 
 				Log.d(TAG, "Verifying if now we have connection");
 
-				if (haveConnection()) {
+				if (FONUtil.haveConnection()) {
 					res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
 				}
 			} else {
@@ -37,8 +38,8 @@ public abstract class SimpleHTTPLogger extends HTTPLogger {
 			res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		}
 
-		return res;
+		return new LoggerResult(res, getLogOffUrl());
 	}
 
-	abstract public Map<String, String> getPostParameters(String user, String password);
+	abstract protected Map<String, String> getPostParameters(String user, String password);
 }

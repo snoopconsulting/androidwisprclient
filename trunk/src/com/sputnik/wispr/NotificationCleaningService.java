@@ -4,6 +4,9 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class NotificationCleaningService extends IntentService {
@@ -21,7 +24,15 @@ public class NotificationCleaningService extends IntentService {
 		Log.v(TAG, "Handling disconection intent: " + intent);
 		if (intent.getAction().equals(ACTION_CLEAN)) {
 			cleanNotification(this, intent);
+			cleanLogOffUrl(this, intent);
 		}
+	}
+
+	private void cleanLogOffUrl(Context context, Intent intent) {
+		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor editor = mPreferences.edit();
+		editor.remove(context.getString(R.string.pref_logOffUrl));
+		editor.commit();
 	}
 
 	private void cleanNotification(Context context, Intent intent) {
