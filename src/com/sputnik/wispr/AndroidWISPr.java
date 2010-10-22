@@ -16,12 +16,14 @@ public class AndroidWISPr extends PreferenceActivity {
 
 	public static final int LOGOFF_ID = CLOSE_ID + 1;
 
+	public static final int ADVANCED_ID = LOGOFF_ID + 1;
+
 	private SharedPreferences mPreferences = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.preferences);
+		addPreferencesFromResource(R.layout.preferences_main);
 	}
 
 	@Override
@@ -42,8 +44,9 @@ public class AndroidWISPr extends PreferenceActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(Menu.NONE, CLOSE_ID, 0, R.string.menu_close).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+		menu.add(Menu.NONE, CLOSE_ID, 0, R.string.menu_close).setIcon(android.R.drawable.ic_menu_save);
 		menu.add(Menu.NONE, LOGOFF_ID, 1, R.string.menu_logOff).setIcon(android.R.drawable.ic_menu_revert);
+		menu.add(Menu.NONE, ADVANCED_ID, 2, R.string.menu_advanced).setIcon(android.R.drawable.ic_menu_preferences);
 
 		return result;
 	}
@@ -57,6 +60,9 @@ public class AndroidWISPr extends PreferenceActivity {
 				break;
 			case LOGOFF_ID:
 				logOff_clicked(item);
+				break;
+			case ADVANCED_ID:
+				startActivity(new Intent(this, PreferencesAdvanced.class));
 				break;
 			default:
 				res = super.onOptionsItemSelected(item);
