@@ -3,7 +3,7 @@
 	<string name="app_name">FON Access</string>
 	<string name="user">Email</string>
 	<string name="password">Contraseña</string>
-	<string name="active">Activa</string>
+	<string name="active">Activo</string>
 
 	<string name="active_summary">Selecciona para activar el login automático</string>
 	<string name="user_summary">Tu email de acceso a FON</string>
@@ -28,10 +28,11 @@
 	<string name="ringtone">Sonido</string>
 	<string name="general">Configuración de acceso</string>
 
-	<string name="status">Connection Status:</string>
+	<string name="status">Estado de la conexión:</string>
 	<string name="status_connected">Conectado</string>
-	<string name="status_disconnected">Disconectado</string>
+	<string name="status_disconnected">Desconectado</string>
 	<string name="status_error">Error</string>
 	
 	<string name="menu_close">Cerrar</string>
+	<string name="menu_logOff">Desconectar</string>
 </resources>

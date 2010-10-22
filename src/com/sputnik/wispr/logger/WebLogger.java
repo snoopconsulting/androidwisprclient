@@ -3,7 +3,7 @@ package com.sputnik.wispr.logger;
 public interface WebLogger {
 	public static final String CONNECTED = "CONNECTED";
 
-	public static final String BLOCKED_URL = "http://www.saltando.net/uploads/android.txt";
+	public static final String BLOCKED_URL = "http://ubuntuone.com/p/F6b/";
 
-	public String login(String user, String password);
+	public LoggerResult login(String user, String password);
 }

@@ -17,16 +17,6 @@
   	<string name="notif_error_1024">WISPr not present</string>
 	<string name="notif_error_255">Internal Error</string>
 
-	<string name="pref_active">pref.active</string>
-	<string name="pref_username">pref.username</string>
-	<string name="pref_password">pref.password</string>
-	<string name="pref_ssid">pref.ssid</string>
-	<string name="pref_bssid">pref.bssid</string>
-	<string name="pref_connectionNotificationsEnable">pref.connectionNotificationEnable</string>
-	<string name="pref_connectionRingtone">pref.connectionRingtone</string>
-	<string name="pref_connectionVibrate">pref.connectionVibrate</string>
-	<string name="pref_connectionAutoEnable">pref.connectionAutoEnable</string>
-
 	<string name="connectionNotifications">Notifications</string>
 	<string name="connectionNotificationsEnable">Enable Notifications</string>
 	<string name="connectionNotificationsSummary">Receives notifications when you connect to FON</string>
@@ -45,4 +35,17 @@
 	<string name="status_error">Error</string>
 
 	<string name="menu_close">Close</string>
+	<string name="menu_logOff">LogOff</string>
+	
+	<string name="pref_active">pref.active</string>
+	<string name="pref_username">pref.username</string>
+	<string name="pref_password">pref.password</string>
+	<string name="pref_ssid">pref.ssid</string>
+	<string name="pref_bssid">pref.bssid</string>
+	<string name="pref_connectionNotificationsEnable">pref.connectionNotificationEnable</string>
+	<string name="pref_connectionRingtone">pref.connectionRingtone</string>
+	<string name="pref_connectionVibrate">pref.connectionVibrate</string>
+	<string name="pref_connectionAutoEnable">pref.connectionAutoEnable</string>
+	<string name="pref_logOffUrl">pref.logOffUrl</string>
+	<string name="pref_logOff">pref.logOff</string>
 </resources>

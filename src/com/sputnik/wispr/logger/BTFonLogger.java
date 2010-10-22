@@ -20,4 +20,9 @@ public class BTFonLogger extends SimpleHTTPLogger {
 
 		return postParams;
 	}
+
+	@Override
+	protected String getLogOffUrl() {
+		return "https://www.btopenzone.com:8443/accountLogoff/home?confirmed=true";
+	}
 }
