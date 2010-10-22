@@ -36,6 +36,8 @@
 
 	<string name="menu_close">Close</string>
 	<string name="menu_logOff">LogOff</string>
+	<string name="menu_advanced">Advanced Preferences</string>
+	<string name="menu_back">Back</string>
 	
 	<string name="pref_active">pref.active</string>
 	<string name="pref_username">pref.username</string>
