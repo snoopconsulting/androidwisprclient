@@ -13,6 +13,9 @@
 	<string name="notif_title_ko">FON Access</string>
 	<string name="notif_text_ko">Error conecting to FON {%s}</string>
 	<string name="notif_default_ssid">FON</string>
+	<string name="notif_error_100">Login Failed</string>
+  	<string name="notif_error_1024">WISPr not present</string>
+	<string name="notif_error_255">Internal Error</string>
 
 	<string name="pref_active">pref.active</string>
 	<string name="pref_username">pref.username</string>
