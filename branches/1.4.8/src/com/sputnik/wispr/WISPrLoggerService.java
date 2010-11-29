@@ -18,7 +18,7 @@ import com.sputnik.wispr.logger.LoggerResult;
 import com.sputnik.wispr.logger.NeufLogger;
 import com.sputnik.wispr.logger.WISPrLogger;
 import com.sputnik.wispr.logger.WebLogger;
-import com.sputnik.wispr.util.FONUtil;
+import com.sputnik.wispr.util.FONUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 
 public class WISPrLoggerService extends IntentService {
@@ -37,11 +37,11 @@ public class WISPrLoggerService extends IntentService {
 		String bssid = intent.getStringExtra(this.getString(R.string.pref_bssid));
 
 		WebLogger logger = null;
-		if (FONUtil.isNeufBox(ssid, bssid)) {
+		if (FONUtils.isNeufBox(ssid, bssid)) {
 			logger = new NeufLogger();
-		} else if (FONUtil.isBtHub(ssid, bssid)) {
+		} else if (FONUtils.isBtHub(ssid, bssid)) {
 			logger = new BTFonLogger();
-		} else if (FONUtil.isLivedoor(ssid, bssid)) {
+		} else if (FONUtils.isLivedoor(ssid, bssid)) {
 			logger = new LivedoorLogger();
 		} else {
 			logger = new WISPrLogger();
