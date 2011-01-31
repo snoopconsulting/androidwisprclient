@@ -92,6 +92,7 @@ public class WISPrLogger implements WebLogger {
 		if (res.equals(WISPrConstants.WISPR_NOT_PRESENT)) {
 			if (FONUtils.haveConnection()) {
 				res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
+				logOffUrl = "http://192.168.182.1:3990/logoff";
 			}
 		}
 
