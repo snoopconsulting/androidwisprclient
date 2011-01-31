@@ -2,6 +2,8 @@ package com.sputnik.wispr;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -10,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class AndroidWISPr extends PreferenceActivity {
-	private static String TAG = AndroidWISPr.class.getName();
+	private static String TAG = AndroidWISPr.class.getSimpleName();
 
 	public static final int CLOSE_ID = Menu.FIRST;
 
@@ -23,6 +25,29 @@ public class AndroidWISPr extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		final Intent intent = getIntent();
+		final Uri uri = intent.getData();
+		if (uri != null) {
+			String username = uri.getQueryParameter(this.getString(R.string.pref_username));
+			String password = uri.getQueryParameter(this.getString(R.string.pref_password));
+			String active = uri.getQueryParameter(this.getString(R.string.pref_active));
+			String connectionAutoEnable = uri.getQueryParameter(this.getString(R.string.pref_connectionAutoEnable));
+			Editor editor = getPreferenceManager().getSharedPreferences().edit();
+			if (username != null) {
+				editor.putString(this.getString(R.string.pref_username), username);
+			}
+			if (password != null) {
+				editor.putString(this.getString(R.string.pref_password), password);
+			}
+			if (active != null) {
+				editor.putBoolean(this.getString(R.string.pref_active), Boolean.valueOf(active));
+			}
+			if (connectionAutoEnable != null) {
+				editor.putBoolean(this.getString(R.string.pref_connectionAutoEnable), Boolean
+						.valueOf(connectionAutoEnable));
+			}
+			editor.commit();
+		}
 		addPreferencesFromResource(R.layout.preferences_main);
 	}
 
@@ -101,4 +126,5 @@ public class AndroidWISPr extends PreferenceActivity {
 
 		return logOffUrl;
 	}
+
 }
