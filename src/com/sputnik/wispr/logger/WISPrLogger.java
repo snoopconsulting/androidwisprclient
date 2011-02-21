@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.sputnik.wispr.handler.WISPrInfoHandler;
 import com.sputnik.wispr.handler.WISPrResponseHandler;
-import com.sputnik.wispr.util.FONUtil;
+import com.sputnik.wispr.util.FONUtils;
 import com.sputnik.wispr.util.HttpUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 import com.sputnik.wispr.util.WISPrUtil;
@@ -90,8 +90,9 @@ public class WISPrLogger implements WebLogger {
 
 		// If we dont find the WISPR Response or we cannot parse it, we check if we have connection
 		if (res.equals(WISPrConstants.WISPR_NOT_PRESENT)) {
-			if (FONUtil.haveConnection()) {
+			if (FONUtils.haveConnection()) {
 				res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
+				logOffUrl = "http://192.168.182.1:3990/logoff";
 			}
 		}
 
