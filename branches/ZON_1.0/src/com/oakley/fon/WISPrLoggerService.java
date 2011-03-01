@@ -20,7 +20,6 @@ import com.oakley.fon.logger.WISPrLogger;
 import com.oakley.fon.logger.WebLogger;
 import com.oakley.fon.util.FONUtils;
 import com.oakley.fon.util.WISPrConstants;
-import com.sputnik.wispr.R;
 
 public class WISPrLoggerService extends IntentService {
 	private static String TAG = WISPrLoggerService.class.getName();

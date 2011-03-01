@@ -1,7 +1,5 @@
 package com.oakley.fon;
 
-import com.sputnik.wispr.R;
-
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;

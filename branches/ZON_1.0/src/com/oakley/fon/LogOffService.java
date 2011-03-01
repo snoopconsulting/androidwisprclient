@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.oakley.fon.util.HttpUtils;
-import com.sputnik.wispr.R;
 
 public class LogOffService extends IntentService {
 	private static String TAG = LogOffService.class.getName();
