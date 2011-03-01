@@ -1,4 +1,4 @@
-package com.sputnik.wispr.logger;
+package com.oakley.fon.logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,10 +7,10 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
-import com.sputnik.wispr.handler.WISPrResponseHandler;
-import com.sputnik.wispr.util.HttpUtils;
-import com.sputnik.wispr.util.WISPrConstants;
-import com.sputnik.wispr.util.WISPrUtil;
+import com.oakley.fon.handler.WISPrResponseHandler;
+import com.oakley.fon.util.HttpUtils;
+import com.oakley.fon.util.WISPrConstants;
+import com.oakley.fon.util.WISPrUtil;
 
 public class NeufLogger extends HTTPLogger {
 	private static String TAG = NeufLogger.class.getName();

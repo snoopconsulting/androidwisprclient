@@ -1,4 +1,4 @@
-package com.sputnik.wispr.logger;
+package com.oakley.fon.logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 import android.util.Log;
 
-import com.sputnik.wispr.util.HttpUtils;
+import com.oakley.fon.util.HttpUtils;
 
 public class LivedoorLogger extends SimpleHTTPLogger {
 	protected static String TAG = LivedoorLogger.class.getName();

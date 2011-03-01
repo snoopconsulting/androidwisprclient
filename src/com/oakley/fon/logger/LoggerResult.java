@@ -1,4 +1,4 @@
-package com.sputnik.wispr.logger;
+package com.oakley.fon.logger;
 
 public class LoggerResult {
 	protected String result;

@@ -1,4 +1,4 @@
-package com.sputnik.wispr.util;
+package com.oakley.fon.util;
 
 public class WISPrConstants {
 	public static String WISPR_MESSAGE_TYPE_INITIAL = "100";

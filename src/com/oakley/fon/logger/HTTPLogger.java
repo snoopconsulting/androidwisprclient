@@ -1,4 +1,4 @@
-package com.sputnik.wispr.logger;
+package com.oakley.fon.logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;

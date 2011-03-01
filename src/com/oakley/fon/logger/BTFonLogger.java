@@ -1,4 +1,4 @@
-package com.sputnik.wispr.logger;
+package com.oakley.fon.logger;
 
 import java.util.HashMap;
 import java.util.Map;
