@@ -17,7 +17,7 @@ import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.sputnik.wispr.util.FONUtil;
+import com.sputnik.wispr.util.FONUtils;
 
 public class NetworkScanReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkScanReceiver.class.getName();
@@ -109,10 +109,10 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 		Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 		while (!found && it.hasNext()) {
 			wifiConfiguration = it.next();
-			// Log.v(TAG, FONUtil.cleanSSID(wifiConfiguration.SSID) + " equals " +
-			// FONUtil.cleanSSID(scanResult.SSID));
+			// Log.v(TAG, FONUtils.cleanSSID(wifiConfiguration.SSID) + " equals " +
+			// FONUtils.cleanSSID(scanResult.SSID));
 			if (wifiConfiguration.SSID != null) {
-				found = FONUtil.cleanSSID(wifiConfiguration.SSID).equals(FONUtil.cleanSSID(scanResult.SSID));
+				found = FONUtils.cleanSSID(wifiConfiguration.SSID).equals(FONUtils.cleanSSID(scanResult.SSID));
 			}
 		}
 
@@ -132,7 +132,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 			Iterator<ScanResult> it = scanResults.iterator();
 			while (!found && it.hasNext()) {
 				scanResult = it.next();
-				found = FONUtil.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
+				found = FONUtils.isSupportedNetwork(scanResult.SSID, scanResult.BSSID);
 			}
 			if (!found) {
 				scanResult = null;
@@ -152,8 +152,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 			if (scanResults != null && !scanResults.isEmpty()) {
 				// We load the SSIDs of the available networks
 				for (ScanResult scanResult : scanResults) {
-					scanResultsKeys.add(FONUtil.cleanSSID(scanResult.SSID));
-					// Log.v(TAG, "Adding scanResultKey:" + FONUtil.cleanSSID(scanResult.SSID));
+					scanResultsKeys.add(FONUtils.cleanSSID(scanResult.SSID));
+					// Log.v(TAG, "Adding scanResultKey:" + FONUtils.cleanSSID(scanResult.SSID));
 				}
 
 				Iterator<WifiConfiguration> it = configuredNetworks.iterator();
@@ -164,9 +164,9 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 					if (wifiConfiguration.SSID == null) {
 						Log.v(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
 						wm.removeNetwork(wifiConfiguration.networkId);
-					} else if (!FONUtil.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
-						found = scanResultsKeys.contains(FONUtil.cleanSSID(wifiConfiguration.SSID));
-						// Log.v(TAG, "looking for: " + FONUtil.cleanSSID(wifiConfiguration.SSID) +
+					} else if (!FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
+						found = scanResultsKeys.contains(FONUtils.cleanSSID(wifiConfiguration.SSID));
+						// Log.v(TAG, "looking for: " + FONUtils.cleanSSID(wifiConfiguration.SSID) +
 						// (found ? " match" : " NO match"));
 					}
 				}

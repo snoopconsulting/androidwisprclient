@@ -9,11 +9,10 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.sputnik.wispr.util.FONUtil;
+import com.sputnik.wispr.util.FONUtils;
 
 public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkConnectivityReceiver.class.getName();
@@ -35,7 +34,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 					+ connectionInfo.getSupplicantState());
 
 			// We look if it's a FON Access Point
-			if (FONUtil.isSupportedNetwork(ssid, bssid)) {
+			if (FONUtils.isSupportedNetwork(ssid, bssid)) {
 				boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
 				if (active) {
 					String username = getPreferences(context).getString(context.getString(R.string.pref_username), "");
@@ -107,24 +106,5 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		}
 
 		return res;
-	}
-
-	protected void logIntent(Intent intent) {
-		if (Log.isLoggable(TAG, Log.DEBUG)) {
-			Log.d(TAG, "intent.getAction():" + intent.getAction());
-			Log.d(TAG, "intent.getData():" + intent.getData());
-			Log.d(TAG, "intent.getDataString():" + intent.getDataString());
-			Log.d(TAG, "intent.getScheme():" + intent.getScheme());
-			Log.d(TAG, "intent.getType():" + intent.getType());
-			Bundle extras = intent.getExtras();
-			if (extras != null && !extras.isEmpty()) {
-				for (String key : extras.keySet()) {
-					Object value = extras.get(key);
-					Log.d(TAG, "EXTRA: {" + key + "::" + value + "}");
-				}
-			} else {
-				Log.d(TAG, "NO EXTRAS");
-			}
-		}
 	}
 }
