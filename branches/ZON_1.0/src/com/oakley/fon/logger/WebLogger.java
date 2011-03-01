@@ -1,4 +1,4 @@
-package com.sputnik.wispr.logger;
+package com.oakley.fon.logger;
 
 public interface WebLogger {
 	public static final String CONNECTED = "CONNECTED";

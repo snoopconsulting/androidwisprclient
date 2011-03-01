@@ -1,4 +1,4 @@
-package com.sputnik.wispr.handler;
+package com.oakley.fon.handler;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;

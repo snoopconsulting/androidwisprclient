@@ -1,4 +1,4 @@
-package com.sputnik.wispr.util;
+package com.oakley.fon.util;
 
 public class WISPrUtil {
 	public static final String WISPR_TAG_NAME = "WISPAccessGatewayParam";

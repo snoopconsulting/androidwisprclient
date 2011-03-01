@@ -1,4 +1,4 @@
-package com.sputnik.wispr.util;
+package com.oakley.fon.util;
 
 import android.content.Intent;
 import android.os.Bundle;

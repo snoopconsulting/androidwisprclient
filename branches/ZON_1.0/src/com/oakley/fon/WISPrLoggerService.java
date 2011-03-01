@@ -1,4 +1,4 @@
-package com.sputnik.wispr;
+package com.oakley.fon;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -12,14 +12,15 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.sputnik.wispr.logger.BTFonLogger;
-import com.sputnik.wispr.logger.LivedoorLogger;
-import com.sputnik.wispr.logger.LoggerResult;
-import com.sputnik.wispr.logger.NeufLogger;
-import com.sputnik.wispr.logger.WISPrLogger;
-import com.sputnik.wispr.logger.WebLogger;
-import com.sputnik.wispr.util.FONUtils;
-import com.sputnik.wispr.util.WISPrConstants;
+import com.oakley.fon.logger.BTFonLogger;
+import com.oakley.fon.logger.LivedoorLogger;
+import com.oakley.fon.logger.LoggerResult;
+import com.oakley.fon.logger.NeufLogger;
+import com.oakley.fon.logger.WISPrLogger;
+import com.oakley.fon.logger.WebLogger;
+import com.oakley.fon.util.FONUtils;
+import com.oakley.fon.util.WISPrConstants;
+import com.sputnik.wispr.R;
 
 public class WISPrLoggerService extends IntentService {
 	private static String TAG = WISPrLoggerService.class.getName();

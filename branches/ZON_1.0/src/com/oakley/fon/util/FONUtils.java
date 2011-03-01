@@ -1,8 +1,8 @@
-package com.sputnik.wispr.util;
+package com.oakley.fon.util;
 
 import java.io.IOException;
 
-import com.sputnik.wispr.logger.WebLogger;
+import com.oakley.fon.logger.WebLogger;
 
 public class FONUtils {
 	private static final String FON_MAC_PREFIX = "00:18:84";

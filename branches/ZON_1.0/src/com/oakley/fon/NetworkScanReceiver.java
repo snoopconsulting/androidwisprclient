@@ -1,4 +1,4 @@
-package com.sputnik.wispr;
+package com.oakley.fon;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,7 +17,8 @@ import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.sputnik.wispr.util.FONUtils;
+import com.oakley.fon.util.FONUtils;
+import com.sputnik.wispr.R;
 
 public class NetworkScanReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkScanReceiver.class.getName();

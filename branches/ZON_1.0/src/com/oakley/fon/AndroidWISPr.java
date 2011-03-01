@@ -1,4 +1,6 @@
-package com.sputnik.wispr;
+package com.oakley.fon;
+
+import com.sputnik.wispr.R;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

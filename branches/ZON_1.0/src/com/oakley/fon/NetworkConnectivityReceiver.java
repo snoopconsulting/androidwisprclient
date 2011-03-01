@@ -1,4 +1,4 @@
-package com.sputnik.wispr;
+package com.oakley.fon;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,7 +12,8 @@ import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.sputnik.wispr.util.FONUtils;
+import com.oakley.fon.util.FONUtils;
+import com.sputnik.wispr.R;
 
 public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkConnectivityReceiver.class.getName();
