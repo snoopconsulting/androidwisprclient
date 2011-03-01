@@ -13,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.oakley.fon.util.FONUtils;
-import com.sputnik.wispr.R;
 
 public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkConnectivityReceiver.class.getName();
