@@ -25,7 +25,12 @@ public class AndroidWISPr extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final Intent intent = getIntent();
+		// savePreferences(getIntent());
+		addPreferencesFromResource(R.layout.preferences_main);
+		setContentView(R.layout.preferences_header);
+	}
+
+	private void savePreferences(Intent intent) {
 		final Uri uri = intent.getData();
 		if (uri != null) {
 			String username = uri.getQueryParameter(this.getString(R.string.pref_username));
@@ -48,7 +53,6 @@ public class AndroidWISPr extends PreferenceActivity {
 			}
 			editor.commit();
 		}
-		addPreferencesFromResource(R.layout.preferences_main);
 	}
 
 	@Override
