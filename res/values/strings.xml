@@ -28,6 +28,10 @@
 
 	<string name="ringtone">Ringtone</string>
 	<string name="general">Login Configuration</string>
+	
+	<string name="help_text">Si eres usuario de ZON tienes acceso gratuito.
+Para mas info visita: http://www.zon.com
+o llama a 123456798</string>
 
 	<string name="status">Connection Status:</string>
 	<string name="status_connected">Connected</string>
