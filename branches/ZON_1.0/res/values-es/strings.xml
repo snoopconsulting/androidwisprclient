@@ -12,6 +12,7 @@
 	<string name="notif_text_ok">Conectado a %s</string>
 	<string name="notif_title_ko">FON</string>
 	<string name="notif_text_ko">Error conectando a FON {%s}</string>
+	<string name="notif_default_ssid">FON</string>
 	<string name="notif_error_100">Acceso denegado</string>
   	<string name="notif_error_1024">WISPr no presente</string>
 	<string name="notif_error_255">Error Interno</string>
@@ -37,5 +38,4 @@
 	<string name="menu_logOff">Desconectar</string>
 	<string name="menu_advanced">Preferencias Avanzadas</string>
 	<string name="menu_back">Volver</string>
-	
 </resources>

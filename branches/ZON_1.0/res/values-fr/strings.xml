@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">FON</string>
-	<string name="user">Username</string>
-	<string name="password">Password</string>
-	<string name="active">Active</string>
+	<string name="user">Nom d\'utilisateur</string>
+	<string name="password">Mot de passe</string>
+	<string name="active">Activé</string>
 
-	<string name="active_summary">Check to active automatic FON Login</string>
-	<string name="user_summary">Your FON username</string>
-	<string name="password_summary">Your FON password</string>
+	<string name="active_summary">Vérification pour activer automatiquement le Login</string>
+	<string name="user_summary">Votre nom d\'utilisateur FON</string>
+	<string name="password_summary">Votre mot de passe FON</string>
 	<string name="notif_title_ok">FON</string>
-	<string name="notif_text_ok">Conected to %s</string>
+	<string name="notif_text_ok">Connecté à%s</string>
 	<string name="notif_title_ko">FON</string>
-	<string name="notif_text_ko">Error conecting to FON {%s}</string>
+	<string name="notif_text_ko">Erreur lors de la connection à FON {%s}</string>
 	<string name="notif_default_ssid">FON</string>
-	<string name="notif_error_100">Login Failed</string>
-  	<string name="notif_error_1024">WISPr not present</string>
-	<string name="notif_error_255">Internal Error</string>
+	<string name="notif_error_100">Échec de Login </string>
+	<string name="notif_error_1024">WISPr non présent </string>
+	<string name="notif_error_255">Erreur interne</string>
 
 	<string name="connectionNotifications">Notifications</string>
-	<string name="connectionNotificationsEnable">Enable Notifications</string>
-	<string name="connectionNotificationsSummary">Receives notifications when you connect to FON</string>
-	<string name="connectionNotificationsVibrate">Vibrate</string>
-	<string name="connectionNotificationsVibrateSummary">Vibrate when you connect to FON</string>
-	<string name="connectionAutoEnable">Auto Connect</string>
-	<string name="connectionAutoSummary">Automatically connect to any available FON Spot</string>
-	<string name="connectionRingtoneSummary">Sounds when you connect to FON</string>
+	<string name="connectionNotificationsEnable">Permettre notifications</string>
+	<string name="connectionNotificationsSummary">Recevoir des notifications lorsque vous vous connectez à FON</string>
+	<string name="connectionNotificationsVibrate">Vibrer</string>
+	<string name="connectionNotificationsVibrateSummary">Vibrer lorsque vous vous connectez à FON</string>
+	<string name="connectionAutoEnable">Connection automatique</string>
+	<string name="connectionAutoSummary">Connection automatique à partir de nimporte quel Spot FON</string>
+	<string name="connectionRingtoneSummary">Son lorsque vous vous connectez à FON</string>
 
-	<string name="ringtone">Ringtone</string>
-	<string name="general">Login Configuration</string>
+	<string name="ringtone">Sonnerie</string>
+	<string name="general">Configuration du Login</string>
+	
+	<string name="status">Statut de la connection:</string>
+	<string name="status_connected">Connecté</string>
+	<string name="status_disconnected">Deconnecté</string>
+	<string name="status_error">Erreur</string>
 
-	<string name="status">Connection Status:</string>
-	<string name="status_connected">Connected</string>
-	<string name="status_disconnected">Disconnected</string>
-	<string name="status_error">Error</string>
-
-	<string name="menu_close">Close</string>
-	<string name="menu_logOff">LogOff</string>
-	<string name="menu_advanced">Advanced Preferences</string>
-	<string name="menu_back">Back</string>
+	<string name="menu_close">Fermer</string>
+	<string name="menu_logOff">Se déconnecter</string>
+	<string name="menu_advanced">Préférences avancées </string>
+	<string name="menu_back">Retour</string>
 </resources>
