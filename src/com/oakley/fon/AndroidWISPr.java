@@ -1,6 +1,7 @@
 package com.oakley.fon;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -9,14 +10,11 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.PopupWindow;
+import android.view.ViewGroup;
 
 public class AndroidWISPr extends PreferenceActivity {
 	private static String TAG = AndroidWISPr.class.getSimpleName();
@@ -30,8 +28,6 @@ public class AndroidWISPr extends PreferenceActivity {
 	public static final int HELP_ID = ADVANCED_ID + 1;
 
 	private SharedPreferences mPreferences = null;
-
-	private PopupWindow pw;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +81,7 @@ public class AndroidWISPr extends PreferenceActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
 		menu.add(Menu.NONE, CLOSE_ID, 0, R.string.menu_close).setIcon(android.R.drawable.ic_menu_save);
-		menu.add(Menu.NONE, HELP_ID, 1, R.string.menu_advanced).setIcon(android.R.drawable.ic_menu_help);
+		menu.add(Menu.NONE, HELP_ID, 1, R.string.menu_help).setIcon(android.R.drawable.ic_menu_help);
 		menu.add(Menu.NONE, LOGOFF_ID, 1, R.string.menu_logOff).setIcon(android.R.drawable.ic_menu_revert);
 		menu.add(Menu.NONE, ADVANCED_ID, 2, R.string.menu_advanced).setIcon(android.R.drawable.ic_menu_preferences);
 
@@ -116,21 +112,19 @@ public class AndroidWISPr extends PreferenceActivity {
 	}
 
 	private void showHelpWindow() {
-		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.help_window, null, false);
-		pw = new PopupWindow(layout, 100, 100, true);
-		pw.setAnimationStyle(android.R.style.Animation_Dialog);
-		// The code below assumes that the root container has an id called 'main'
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.help_window, (ViewGroup) findViewById(R.id.layout_help));
 
-		pw.showAtLocation(this.getListView(), Gravity.CENTER, 0, 0);
-		Button button = (Button) layout.findViewById(R.id.popup_close);
-		button.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				pw.dismiss();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setView(layout);
+		builder.setTitle(R.string.help_title);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
 			}
 		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	private void logOff_clicked(MenuItem item) {
