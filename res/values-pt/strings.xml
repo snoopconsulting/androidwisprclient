@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">FON</string>
-	<string name="user">Email</string>
-	<string name="password">Palavra-passe</string>
+	<string name="user">E-mail (Username)</string>
+	<string name="password">Password</string>
 	<string name="active">Activo</string>
 
 	<string name="active_summary">Selecciona para activar o login automático</string>
-	<string name="user_summary">Seu email de acesso Fon</string>
-	<string name="password_summary">Sua palavra-passe</string>
+	<string name="user_summary">E-mail (Username)</string>
+	<string name="password_summary">Password</string>
 	<string name="notif_title_ok">FON</string>
-	<string name="notif_text_ok">Ligando a %s</string>
+	<string name="notif_text_ok">Ligado a %s</string>
 	<string name="notif_title_ko">FON</string>
-	<string name="notif_text_ko">Erro ligando a Fon {%s}</string>
-	<string name="notif_error_100">Acesso negado</string>
-  	<string name="notif_error_1024">WISPr não presente </string>
-	<string name="notif_error_255">Erro interno</string>
+	<string name="notif_text_ko">Erro de ligação  {%s}</string>
+	<string name="notif_default_ssid">FON</string>
+	<string name="notif_error_100">Acesso recusado</string>
+  	<string name="notif_error_1024">WISPr indisponível </string>
+	<string name="notif_error_255">Erro </string>
 
 	<string name="connectionNotifications">Notificações</string>
 	<string name="connectionNotificationsEnable">Activar notificações</string>
-	<string name="connectionNotificationsSummary">Receber notificações quando te conecta a  Fon</string>
+	<string name="connectionNotificationsSummary">Receber notificação quando te ligas à ZON@FON</string>
 	<string name="connectionNotificationsVibrate">Vibrar</string>
-	<string name="connectionNotificationsVibrateSummary">Faz que seu telemóvel vibre quando te conecta a Fon</string>
-	<string name="connectionAutoEnable">Auto Ligação</string>
-	<string name="connectionAutoSummary">Liga automaticamente quando está próximo de um ponto Fon</string>
-	<string name="connectionRingtoneSummary">Faz que seu telemóvel toque quando te conecta a Fon</string>
+	<string name="connectionNotificationsVibrateSummary">Faz que seu telemóvel vibre quando te conecta a ZON@FON</string>
+	<string name="connectionAutoEnable">Ligação Automática</string>
+	<string name="connectionAutoSummary">Ligar automaticamente quando está próximo de um Hotspot</string>
+	<string name="connectionRingtoneSummary">Faz com que o telemóvel toque quando te ligas à ZON@FON</string>
 
-	<string name="ringtone">Sonido</string>
+	<string name="ringtone">Som</string>
 	<string name="general">Configuração de acesso</string>
+
+	<string name="help_text">Se é um cliente ZON você tem acesso gratuito!!\nPara mais infromações, Por favor ligue para 123456789\nou visite http://www.zonfon.pt/</string>
+	<string name="help_title">Ajuda</string>
+
+	<string name="ok">OK</string> 
 
 	<string name="status">Estado da ligação:</string>
 	<string name="status_connected">Ligado a</string>
@@ -35,7 +41,8 @@
 	
 	<string name="menu_close">Fechar</string>
 	<string name="menu_logOff">Desligar</string>
-	<string name="menu_advanced">Preferências avançadas</string>
+	<string name="menu_advanced">Configurações avançadas</string>
 	<string name="menu_back">Voltar</string>
+	<string name="menu_help">Ajuda</string>
 	
 </resources>
