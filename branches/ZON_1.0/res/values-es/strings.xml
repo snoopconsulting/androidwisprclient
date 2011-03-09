@@ -29,6 +29,11 @@
 	<string name="ringtone">Sonido</string>
 	<string name="general">Configuración de acceso</string>
 
+	<string name="help_text">¡¡Si tienes una fonera tienes acceso gratuito!!\n Para mas informacion visita http://corp.fon.com/support/</string>
+	<string name="help_title">Ayuda</string>
+
+	<string name="ok">OK</string> 
+
 	<string name="status">Estado de la conexión:</string>
 	<string name="status_connected">Conectado</string>
 	<string name="status_disconnected">Desconectado</string>
@@ -38,4 +43,5 @@
 	<string name="menu_logOff">Desconectar</string>
 	<string name="menu_advanced">Preferencias Avanzadas</string>
 	<string name="menu_back">Volver</string>
+	<string name="menu_help">Ayuda</string>
 </resources>

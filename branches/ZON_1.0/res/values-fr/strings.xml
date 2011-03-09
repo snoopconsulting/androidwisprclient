@@ -29,6 +29,11 @@
 	<string name="ringtone">Sonnerie</string>
 	<string name="general">Configuration du Login</string>
 	
+	<string name="help_text">Les clients de FON </string>
+	<string name="help_title">Aide</string>
+	
+	<string name="ok">OK</string> 
+	
 	<string name="status">Statut de la connection:</string>
 	<string name="status_connected">Connecté</string>
 	<string name="status_disconnected">Deconnecté</string>
@@ -38,4 +43,5 @@
 	<string name="menu_logOff">Se déconnecter</string>
 	<string name="menu_advanced">Préférences avancées </string>
 	<string name="menu_back">Retour</string>
+	<string name="menu_help">Aide</string>
 </resources>
