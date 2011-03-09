@@ -37,6 +37,7 @@ public class AndroidWISPr extends PreferenceActivity {
 		setContentView(R.layout.preferences_header);
 	}
 
+	@SuppressWarnings("unused")
 	private void savePreferences(Intent intent) {
 		final Uri uri = intent.getData();
 		if (uri != null) {
