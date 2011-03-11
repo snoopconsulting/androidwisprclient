@@ -36,10 +36,10 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS)) {
 			lastCalled = now;
-			boolean activeEnabled = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
+			boolean activeEnabled = getPreferences(context).getBoolean(context.getString(R.string.pref_active), true);
 
 			boolean autoConnectEnabled = getPreferences(context).getBoolean(
-					context.getString(R.string.pref_connectionAutoEnable), false);
+					context.getString(R.string.pref_connectionAutoEnable), true);
 
 			if (autoConnectEnabled && activeEnabled) {
 				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
