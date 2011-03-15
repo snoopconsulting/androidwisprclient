@@ -5,11 +5,11 @@
 	<string name="password">Mot de passe</string>
 	<string name="active">Activé</string>
 
-	<string name="active_summary">Vérification pour activer automatiquement le Login</string>
+	<string name="active_summary">Cocher pour activer automatiquement l\'authentification</string>
 	<string name="user_summary">Votre nom d\'utilisateur Fon</string>
 	<string name="password_summary">Votre mot de passe Fon</string>
 	<string name="notif_title_ok">Fon</string>
-	<string name="notif_text_ok">Connecté à%s</string>
+	<string name="notif_text_ok">Connecté à %s</string>
 	<string name="notif_title_ko">Fon</string>
 	<string name="notif_text_ko">Erreur lors de la connection à Fon {%s}</string>
 	<string name="notif_default_ssid">Fon</string>
@@ -18,16 +18,16 @@
 	<string name="notif_error_255">Erreur interne</string>
 
 	<string name="connectionNotifications">Notifications</string>
-	<string name="connectionNotificationsEnable">Permettre notifications</string>
+	<string name="connectionNotificationsEnable">Autoriser les notifications</string>
 	<string name="connectionNotificationsSummary">Recevoir des notifications lorsque vous vous connectez à Fon</string>
 	<string name="connectionNotificationsVibrate">Vibrer</string>
 	<string name="connectionNotificationsVibrateSummary">Vibrer lorsque vous vous connectez à Fon</string>
-	<string name="connectionAutoEnable">Connection automatique</string>
-	<string name="connectionAutoSummary">Connection automatique à partir de nimporte quel Spot Fon</string>
-	<string name="connectionRingtoneSummary">Son lorsque vous vous connectez à Fon</string>
+	<string name="connectionAutoEnable">Connexion automatique</string>
+	<string name="connectionAutoSummary">Connexion automatique à partir de n\'importe quel Fon spot</string>
+	<string name="connectionRingtoneSummary">Emettre un son lorsque vous vous connectez à Fon</string>
 
 	<string name="ringtone">Sonnerie</string>
-	<string name="general">Configuration du Login</string>
+	<string name="general">Configuration de l\'authentification</string>
 	
 	<string name="help_text">Visitez http://corp.fon.com/support/ </string>
 	<string name="help_title">Aide</string>
@@ -39,7 +39,7 @@
 	<string name="status_disconnected">Deconnecté</string>
 	<string name="status_error">Erreur</string>
 
-	<string name="menu_close">Fermer</string>
+	<string name="menu_close">Sauvegarder</string>
 	<string name="menu_logOff">Se déconnecter</string>
 	<string name="menu_advanced">Préférences avancées </string>
 	<string name="menu_back">Retour</string>
