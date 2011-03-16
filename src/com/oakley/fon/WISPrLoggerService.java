@@ -60,7 +60,7 @@ public class WISPrLoggerService extends IntentService {
 		String resultDesc = result.getResult();
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean notificationsActive = mPreferences.getBoolean(context
-				.getString(R.string.pref_connectionNotificationsEnable), false);
+				.getString(R.string.pref_connectionNotificationsEnable), true);
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
