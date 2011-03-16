@@ -124,7 +124,9 @@ public class WISPrLoggerService extends IntentService {
 
 				if (useRingtone) {
 					String ringtone = mPreferences.getString(context.getString(R.string.pref_connectionRingtone), "");
-					if (!ringtone.equals("")) {
+					if (ringtone.equals("")) {
+						notification.defaults |= Notification.DEFAULT_SOUND;
+					} else {
 						notification.sound = Uri.parse(ringtone);
 					}
 				}
