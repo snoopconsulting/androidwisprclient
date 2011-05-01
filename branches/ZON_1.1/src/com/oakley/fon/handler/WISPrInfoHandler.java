@@ -10,19 +10,19 @@ public class WISPrInfoHandler extends DefaultHandler {
 
 	private Tag actualTag;
 
-	private String accessProcedure = "";
+	private StringBuilder accessProcedure = new StringBuilder();
 
-	private String accessLocation = "";
+	private StringBuilder accessLocation = new StringBuilder();
 
-	private String loginURL = "";
+	private StringBuilder loginURL = new StringBuilder();
 
-	private String abortLoginURL = "";
+	private StringBuilder abortLoginURL = new StringBuilder();
 
-	private String messageType = "";
+	private StringBuilder messageType = new StringBuilder();
 
-	private String responseCode = "";
+	private StringBuilder responseCode = new StringBuilder();
 
-	private String locationName = "";
+	private StringBuilder locationName = new StringBuilder();
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -33,54 +33,54 @@ public class WISPrInfoHandler extends DefaultHandler {
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
 		if (actualTag.equals(Tag.accessprocedure)) {
-			accessProcedure += chars;
+			accessProcedure.append(chars);
 		} else if (actualTag.equals(Tag.loginurl)) {
-			loginURL += chars;
+			loginURL.append(chars);
 		} else if (actualTag.equals(Tag.abortloginurl)) {
-			abortLoginURL += chars;
+			abortLoginURL.append(chars);
 		} else if (actualTag.equals(Tag.messagetype)) {
-			messageType += chars;
+			messageType.append(chars);
 		} else if (actualTag.equals(Tag.responsecode)) {
-			responseCode += chars;
+			responseCode.append(chars);
 		} else if (actualTag.equals(Tag.accesslocation)) {
-			accessLocation += chars;
+			accessLocation.append(chars);
 		} else if (actualTag.equals(Tag.locationname)) {
-			locationName += chars;
+			locationName.append(chars);
 		}
 	}
 
 	public String getAccessProcedure() {
-		return accessProcedure.trim();
+		return accessProcedure.toString().trim();
 	}
 
 	public String getLoginURL() {
-		return loginURL.trim();
+		return loginURL.toString().trim();
 	}
 
 	public String getAbortLoginURL() {
-		return abortLoginURL.trim();
+		return abortLoginURL.toString().trim();
 	}
 
 	public String getMessageType() {
-		return messageType.trim();
+		return messageType.toString().trim();
 	}
 
 	public String getResponseCode() {
-		return responseCode.trim();
+		return responseCode.toString().trim();
 	}
 
 	public String getAccessLocation() {
-		return accessLocation.trim();
+		return accessLocation.toString().trim();
 	}
 
 	public String getLocationName() {
-		return locationName.trim();
+		return locationName.toString().trim();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("WISPrInfoHandler{");
+		sb.append(this.getClass().getSimpleName()).append("{");
 		sb.append("accessProcedure: ").append(accessProcedure).append(", ");
 		sb.append("accessLocation: ").append(accessLocation).append(", ");
 		sb.append("locationName: ").append(locationName).append(", ");

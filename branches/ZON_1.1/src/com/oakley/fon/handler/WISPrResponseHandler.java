@@ -10,15 +10,15 @@ public class WISPrResponseHandler extends DefaultHandler {
 
 	private Tag actualTag;
 
-	private String responseCode = "";
+	private StringBuilder responseCode = new StringBuilder();
 
-	private String fonResponseCode = "";
+	private StringBuilder fonResponseCode = new StringBuilder();
 
-	private String logoffURL = "";
+	private StringBuilder logoffURL = new StringBuilder();
 
-	private String replyMessage = "";
+	private StringBuilder replyMessage = new StringBuilder();
 
-	private String messageType = "";
+	private StringBuilder messageType = new StringBuilder();
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -29,42 +29,42 @@ public class WISPrResponseHandler extends DefaultHandler {
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
 		if (actualTag.equals(Tag.responsecode)) {
-			responseCode += chars;
+			responseCode.append(chars);
 		} else if (actualTag.equals(Tag.fonresponsecode)) {
-			fonResponseCode += chars;
+			fonResponseCode.append(chars);
 		} else if (actualTag.equals(Tag.logoffurl)) {
-			logoffURL += chars;
+			logoffURL.append(chars);
 		} else if (actualTag.equals(Tag.replymessage)) {
-			replyMessage += chars;
+			replyMessage.append(chars);
 		} else if (actualTag.equals(Tag.messagetype)) {
-			messageType += chars;
+			messageType.append(chars);
 		}
 	}
 
 	public String getResponseCode() {
-		return responseCode.trim();
+		return responseCode.toString().trim();
 	}
 
 	public String getFonResponseCode() {
-		return fonResponseCode.trim();
+		return fonResponseCode.toString().trim();
 	}
 
 	public String getLogoffURL() {
-		return logoffURL.trim();
+		return logoffURL.toString().trim();
 	}
 
 	public String getReplyMessage() {
-		return replyMessage.trim();
+		return replyMessage.toString().trim();
 	}
 
 	public String getMessageType() {
-		return messageType.trim();
+		return messageType.toString().trim();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("WISPrResponseHandler{");
+		sb.append(this.getClass().getSimpleName()).append("{");
 		sb.append("responseCode: ").append(responseCode).append(", ");
 		sb.append("fonResponseCode: ").append(fonResponseCode).append(", ");
 		sb.append("logoffURL: ").append(logoffURL).append(", ");

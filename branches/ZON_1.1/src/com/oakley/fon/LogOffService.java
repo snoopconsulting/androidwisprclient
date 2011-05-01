@@ -29,5 +29,4 @@ public class LogOffService extends IntentService {
 			Log.e(TAG, "Error login off", e);
 		}
 	}
-
 }

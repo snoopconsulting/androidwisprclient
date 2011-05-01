@@ -33,6 +33,7 @@ public class WISPrConstants {
 
 	public static String WISPR_RESPONSE_CODE_INTERNAL_ERROR = "255";
 
+	// Custom Response Codes
 	public static String WISPR_NOT_PRESENT = "1024";
 
 	public static String ALREADY_CONNECTED = "1025";

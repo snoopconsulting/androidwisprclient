@@ -158,5 +158,4 @@ public class AndroidWISPr extends PreferenceActivity {
 
 		return logOffUrl;
 	}
-
 }
