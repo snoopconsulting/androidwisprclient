@@ -8,16 +8,15 @@ import java.util.Set;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.oakley.fon.util.FONUtils;
+import com.oakley.fon.util.Utils;
 
 public class NetworkScanReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkScanReceiver.class.getName();
@@ -25,8 +24,6 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 	private static long lastCalled = -1;
 
 	private static final int MIN_PERIOD_BTW_CALLS = 10 * 1000;// 10 Seconds
-
-	private static SharedPreferences mPreferences;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -36,53 +33,48 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		if (lastCalled == -1 || (now - lastCalled > MIN_PERIOD_BTW_CALLS)) {
 			lastCalled = now;
-			boolean activeEnabled = getPreferences(context).getBoolean(context.getString(R.string.pref_active), true);
+			if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+				boolean activeEnabled = Utils.getBooleanPreference(context, R.string.pref_active, true);
+				boolean autoConnectEnabled = Utils.getBooleanPreference(context, R.string.pref_connectionAutoEnable,
+						true);
 
-			boolean autoConnectEnabled = getPreferences(context).getBoolean(
-					context.getString(R.string.pref_connectionAutoEnable), true);
+				if (autoConnectEnabled && activeEnabled) {
+					WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+					if (!isAlreadyConnected(wm)) {
+						if (!isAnyPreferedNetworkAvailable(wm)) {
+							ScanResult fonScanResult = getFonNetwork(wm);
+							if (fonScanResult != null) {
+								// Log.d(TAG, "Scan result found:" + fonScanResult);
+								WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm
+										.getConfiguredNetworks(), fonScanResult);
+								// Log.d(TAG, "FON Network found:" + fonNetwork);
+								if (fonNetwork == null) {
+									fonNetwork = new WifiConfiguration();
+									fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
+									fonNetwork.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+									fonNetwork.status = WifiConfiguration.Status.ENABLED;
 
-			if (autoConnectEnabled && activeEnabled) {
-				WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
-				if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-					if (!isAlreadyConnected(wm) && !isAnyPreferedNetworkAvailable(wm)) {
-						ScanResult fonScanResult = getFonNetwork(wm);
-						if (fonScanResult != null) {
-							// Log.d(TAG, "Scan result found:" + fonScanResult);
-							WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
-									fonScanResult);
-							// Log.d(TAG, "FON Network found:" + fonNetwork);
-							if (fonNetwork == null) {
-								fonNetwork = new WifiConfiguration();
-								fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
-								fonNetwork.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-								fonNetwork.status = WifiConfiguration.Status.ENABLED;
-
-								fonNetwork.networkId = wm.addNetwork(fonNetwork);
-								wm.saveConfiguration();
-								fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
-							}
-							// Log.v(TAG, "Selected network:" + fonNetwork);
-							wm.enableNetwork(fonNetwork.networkId, true);
-							Log.d(TAG, "Trying to connect");
-						}// No FON Signal Available
+									fonNetwork.networkId = wm.addNetwork(fonNetwork);
+									wm.saveConfiguration();
+									fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
+								}
+								// Log.v(TAG, "Selected network:" + fonNetwork);
+								wm.enableNetwork(fonNetwork.networkId, true);
+								Log.d(TAG, "Trying to connect");
+							}// No FON Signal Available
+						} else {
+							Log.d(TAG, "Not connecting because a prefered network is available");
+						}
 					} else {
-						Log.d(TAG, "Not connecting because a prefered network is available OR it's already connected");
+						Log.d(TAG, "Not connecting because it's already connected");
 					}
 					lastCalled = System.currentTimeMillis();
-				}// Not Scanning State
-			} // Not Active in preferences
+
+				} // Not Active in preferences
+			}// Not Scanning State
 		} else {
 			Log.v(TAG, "Events to close, ignoring.");
 		}
-	}
-
-	private SharedPreferences getPreferences(Context context) {
-		if (mPreferences == null) {
-			mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		}
-
-		return mPreferences;
 	}
 
 	private boolean isAlreadyConnected(WifiManager wm) {

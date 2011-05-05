@@ -31,7 +31,7 @@ public class WISPrLogger implements WebLogger {
 	public LoggerResult login(String user, String password) {
 		LoggerResult res = new LoggerResult(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR, null);
 		try {
-			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
+			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL).getContent();
 			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
 				String WISPrXML = WISPrUtil.getWISPrXML(blockedUrlText);
 				if (WISPrXML != null) {
@@ -69,7 +69,7 @@ public class WISPrLogger implements WebLogger {
 		data.put(userParam, user);
 		data.put(passwordParam, password);
 
-		String htmlResponse = HttpUtils.getUrlByPost(targetURL, data);
+		String htmlResponse = HttpUtils.getUrlByPost(targetURL, data).getContent();
 		// Log.d(TAG, "WISPR Reponse:" + htmlResponse);
 		if (htmlResponse != null) {
 			String response = WISPrUtil.getWISPrXML(htmlResponse);

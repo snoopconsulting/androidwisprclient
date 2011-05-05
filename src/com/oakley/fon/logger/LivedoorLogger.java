@@ -34,7 +34,7 @@ public class LivedoorLogger extends SimpleHTTPLogger {
 	private String getSNParameter() {
 		String sn = "001";
 		try {
-			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
+			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL).getContent();
 			int start = blockedUrlText.indexOf("name=\"sn\" value=\"") + 17;
 			int end = blockedUrlText.indexOf("\"", start);
 			sn = blockedUrlText.substring(start, end);

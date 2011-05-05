@@ -9,15 +9,19 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
@@ -35,20 +39,21 @@ public class HttpUtils {
 		defaultHttpParams.setParameter(CoreProtocolPNames.USER_AGENT, "FONAccess; wispr; (Linux; U; Android)");
 	}
 
-	public static String getUrl(String url) throws IOException {
+	public static HttpResult getUrl(String url) throws IOException {
 		return getUrl(url, DEFAULT_MAX_RETRIES);
 	}
 
-	public static String getUrl(String url, int maxRetries) throws IOException {
+	public static HttpResult getUrl(String url, int maxRetries) throws IOException {
 		String result = null;
 		int retries = 0;
+		HttpContext localContext = new BasicHttpContext();
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 		HttpGet httpget = new HttpGet(url);
 		while (retries <= maxRetries && result == null) {
 			try {
 				retries++;
-				HttpEntity entity = httpclient.execute(httpget).getEntity();
+				HttpEntity entity = httpclient.execute(httpget, localContext).getEntity();
 
 				if (entity != null) {
 					result = EntityUtils.toString(entity).trim();
@@ -62,21 +67,23 @@ public class HttpUtils {
 			}
 		}
 
-		return result;
+		return new HttpResult(result, (BasicHttpResponse) localContext.getAttribute("http.response"),
+				((HttpHost) localContext.getAttribute("http.target_host")).toURI());
 	}
 
-	public static String getUrlByPost(String url, Map<String, String> params, int maxRetries) throws IOException {
+	public static HttpResult getUrlByPost(String url, Map<String, String> params, int maxRetries) throws IOException {
 		return getUrlByPost(url, params, null, maxRetries);
 	}
 
-	public static String getUrlByPost(String url, Map<String, String> params) throws IOException {
+	public static HttpResult getUrlByPost(String url, Map<String, String> params) throws IOException {
 		return getUrlByPost(url, params, DEFAULT_MAX_RETRIES);
 	}
 
-	public static String getUrlByPost(String url, Map<String, String> params, Map<String, String> headers,
+	public static HttpResult getUrlByPost(String url, Map<String, String> params, Map<String, String> headers,
 			int maxRetries) throws IOException {
 		String result = null;
 		int retries = 0;
+		HttpContext localContext = new BasicHttpContext();
 		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
 		httpclient.setCookieStore(null);
 
@@ -102,7 +109,7 @@ public class HttpUtils {
 		while (retries < maxRetries && result == null) {
 			try {
 				retries++;
-				HttpEntity responseEntity = httpclient.execute(httppost).getEntity();
+				HttpEntity responseEntity = httpclient.execute(httppost, localContext).getEntity();
 				if (responseEntity != null) {
 					result = EntityUtils.toString(responseEntity).trim();
 				}
@@ -115,7 +122,9 @@ public class HttpUtils {
 			}
 		}
 
-		return result;
+		return new HttpResult(result, (BasicHttpResponse) localContext.getAttribute("http.response"),
+				((HttpHost) localContext.getAttribute("http.target_host")).toURI());
+
 	}
 
 	public static String getMetaRefresh(String html) {
