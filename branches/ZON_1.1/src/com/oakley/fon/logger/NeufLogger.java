@@ -23,7 +23,7 @@ public class NeufLogger extends HTTPLogger {
 	public LoggerResult login(String user, String password) {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
-			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
+			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL).getContent();
 			if (!blockedUrlText.equals(CONNECTED)) {
 
 				Map<String, String> refererParams = parseForm(blockedUrlText);
@@ -43,13 +43,13 @@ public class NeufLogger extends HTTPLogger {
 
 					loginParams.put(userParam, user);
 					loginParams.put(passwordParam, password);
-					String result = HttpUtils.getUrlByPost(targetURL, loginParams);
+					String result = HttpUtils.getUrlByPost(targetURL, loginParams).getContent();
 					Log.v(TAG, "Login result:" + result);
 
 					String metaRefresh = HttpUtils.getMetaRefresh(result);
 					if (metaRefresh != null) {
 						Log.v(TAG, "meta refresh:" + metaRefresh);
-						result = HttpUtils.getUrl(metaRefresh);
+						result = HttpUtils.getUrl(metaRefresh).getContent();
 						Log.v(TAG, "Login result after refresh:" + result);
 						if (hasLoginSuceeded(result)) {
 							res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;

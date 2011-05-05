@@ -6,8 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.oakley.fon.util.Utils;
 
 public class NotificationCleaningService extends IntentService {
 
@@ -29,7 +30,7 @@ public class NotificationCleaningService extends IntentService {
 	}
 
 	private void cleanLogOffUrl(Context context, Intent intent) {
-		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences mPreferences = Utils.getSharedPreferences(context);
 		Editor editor = mPreferences.edit();
 		editor.remove(context.getString(R.string.pref_logOffUrl));
 		editor.commit();

@@ -3,18 +3,16 @@ package com.oakley.fon;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.oakley.fon.util.Utils;
 
 public class AndroidWISPr extends PreferenceActivity {
 	private static String TAG = AndroidWISPr.class.getSimpleName();
@@ -27,40 +25,12 @@ public class AndroidWISPr extends PreferenceActivity {
 
 	public static final int HELP_ID = ADVANCED_ID + 1;
 
-	private SharedPreferences mPreferences = null;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// savePreferences(getIntent());
 		addPreferencesFromResource(R.layout.preferences_main);
 		setContentView(R.layout.preferences_header);
-	}
-
-	@SuppressWarnings("unused")
-	private void savePreferences(Intent intent) {
-		final Uri uri = intent.getData();
-		if (uri != null) {
-			String username = uri.getQueryParameter(this.getString(R.string.pref_username));
-			String password = uri.getQueryParameter(this.getString(R.string.pref_password));
-			String active = uri.getQueryParameter(this.getString(R.string.pref_active));
-			String connectionAutoEnable = uri.getQueryParameter(this.getString(R.string.pref_connectionAutoEnable));
-			Editor editor = getPreferenceManager().getSharedPreferences().edit();
-			if (username != null) {
-				editor.putString(this.getString(R.string.pref_username), username);
-			}
-			if (password != null) {
-				editor.putString(this.getString(R.string.pref_password), password);
-			}
-			if (active != null) {
-				editor.putBoolean(this.getString(R.string.pref_active), Boolean.valueOf(active));
-			}
-			if (connectionAutoEnable != null) {
-				editor.putBoolean(this.getString(R.string.pref_connectionAutoEnable), Boolean
-						.valueOf(connectionAutoEnable));
-			}
-			editor.commit();
-		}
 	}
 
 	@Override
@@ -139,16 +109,8 @@ public class AndroidWISPr extends PreferenceActivity {
 		item.setEnabled(false);
 	}
 
-	private SharedPreferences getPreferences() {
-		if (mPreferences == null) {
-			mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		}
-
-		return mPreferences;
-	}
-
 	private String getLogOffUrl() {
-		String logOffUrl = getPreferences().getString(this.getText(R.string.pref_logOffUrl).toString(), "");
+		String logOffUrl = Utils.getStringPreference(this, R.string.pref_logOffUrl, "");
 		if (logOffUrl != null) {
 			logOffUrl = logOffUrl.trim();
 			if (logOffUrl.length() == 0) {

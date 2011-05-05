@@ -50,7 +50,7 @@ public class FONUtils {
 	}
 
 	public static boolean haveConnection() throws IOException {
-		String blockedUrlText = HttpUtils.getUrl(WebLogger.BLOCKED_URL);
+		String blockedUrlText = HttpUtils.getUrl(WebLogger.BLOCKED_URL).getContent();
 		return blockedUrlText.equals(WebLogger.CONNECTED);
 	}
 

@@ -6,10 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.oakley.fon.logger.BTFonLogger;
@@ -19,6 +17,7 @@ import com.oakley.fon.logger.NeufLogger;
 import com.oakley.fon.logger.WISPrLogger;
 import com.oakley.fon.logger.WebLogger;
 import com.oakley.fon.util.FONUtils;
+import com.oakley.fon.util.Utils;
 import com.oakley.fon.util.WISPrConstants;
 
 public class WISPrLoggerService extends IntentService {
@@ -58,9 +57,9 @@ public class WISPrLoggerService extends IntentService {
 
 		long[] vibratePattern = null;
 		String resultDesc = result.getResult();
-		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean notificationsActive = mPreferences.getBoolean(context
-				.getString(R.string.pref_connectionNotificationsEnable), true);
+		boolean notificationsActive = Utils.getBooleanPreference(context, R.string.pref_connectionNotificationsEnable,
+				true);
+
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
@@ -88,7 +87,7 @@ public class WISPrLoggerService extends IntentService {
 				notification = new Notification(icon_ok, notificationTitle, System.currentTimeMillis());
 				notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 				if (result.getLogOffUrl() != null && result.getLogOffUrl().length() > 0) {
-					Editor editor = mPreferences.edit();
+					Editor editor = Utils.getSharedPreferences(context).edit();
 					editor.putString(context.getString(R.string.pref_logOffUrl), result.getLogOffUrl());
 					editor.commit();
 				}
@@ -115,15 +114,14 @@ public class WISPrLoggerService extends IntentService {
 				notification.setLatestEventInfo(context, notificationTitle, notificationText, pendingIntent);
 
 				if (useVibration) {
-					boolean vibrate = mPreferences
-							.getBoolean(context.getString(R.string.pref_connectionVibrate), false);
+					boolean vibrate = Utils.getBooleanPreference(context, R.string.pref_connectionVibrate, false);
 					if (vibrate) {
 						notification.vibrate = vibratePattern;
 					}
 				}
 
 				if (useRingtone) {
-					String ringtone = mPreferences.getString(context.getString(R.string.pref_connectionRingtone), null);
+					String ringtone = Utils.getStringPreference(context, R.string.pref_connectionRingtone, null);
 					if (ringtone == null) {
 						notification.defaults |= Notification.DEFAULT_SOUND;
 					} else {

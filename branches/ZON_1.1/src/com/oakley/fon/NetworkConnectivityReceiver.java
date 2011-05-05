@@ -3,21 +3,18 @@ package com.oakley.fon;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.oakley.fon.util.FONUtils;
+import com.oakley.fon.util.Utils;
 
 public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	private static String TAG = NetworkConnectivityReceiver.class.getName();
-
-	private SharedPreferences mPreferences;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -35,11 +32,14 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 
 			// We look if it's a FON Access Point
 			if (FONUtils.isSupportedNetwork(ssid, bssid)) {
-				boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), true);
+
+				boolean active = Utils.getBooleanPreference(context, R.string.pref_active, true);
+
 				if (active) {
-					String username = getPreferences(context).getString(context.getString(R.string.pref_username), "");
-					String password = getPreferences(context).getString(context.getString(R.string.pref_password), "");
-					if (username.length() > 0 && password.length() > 0) {
+
+					String username = Utils.getStringPreference(context, R.string.pref_username, "");
+					String password = Utils.getStringPreference(context, R.string.pref_password, "");
+					if (username.trim().length() > 0 && password.trim().length() > 0) {
 						// If the application is active and we have username and password we launch
 						// the login intent
 						Intent logIntent = new Intent(context, WISPrLoggerService.class);
@@ -72,14 +72,6 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 		Intent cleaningIntent = new Intent(context, NotificationCleaningService.class);
 		cleaningIntent.setAction(NotificationCleaningService.ACTION_CLEAN);
 		context.startService(cleaningIntent);
-	}
-
-	private SharedPreferences getPreferences(Context context) {
-		if (mPreferences == null) {
-			mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		}
-
-		return mPreferences;
 	}
 
 	private boolean isConnectedIntent(Intent intent) {
