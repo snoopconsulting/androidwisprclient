@@ -81,6 +81,7 @@ public class WISPrLogger implements WebLogger {
 					res = wrh.getResponseCode();
 					logOffUrl = wrh.getLogoffURL();
 				} catch (SAXException saxe) {
+					Log.e(TAG, saxe.getMessage());
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
 			} else {
@@ -89,10 +90,11 @@ public class WISPrLogger implements WebLogger {
 		}
 
 		// If we dont find the WISPR Response or we cannot parse it, we check if we have connection
+		// (some times happens)
 		if (res.equals(WISPrConstants.WISPR_NOT_PRESENT)) {
 			if (FONUtils.haveConnection()) {
 				res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
-				logOffUrl = "http://192.168.182.1:3990/logoff";
+				logOffUrl = DEFAULT_LOGOFF_URL;
 			}
 		}
 
