@@ -6,6 +6,7 @@ import java.util.Map;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -46,7 +47,32 @@ public class Utils {
 		return getSharedPreferences(context).getBoolean(context.getString(resId), defaultValue);
 	}
 
+	public static int getIntPreference(Context context, int resId, int defaultValue) {
+		return getSharedPreferences(context).getInt(context.getString(resId), defaultValue);
+	}
+
 	public static String getStringPreference(Context context, int resId, String defaultValue) {
 		return getSharedPreferences(context).getString(context.getString(resId), defaultValue);
+	}
+
+	public static void savePreference(Context context, int resId, int newValue) {
+		SharedPreferences mPreferences = Utils.getSharedPreferences(context);
+		Editor editor = mPreferences.edit();
+		editor.putInt(context.getString(resId), newValue);
+		editor.commit();
+	}
+
+	public static void savePreference(Context context, int resId, String newValue) {
+		SharedPreferences mPreferences = Utils.getSharedPreferences(context);
+		Editor editor = mPreferences.edit();
+		editor.putString(context.getString(resId), newValue);
+		editor.commit();
+	}
+
+	public static void removePreference(Context context, int resId) {
+		SharedPreferences mPreferences = Utils.getSharedPreferences(context);
+		Editor editor = mPreferences.edit();
+		editor.remove(context.getString(resId));
+		editor.commit();
 	}
 }

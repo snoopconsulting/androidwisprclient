@@ -45,8 +45,8 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 							ScanResult fonScanResult = getFonNetwork(wm);
 							if (fonScanResult != null) {
 								// Log.d(TAG, "Scan result found:" + fonScanResult);
-								WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm
-										.getConfiguredNetworks(), fonScanResult);
+								WifiConfiguration fonNetwork = lookupConfigurationByScanResult(
+										wm.getConfiguredNetworks(), fonScanResult);
 								// Log.d(TAG, "FON Network found:" + fonNetwork);
 								if (fonNetwork == null) {
 									fonNetwork = new WifiConfiguration();
@@ -56,10 +56,9 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 									fonNetwork.networkId = wm.addNetwork(fonNetwork);
 									wm.saveConfiguration();
-									fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
 								}
 								// Log.v(TAG, "Selected network:" + fonNetwork);
-								wm.enableNetwork(fonNetwork.networkId, true);
+								wm.enableNetwork(fonNetwork.networkId, false);
 								Log.d(TAG, "Trying to connect");
 							}// No FON Signal Available
 						} else {
