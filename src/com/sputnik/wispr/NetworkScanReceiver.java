@@ -148,6 +148,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 		if (configuredNetworks != null && !configuredNetworks.isEmpty()) {
+			// We get the list of availabel networks
 			List<ScanResult> scanResults = wm.getScanResults();
 			if (scanResults != null && !scanResults.isEmpty()) {
 				// We load the SSIDs of the available networks
@@ -156,15 +157,20 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 					// Log.v(TAG, "Adding scanResultKey:" + FONUtils.cleanSSID(scanResult.SSID));
 				}
 
+				// We get the list of the known networks
 				Iterator<WifiConfiguration> it = configuredNetworks.iterator();
 
-				// We look for the Known networks
+				// We check is any of the known networks:
+				// - has SSID distinct from null
+				// - is not a FON SSID
+				// - is not Disabled
 				while (!found && it.hasNext()) {
 					WifiConfiguration wifiConfiguration = it.next();
 					if (wifiConfiguration.SSID == null) {
 						Log.v(TAG, "Removing null wifiConfiguration:" + wifiConfiguration);
 						wm.removeNetwork(wifiConfiguration.networkId);
-					} else if (!FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
+					} else if (!FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)
+							&& wifiConfiguration.status != WifiConfiguration.Status.DISABLED) {
 						found = scanResultsKeys.contains(FONUtils.cleanSSID(wifiConfiguration.SSID));
 						// Log.v(TAG, "looking for: " + FONUtils.cleanSSID(wifiConfiguration.SSID) +
 						// (found ? " match" : " NO match"));
