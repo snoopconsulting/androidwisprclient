@@ -21,14 +21,18 @@ public abstract class SimpleHTTPLogger extends HTTPLogger {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		try {
 			if (!FONUtils.haveConnection()) {
-				Map<String, String> postParams = getPostParameters(user, password);
-				Log.d(TAG, "Posting username & password");
-				HttpUtils.getUrlByPost(targetURL, postParams);
+				if (FONUtils.isSafeUrl(targetURL)) {
+					Map<String, String> postParams = getPostParameters(user, password);
+					Log.d(TAG, "Posting username & password");
+					HttpUtils.getUrlByPost(targetURL, postParams);
 
-				Log.d(TAG, "Verifying if now we have connection");
+					Log.d(TAG, "Verifying if now we have connection");
 
-				if (FONUtils.haveConnection()) {
-					res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
+					if (FONUtils.haveConnection()) {
+						res = WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED;
+					}
+				} else {
+					Log.e(TAG, "Not safe URL:" + targetURL);
 				}
 			} else {
 				res = WISPrConstants.ALREADY_CONNECTED;
