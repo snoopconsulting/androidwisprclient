@@ -33,28 +33,24 @@ public class WISPrLogger implements WebLogger {
 		LoggerResult res = new LoggerResult(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR, null);
 		try {
 			HttpResult httpResult = HttpUtils.getUrl(BLOCKED_URL);
-			if (FONUtils.isSafeUrl(httpResult.getTargetHost())) {
-				String blockedUrlText = httpResult.getContent();
-				if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
-					String WISPrXML = WISPrUtil.getWISPrXML(blockedUrlText);
-					if (WISPrXML != null) {
-						// Log.d(TAG, "XML Found:" + WISPrXML);
-						WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
-						android.util.Xml.parse(WISPrXML, wisprInfo);
+			String blockedUrlText = httpResult.getContent();
+			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
+				String WISPrXML = WISPrUtil.getWISPrXML(blockedUrlText);
+				if (WISPrXML != null) {
+					// Log.d(TAG, "XML Found:" + WISPrXML);
+					WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
+					android.util.Xml.parse(WISPrXML, wisprInfo);
 
-						if (wisprInfo.getMessageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_INITIAL)
-								&& wisprInfo.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_NO_ERROR)) {
-							res = tryToLogin(user, password, wisprInfo);
-						}
-					} else {
-						// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
-						res = new LoggerResult(WISPrConstants.WISPR_NOT_PRESENT, null);
+					if (wisprInfo.getMessageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_INITIAL)
+							&& wisprInfo.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_NO_ERROR)) {
+						res = tryToLogin(user, password, wisprInfo);
 					}
 				} else {
-					res = new LoggerResult(WISPrConstants.ALREADY_CONNECTED, DEFAULT_LOGOFF_URL);
+					// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
+					res = new LoggerResult(WISPrConstants.WISPR_NOT_PRESENT, null);
 				}
 			} else {
-				Log.e(TAG, "Not safe URL:" + httpResult.getTargetHost());
+				res = new LoggerResult(WISPrConstants.ALREADY_CONNECTED, DEFAULT_LOGOFF_URL);
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error trying to log", e);
@@ -70,29 +66,33 @@ public class WISPrLogger implements WebLogger {
 		String res = WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR;
 		String logOffUrl = null;
 		String targetURL = wisprInfo.getLoginURL();
-		Log.d(TAG, "Trying to Log " + targetURL);
-		Map<String, String> data = new HashMap<String, String>();
-		data.put(userParam, user);
-		data.put(passwordParam, password);
+		if (FONUtils.isSafeUrl(targetURL)) {
+			Log.d(TAG, "Trying to Log " + targetURL);
+			Map<String, String> data = new HashMap<String, String>();
+			data.put(userParam, user);
+			data.put(passwordParam, password);
 
-		String htmlResponse = HttpUtils.getUrlByPost(targetURL, data).getContent();
-		// Log.d(TAG, "WISPR Reponse:" + htmlResponse);
-		if (htmlResponse != null) {
-			String response = WISPrUtil.getWISPrXML(htmlResponse);
-			if (response != null) {
-				// Log.d(TAG, "WISPr response:" + response);
-				WISPrResponseHandler wrh = new WISPrResponseHandler();
-				try {
-					android.util.Xml.parse(response, wrh);
-					res = wrh.getResponseCode();
-					logOffUrl = wrh.getLogoffURL();
-				} catch (SAXException saxe) {
-					Log.e(TAG, saxe.getMessage());
+			String htmlResponse = HttpUtils.getUrlByPost(targetURL, data).getContent();
+			// Log.d(TAG, "WISPR Reponse:" + htmlResponse);
+			if (htmlResponse != null) {
+				String response = WISPrUtil.getWISPrXML(htmlResponse);
+				if (response != null) {
+					// Log.d(TAG, "WISPr response:" + response);
+					WISPrResponseHandler wrh = new WISPrResponseHandler();
+					try {
+						android.util.Xml.parse(response, wrh);
+						res = wrh.getResponseCode();
+						logOffUrl = wrh.getLogoffURL();
+					} catch (SAXException saxe) {
+						Log.e(TAG, saxe.getMessage());
+						res = WISPrConstants.WISPR_NOT_PRESENT;
+					}
+				} else {
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
-			} else {
-				res = WISPrConstants.WISPR_NOT_PRESENT;
 			}
+		} else {
+			Log.e(TAG, "Not safe URL:" + targetURL);
 		}
 
 		// If we dont find the WISPR Response or we cannot parse it, we check if we have connection
