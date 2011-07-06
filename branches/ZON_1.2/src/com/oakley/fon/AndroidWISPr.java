@@ -28,7 +28,6 @@ public class AndroidWISPr extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// savePreferences(getIntent());
 		addPreferencesFromResource(R.layout.preferences_main);
 		setContentView(R.layout.preferences_header);
 	}
