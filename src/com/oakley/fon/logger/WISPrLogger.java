@@ -88,6 +88,7 @@ public class WISPrLogger implements WebLogger {
 						res = WISPrConstants.WISPR_NOT_PRESENT;
 					}
 				} else {
+					// Log.d(TAG, "Response is null");
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
 			}

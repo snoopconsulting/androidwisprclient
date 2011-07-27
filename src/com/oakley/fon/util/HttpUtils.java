@@ -1,19 +1,28 @@
 package com.oakley.fon.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.zip.GZIPInputStream;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,6 +42,10 @@ public class HttpUtils {
 
 	private static final String UTF8 = "UTF-8";
 
+	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
+
+	private static final String ENCODING_GZIP = "gzip";
+
 	private static HttpParams defaultHttpParams = new BasicHttpParams();
 
 	static {
@@ -47,8 +60,8 @@ public class HttpUtils {
 		String result = null;
 		int retries = 0;
 		HttpContext localContext = new BasicHttpContext();
-		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
-		httpclient.setCookieStore(null);
+		DefaultHttpClient httpclient = getHttpClient();
+
 		HttpGet httpget = new HttpGet(url);
 		while (retries <= maxRetries && result == null) {
 			try {
@@ -84,8 +97,7 @@ public class HttpUtils {
 		String result = null;
 		int retries = 0;
 		HttpContext localContext = new BasicHttpContext();
-		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
-		httpclient.setCookieStore(null);
+		DefaultHttpClient httpclient = getHttpClient();
 
 		List<NameValuePair> formParams = new ArrayList<NameValuePair>();
 		if (params != null) {
@@ -124,7 +136,6 @@ public class HttpUtils {
 
 		return new HttpResult(result, (BasicHttpResponse) localContext.getAttribute("http.response"),
 				((HttpHost) localContext.getAttribute("http.target_host")).toURI());
-
 	}
 
 	public static String getMetaRefresh(String html) {
@@ -145,5 +156,58 @@ public class HttpUtils {
 		}
 
 		return meta;
+	}
+
+	private static DefaultHttpClient getHttpClient() {
+		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
+
+		httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
+			public void process(HttpRequest request, HttpContext context) {
+				if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
+					request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
+				}
+			}
+		});
+
+		httpclient.addResponseInterceptor(new HttpResponseInterceptor() {
+			public void process(HttpResponse response, HttpContext context) {
+				// Inflate any responses compressed with gzip
+				final HttpEntity entity = response.getEntity();
+				final Header encoding = entity.getContentEncoding();
+				if (encoding != null) {
+					for (HeaderElement element : encoding.getElements()) {
+						if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
+							// Log.d(TAG, "Decompresing GZIP Response");
+							response.setEntity(new InflatingEntity(response.getEntity()));
+							break;
+						}
+					}
+				}
+			}
+		});
+
+		httpclient.setCookieStore(null);
+
+		return httpclient;
+	}
+
+	/**
+	 * Simple {@link HttpEntityWrapper} that inflates the wrapped {@link HttpEntity} by passing it
+	 * through {@link GZIPInputStream}.
+	 */
+	private static class InflatingEntity extends HttpEntityWrapper {
+		public InflatingEntity(HttpEntity wrapped) {
+			super(wrapped);
+		}
+
+		@Override
+		public InputStream getContent() throws IOException {
+			return new GZIPInputStream(wrappedEntity.getContent());
+		}
+
+		@Override
+		public long getContentLength() {
+			return -1;
+		}
 	}
 }
