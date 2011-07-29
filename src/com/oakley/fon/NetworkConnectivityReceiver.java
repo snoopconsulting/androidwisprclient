@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.BadParcelableException;
 import android.util.Log;
 
 import com.oakley.fon.util.FONUtils;
@@ -75,7 +76,10 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 	}
 
 	private boolean isConnectedIntent(Intent intent) {
-		NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+		NetworkInfo networkInfo = null;
+		try {
+			networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+		} catch (BadParcelableException ignored) {}
 
 		return (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
 	}
