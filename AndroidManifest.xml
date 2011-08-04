@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sputnik.wispr"
-	android:versionName="1.4.7" android:versionCode="147" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.oakley.fon"
+	android:versionName="1.2.2" android:versionCode="0014">
 
-	<application android:icon="@drawable/f" android:label="@string/app_name" android:debuggable="false">
-
-		<meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIrz2YSu-eoPOUZdBts58P16DSrg8l19ZXzE1SOA" />
+	<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
 
 		<activity android:label="@string/app_name" android:name=".AndroidWISPr">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:scheme="fon" />
+			</intent-filter>
 		</activity>
+
+		<activity android:label="@string/app_name" android:name=".PreferencesAdvanced" />
 
 		<receiver android:name=".NetworkConnectivityReceiver" android:enabled="true">
 			<intent-filter>
@@ -37,6 +43,6 @@
 	<uses-permission android:name="android.permission.VIBRATE" />
 
 	<uses-feature android:name="android.hardware.wifi" android:required="true" />
-	
+
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8" />
 </manifest> 
