@@ -4,7 +4,7 @@
 	<string name="user">Nom d\'utilisateur</string>
 	<string name="password">Mot de passe</string>
 	<string name="active">Activé</string>
-	<string name="header_text">Veuillez saisir votre nom d'utilisateur et mot de passe. À chaque fois que vous êtes près d'un Hotspot WiFi du réseau Fon, vous y serez automatiquement connecté.</string>
+	<string name="header_text">Veuillez saisir votre nom d\'utilisateur et mot de passe. À chaque fois que vous êtes près d\'un Hotspot WiFi du réseau Fon, vous y serez automatiquement connecté.</string>
 
 	<string name="active_summary">Cocher pour activer automatiquement l\'authentification</string>
 	<string name="user_summary">Votre nom d\'utilisateur Fon</string>
