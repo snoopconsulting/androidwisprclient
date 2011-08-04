@@ -4,7 +4,7 @@
 	<string name="user">Email</string>
 	<string name="password">Contraseña</string>
 	<string name="active">Activo</string>
-	<string name="header_text">Introduce tu nombre de usuario y contraseña. Cada vez que estés cerca de un punto WiFi de Fon, te conectarás automáticamente a él.</string>
+	<string name="header_text">Introduce tu nombre de usuario y contraseña.\nCada vez que estés cerca de un punto WiFi de Fon, te conectarás automáticamente a él.</string>
 
 	<string name="active_summary">Selecciona para activar el login automático</string>
 	<string name="user_summary">Tu email de acceso a Fon</string>
