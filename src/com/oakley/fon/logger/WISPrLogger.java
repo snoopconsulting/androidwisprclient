@@ -37,7 +37,7 @@ public class WISPrLogger implements WebLogger {
 			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
 				String WISPrXML = WISPrUtil.getWISPrXML(blockedUrlText);
 				if (WISPrXML != null) {
-					Log.d(TAG, "XML Found:" + WISPrXML);
+					// Log.d(TAG, "XML Found:" + WISPrXML);
 					WISPrInfoHandler wisprInfo = new WISPrInfoHandler();
 					android.util.Xml.parse(WISPrXML, wisprInfo);
 
@@ -77,7 +77,7 @@ public class WISPrLogger implements WebLogger {
 			if (htmlResponse != null) {
 				String response = WISPrUtil.getWISPrXML(htmlResponse);
 				if (response != null) {
-					Log.d(TAG, "WISPr response:" + response);
+					// Log.d(TAG, "WISPr response:" + response);
 					WISPrResponseHandler wrh = new WISPrResponseHandler();
 					try {
 						android.util.Xml.parse(response, wrh);
@@ -88,15 +88,13 @@ public class WISPrLogger implements WebLogger {
 						res = WISPrConstants.WISPR_NOT_PRESENT;
 					}
 				} else {
-					Log.d(TAG, "Response is null");
+					// Log.d(TAG, "Response is null");
 					res = WISPrConstants.WISPR_NOT_PRESENT;
 				}
 			}
 		} else {
 			Log.e(TAG, "Not safe URL:" + targetURL);
 		}
-
-		Log.d(TAG, "LoggerResult:" + res);
 
 		// If we dont find the WISPR Response or we cannot parse it, we check if we have connection
 		// (some times happens)
