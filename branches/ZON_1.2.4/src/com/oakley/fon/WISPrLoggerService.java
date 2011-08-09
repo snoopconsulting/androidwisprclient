@@ -10,7 +10,7 @@ import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.oakley.fon.logger.BTFonLogger;
+import com.oakley.fon.logger.BTFonLoggerv2;
 import com.oakley.fon.logger.LivedoorLogger;
 import com.oakley.fon.logger.LoggerResult;
 import com.oakley.fon.logger.NeufLogger;
@@ -39,7 +39,8 @@ public class WISPrLoggerService extends IntentService {
 		if (FONUtils.isNeufBox(ssid, bssid)) {
 			logger = new NeufLogger();
 		} else if (FONUtils.isBtHub(ssid, bssid)) {
-			logger = new BTFonLogger();
+			// logger = new BTFonLogger();
+			logger = new BTFonLoggerv2();
 		} else if (FONUtils.isLivedoor(ssid, bssid)) {
 			logger = new LivedoorLogger();
 		} else {
