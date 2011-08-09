@@ -2,8 +2,8 @@ package com.oakley.fon.logger;
 
 import android.util.Log;
 
-public class BTFonLoggerv2 extends WISPrLogger {
-	protected static String TAG = BTFonLoggerv2.class.getName();
+public class BTFonLogger extends WISPrLogger {
+	protected static String TAG = BTFonLogger.class.getName();
 
 	private static final String NETWORK_PREFIX = "BTFON/";
 

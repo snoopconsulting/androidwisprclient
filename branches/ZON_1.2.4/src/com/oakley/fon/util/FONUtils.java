@@ -111,7 +111,7 @@ public class FONUtils {
 
 	public static boolean isSafeUrl(URL url) {
 		boolean res = false;
-		if (url.getProtocol().equals("https")) {
+		if (url.getProtocol().equalsIgnoreCase("https")) {
 			Iterator<String> iterator = validSuffix.iterator();
 			while (iterator.hasNext() && res == false) {
 				String validSuffix = iterator.next();
