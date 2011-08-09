@@ -9,6 +9,9 @@ import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
 
+/**
+ * Used for debugging purposes
+ */
 public class LogRedirectHandler extends DefaultRedirectHandler {
 	private static String TAG = LogRedirectHandler.class.getName();
 
