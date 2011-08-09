@@ -76,7 +76,8 @@ public class FONUtils {
 			result = ssid.equalsIgnoreCase("BTFON") && !bssid.startsWith(FON_MAC_PREFIX);
 		}
 		if (!result && ssid != null) {
-			result = ssid.equalsIgnoreCase("BTOpenzone-H");
+			// result = ssid.equalsIgnoreCase("BTOpenzone-H");
+			result = ssid.equalsIgnoreCase("BTOpenzone");
 		}
 
 		return result;
