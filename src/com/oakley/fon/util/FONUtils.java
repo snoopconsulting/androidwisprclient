@@ -5,9 +5,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.oakley.fon.R;
@@ -31,8 +34,17 @@ public class FONUtils {
 		boolean res = false;
 
 		if (ssid != null) {
-			res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid) || isBtHub(ssid, bssid)
-					|| isLivedoor(ssid, bssid) || isSBPublicFonera(ssid, bssid) || isOIWifi(ssid, bssid);
+			res = isFonNetwork(ssid, bssid) || isNeufBox(ssid, bssid) || isBtHub(ssid, bssid) || isLivedoor(ssid, bssid);
+		}
+
+		return res;
+	}
+
+	public static boolean isFonNetwork(String ssid, String bssid) {
+		boolean res = false;
+
+		if (ssid != null) {
+			res = isFonera(ssid, bssid) || isBtFonera(ssid, bssid) || isSBPublicFonera(ssid, bssid) || isOIWifi(ssid, bssid);
 		}
 
 		return res;
@@ -65,8 +77,7 @@ public class FONUtils {
 
 	public static boolean isLivedoor(String ssid, String bssid) {
 		ssid = FONUtils.cleanSSID(ssid);
-		return ssid != null && bssid != null && ssid.equalsIgnoreCase("FON_livedoor")
-				&& !bssid.startsWith(FON_MAC_PREFIX);
+		return ssid != null && bssid != null && ssid.equalsIgnoreCase("FON_livedoor") && !bssid.startsWith(FON_MAC_PREFIX);
 	}
 
 	public static boolean isBtHub(String ssid, String bssid) {
@@ -76,8 +87,7 @@ public class FONUtils {
 			result = ssid.equalsIgnoreCase("BTFON") && !bssid.startsWith(FON_MAC_PREFIX);
 		}
 		if (!result && ssid != null) {
-			// result = ssid.equalsIgnoreCase("BTOpenzone-H");
-			result = ssid.equalsIgnoreCase("BTOpenzone");
+			result = ssid.equalsIgnoreCase("BTOpenzone-H");
 		}
 
 		return result;
@@ -127,5 +137,18 @@ public class FONUtils {
 		String password = Utils.getStringPreference(context, R.string.pref_password, "");
 
 		return (username.trim().length() > 0 && password.trim().length() > 0);
+	}
+
+	public static void cleanNetworks(Context context) {
+		WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
+
+		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
+			if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
+					&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
+				boolean removeNetwork = wm.removeNetwork(wifiConfiguration.networkId);
+				Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->" + removeNetwork);
+			}
+		}
 	}
 }

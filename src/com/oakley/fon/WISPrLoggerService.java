@@ -49,6 +49,10 @@ public class WISPrLoggerService extends IntentService {
 		LoggerResult result = logger.login(username, password);
 		Log.d(TAG, "LoggerResult:" + result);
 		notifyConnectionResult(this, result, ssid);
+		saveLogOffUrl(this, result);
+		if (result.hasSucceded()) {
+			FONUtils.cleanNetworks(this);
+		}
 	}
 
 	private void notifyConnectionResult(Context context, LoggerResult result, String ssid) {
@@ -57,14 +61,12 @@ public class WISPrLoggerService extends IntentService {
 
 		long[] vibratePattern = null;
 		String resultDesc = result.getResult();
-		boolean notificationsActive = Utils.getBooleanPreference(context, R.string.pref_connectionNotificationsEnable,
-				true);
+		boolean notificationsActive = Utils.getBooleanPreference(context, R.string.pref_connectionNotificationsEnable, true);
 
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
-			NotificationManager notificationManager = (NotificationManager) context
-					.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			if (ssid == null) {
 				ssid = context.getString(R.string.notif_default_ssid);
@@ -76,8 +78,7 @@ public class WISPrLoggerService extends IntentService {
 			boolean useRingtone = true;
 			boolean useVibration = true;
 			Log.d(TAG, "Result=" + resultDesc);
-			if (resultDesc.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_SUCCEEDED)
-					|| resultDesc.equals(WISPrConstants.ALREADY_CONNECTED)) {
+			if (result.hasSucceded()) {
 				notificationTitle = context.getString(R.string.notif_title_ok);
 				notificationText = context.getString(R.string.notif_text_ok, ssid);
 				appIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
@@ -86,12 +87,7 @@ public class WISPrLoggerService extends IntentService {
 				pendingIntent = PendingIntent.getActivity(context, 1, appIntent, 0);
 				notification = new Notification(icon_ok, notificationTitle, System.currentTimeMillis());
 				notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-				if (result.getLogOffUrl() != null && result.getLogOffUrl().length() > 0) {
-					Editor editor = Utils.getSharedPreferences(context).edit();
-					editor.putString(context.getString(R.string.pref_logOffUrl), result.getLogOffUrl());
-					editor.commit();
-				}
-			} else if (!resultDesc.equals(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR)) {
+			} else if (result.hasFailed()) {
 				if (resultDesc.equals(WISPrConstants.WISPR_RESPONSE_CODE_LOGIN_FAILED)) {
 					resultDesc = context.getString(R.string.notif_error_100);
 				} else if (resultDesc.equals(WISPrConstants.WISPR_NOT_PRESENT)) {
@@ -131,6 +127,14 @@ public class WISPrLoggerService extends IntentService {
 
 				notificationManager.notify(1, notification);
 			}
+		}
+	}
+
+	private void saveLogOffUrl(Context context, LoggerResult result) {
+		if (result != null && result.hasSucceded() && result.getLogOffUrl() != null && result.getLogOffUrl().length() > 0) {
+			Editor editor = Utils.getSharedPreferences(context).edit();
+			editor.putString(context.getString(R.string.pref_logOffUrl), result.getLogOffUrl());
+			editor.commit();
 		}
 	}
 }
