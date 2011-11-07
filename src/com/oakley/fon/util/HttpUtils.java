@@ -134,8 +134,13 @@ public class HttpUtils {
 			}
 		}
 
-		return new HttpResult(result, (BasicHttpResponse) localContext.getAttribute("http.response"),
-				((HttpHost) localContext.getAttribute("http.target_host")).toURI());
+		HttpHost attribute = (HttpHost) localContext.getAttribute("http.target_host");
+		String targetHost = null;
+		if (attribute != null) {
+			targetHost = attribute.toURI();
+		}
+
+		return new HttpResult(result, (BasicHttpResponse) localContext.getAttribute("http.response"), targetHost);
 	}
 
 	public static String getMetaRefresh(String html) {

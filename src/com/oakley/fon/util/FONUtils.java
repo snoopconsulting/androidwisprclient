@@ -34,7 +34,8 @@ public class FONUtils {
 		boolean res = false;
 
 		if (ssid != null) {
-			res = isFonNetwork(ssid, bssid) || isNeufBox(ssid, bssid) || isBtHub(ssid, bssid) || isLivedoor(ssid, bssid);
+			res = isFonNetwork(ssid, bssid) || isNeufBox(ssid, bssid) || isBtHub(ssid, bssid)
+					|| isLivedoor(ssid, bssid);
 		}
 
 		return res;
@@ -44,7 +45,8 @@ public class FONUtils {
 		boolean res = false;
 
 		if (ssid != null) {
-			res = isFonera(ssid, bssid) || isBtFonera(ssid, bssid) || isSBPublicFonera(ssid, bssid) || isOIWifi(ssid, bssid);
+			res = isFonera(ssid, bssid) || isBtFonera(ssid, bssid) || isSBPublicFonera(ssid, bssid)
+					|| isOIWifi(ssid, bssid);
 		}
 
 		return res;
@@ -77,7 +79,8 @@ public class FONUtils {
 
 	public static boolean isLivedoor(String ssid, String bssid) {
 		ssid = FONUtils.cleanSSID(ssid);
-		return ssid != null && bssid != null && ssid.equalsIgnoreCase("FON_livedoor") && !bssid.startsWith(FON_MAC_PREFIX);
+		return ssid != null && bssid != null && ssid.equalsIgnoreCase("FON_livedoor")
+				&& !bssid.startsWith(FON_MAC_PREFIX);
 	}
 
 	public static boolean isBtHub(String ssid, String bssid) {
@@ -110,7 +113,11 @@ public class FONUtils {
 	public static boolean isSafeUrl(String url) {
 		boolean res = false;
 		try {
-			res = isSafeUrl(new URL(url));
+			if (url == null) {
+				res = true;
+			} else {
+				res = isSafeUrl(new URL(url));
+			}
 		} catch (MalformedURLException e) {
 			Log.e(TAG, e.getMessage());
 			res = false;
@@ -147,7 +154,8 @@ public class FONUtils {
 			if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
 					&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
 				boolean removeNetwork = wm.removeNetwork(wifiConfiguration.networkId);
-				Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->" + removeNetwork);
+				Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->"
+						+ removeNetwork);
 			}
 		}
 	}

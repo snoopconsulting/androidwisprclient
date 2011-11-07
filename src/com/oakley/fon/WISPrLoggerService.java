@@ -51,7 +51,8 @@ public class WISPrLoggerService extends IntentService {
 		notifyConnectionResult(this, result, ssid);
 		saveLogOffUrl(this, result);
 		if (result.hasSucceded()) {
-			FONUtils.cleanNetworks(this);
+			// Comented because is not enough tested
+			// FONUtils.cleanNetworks(this);
 		}
 	}
 
@@ -61,12 +62,14 @@ public class WISPrLoggerService extends IntentService {
 
 		long[] vibratePattern = null;
 		String resultDesc = result.getResult();
-		boolean notificationsActive = Utils.getBooleanPreference(context, R.string.pref_connectionNotificationsEnable, true);
+		boolean notificationsActive = Utils.getBooleanPreference(context, R.string.pref_connectionNotificationsEnable,
+				true);
 
 		if (notificationsActive) {
 			String notificationTitle = null;
 			String notificationText = null;
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			if (ssid == null) {
 				ssid = context.getString(R.string.notif_default_ssid);
@@ -131,7 +134,8 @@ public class WISPrLoggerService extends IntentService {
 	}
 
 	private void saveLogOffUrl(Context context, LoggerResult result) {
-		if (result != null && result.hasSucceded() && result.getLogOffUrl() != null && result.getLogOffUrl().length() > 0) {
+		if (result != null && result.hasSucceded() && result.getLogOffUrl() != null
+				&& result.getLogOffUrl().length() > 0) {
 			Editor editor = Utils.getSharedPreferences(context).edit();
 			editor.putString(context.getString(R.string.pref_logOffUrl), result.getLogOffUrl());
 			editor.commit();
