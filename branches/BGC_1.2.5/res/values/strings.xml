@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Belgacom Fon Wi-Fi Access</string>
+	<string name="app_name">WiFi Access</string>
 	<string name="user">Username</string>
 	<string name="password">Password</string>
 	<string name="active">Active</string>
