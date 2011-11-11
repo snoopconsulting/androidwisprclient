@@ -4,7 +4,7 @@
 	<string name="user">Username</string>
 	<string name="password">Password</string>
 	<string name="active">Active</string>
-	<string name="header_text">Enter your Belgacom username and password.\nYou will automatically be connected when you encounter a Belgacom Fon Wi-Fi hotspot.</string>
+	<string name="header_text">Enter your Belgacom username and password.\nYou will automatically be connected when you find a Belgacom Fon Wi-Fi hotspot.</string>
 
 	<string name="active_summary">Enable automatic Login</string>
 	<string name="user_summary">Your Belgacom username</string>
