@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">WiFi Access</string>
+	<string name="app_name">Wi-Fi Access</string>
 	<string name="user">Nom d\'utilisateur</string>
     <string name="password">Mot de passe</string>
     <string name="active">Activé</string>
