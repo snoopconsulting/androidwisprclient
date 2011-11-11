@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.belgacom.fon.util.HttpUtils;
-import com.oakley.fon.R;
 
 public class LogOffService extends IntentService {
 	private static String TAG = LogOffService.class.getName();

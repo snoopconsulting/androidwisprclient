@@ -13,8 +13,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import com.belgacom.fon.R;
 import com.belgacom.fon.logger.WebLogger;
-import com.oakley.fon.R;
 
 public class FONUtils {
 	private static final String FON_MAC_PREFIX = "00:18:84";

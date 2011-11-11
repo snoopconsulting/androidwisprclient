@@ -19,7 +19,6 @@ import com.belgacom.fon.logger.WebLogger;
 import com.belgacom.fon.util.FONUtils;
 import com.belgacom.fon.util.Utils;
 import com.belgacom.fon.util.WISPrConstants;
-import com.oakley.fon.R;
 
 public class WISPrLoggerService extends IntentService {
 	private static String TAG = WISPrLoggerService.class.getName();
