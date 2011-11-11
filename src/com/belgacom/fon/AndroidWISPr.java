@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.belgacom.fon.util.Utils;
-import com.oakley.fon.R;
 
 public class AndroidWISPr extends PreferenceActivity {
 	private static String TAG = AndroidWISPr.class.getSimpleName();

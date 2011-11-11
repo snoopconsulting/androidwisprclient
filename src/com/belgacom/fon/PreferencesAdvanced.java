@@ -1,7 +1,5 @@
 package com.belgacom.fon;
 
-import com.oakley.fon.R;
-
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;

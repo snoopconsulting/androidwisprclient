@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.belgacom.fon.util.Utils;
-import com.oakley.fon.R;
 
 public class NotificationCleaningService extends IntentService {
 
