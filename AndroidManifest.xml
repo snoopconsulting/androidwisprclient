@@ -17,7 +17,7 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:label="@string/app_name" android:name=".PreferencesAdvancedferencesAdvanced" />
+		<activity android:label="@string/app_name" android:name=".PreferencesAdvanced" />
 
 		<receiver android:name=".NetworkConnectivityReceiver" android:enabled="true">
 			<intent-filter>
@@ -26,14 +26,15 @@
 			</intent-filter>
 		</receiver>
 
-		<receive.NetworkScanReceiverbelgacom.fon.NetworkScanReceiver" android:enabled="true">
+		<receiver android:name=".NetworkScanReceiver" android:enabled="true">
 			<intent-filter>
 				<action android:name="android.net.wifi.SCAN_RESULTS" />
 			</intent-filter>
 		</receiver>
 
 		<service android:name=".WISPrLoggerService" />
-		<service android:name=".NotificationCleaningServi.LogOffServiceice android:name="com.belgacom.fon.LogOffService" />
+		<service android:name=".NotificationCleaningService" />
+		<service android:name=".LogOffService" />
 	</application>
 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
