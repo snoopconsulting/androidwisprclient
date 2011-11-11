@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Belgacom Fon Wi-Fi Access</string>
+	<string name="user">Login </string>
+	<string name="password">Paswoord</string>
+	<string name="active">Actief</string>
+	<string name="header_text">Geef uw Belgacom Fon login en passwoord.\n U zal automatisch verbinden van zodra je in de buurt bent van een Belgacom Fon wifi-hotspot</string>
+
+	<string name="active_summary">Activeer automatisch inloggen</string>
+    <string name="user_summary">Uw Belgacom Fon login</string>
+    <string name="password_summary">Uw Belgacom Fon paswoord</string>
+    <string name="notif_title_ok">Belgacom Fon</string>
+    <string name="notif_text_ok">Verbonden met %s</string>
+    <string name="notif_title_ko">Belgacom Fon</string>
+    <string name="notif_text_ko">Fout bij het verbinden op Belgacom Fon {%s}</string>
+    <string name="notif_default_ssid">Belgacom Fon</string>
+    <string name="notif_error_100">Login mislukt</string>
+    <string name="notif_error_1024">WISPr niet beschikbaar</string>
+    <string name="notif_error_255">Interne fout</string>
+    
+	<string name="connectionNotifications">Meldingen</string>
+    <string name="connectionNotificationsEnable">Activeren meldingen</string>
+    <string name="connectionNotificationsSummary">Ontvang een melding als u verbindt op  Belgacom Fon</string>
+    <string name="connectionNotificationsVibrate">Trillen</string>
+    <string name="connectionNotificationsVibrateSummary">Trillen bij het verbinden op Belgacom Fon</string>
+    <string name="connectionAutoEnable">Automatisch verbinden</string>
+    <string name="connectionAutoSummary">Automatisch verbinden op eender welke Belgacom Fon wifi-hotspot</string>
+    <string name="connectionRingtoneSummary">Uw meldingstoon instellen</string>
+
+    <string name="ringtone">Meldingstoon</string>
+    <string name="general">Login instellingen</string>
+
+	<string name="help_text">Voor Assistentie, gelieve http://corp.fon.com/support te bezoeken</string>
+    <string name="help_title">Help</string>
+    
+	<string name="ok">OK</string>
+
+	<string name="status">Verbindingsstatus:</string>
+    <string name="status_connected">Verbonden</string>
+    <string name="status_disconnected">Niet verbonden</string>
+    <string name="status_error">Fout</string>
+
+	<string name="menu_close">Sluiten</string>
+    <string name="menu_logOff">Uitloggen</string>
+    <string name="menu_advanced">Instellingen</string>
+    <string name="menu_back">Terug</string>
+    <string name="menu_help">Help</string>
+</resources>
