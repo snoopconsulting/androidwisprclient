@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Wi-Fi Access</string>
+    <string name="user">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="active">Aktiv</string>
+    <string name="header_text">Geben Sie bitte Ihren Belgacom Benutzernamen und Passwort ein.\nSie werden automatisch verbunden, wenn Sie einen Belgacom Fon WiFi-Hotspot finden.</string>
+    
+    <string name="active_summary">Aktivieren der automatischen Belgacom Fon Anmeldung</string>
+    <string name="user_summary">Ihr Belgacom Benutzername</string>
+    <string name="password_summary">Ihr Belgacom Passwort</string>
+    <string name="notif_title_ok">Belgacom Fon</string>
+    <string name="notif_text_ok">Verbunden mit %s</string>
+    <string name="notif_title_ko">Belgacom Fon</string>
+    <string name="notif_text_ko">Fehler beim Verbinden mit Belgacom Fon {%s}</string>
+    <string name="notif_default_ssid">Belgacom Fon</string>
+    <string name="notif_error_100">Anmeldung fehlgeschlagen</string>
+    <string name="notif_error_1024">WISPr nicht vorhanden</string>
+    <string name="notif_error_255">Interner Fehler</string>
+    
+    <string name="connectionNotifications">Benachrichtigungen</string>
+    <string name="connectionNotificationsEnable">Benachrichtigungen aktivieren</string>
+    <string name="connectionNotificationsSummary">Benachrichtigungen erhalten, wenn Sie eine Verbindung zu Belgacom Fon haben</string>
+    <string name="connectionNotificationsVibrate">Vibrieren</string>
+    <string name="connectionNotificationsVibrateSummary">Vibrieren, wenn angeschlossen</string>
+    <string name="connectionAutoEnable">Automatisch verbinden</string>
+    <string name="connectionAutoSummary">Automatisch verbinden bei allen verfügbaren Belgacom Fon Hotspots</string>
+    <string name="connectionRingtoneSummary">Klingelton bei eingehender Meldung</string>
+    
+    <string name="ringtone">Klingelton</string>
+    <string name="general">Login-Konfiguration</string>
+    
+    <string name="help_text">Wenn Sie Hilfe benötigen, besuchen Sie bitte http://corp.fon.com/support/</string>
+    <string name="help_title">Hilfe</string>
+    
+	<string name="ok">OK</string>
+
+    <string name="status">Verbindungsstatus:</string>
+    <string name="status_connected">Verbunden</string>
+    <string name="status_disconnected">Getrennt</string>
+    <string name="status_error">Fehler</string>
+    
+    <string name="menu_close">Schliessen</string>
+    <string name="menu_logOff">Abmelden</string>
+    <string name="menu_advanced">Einstellungen</string>
+    <string name="menu_back">Zurück</string>
+    <string name="menu_help">Hilfe</string>
+</resources>
