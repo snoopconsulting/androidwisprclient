@@ -15,4 +15,4 @@
 			android:inputType="textPassword"
 			/>
 	</PreferenceCategory>
-</PreferenceScreen>  
+</PreferenceScreen>
