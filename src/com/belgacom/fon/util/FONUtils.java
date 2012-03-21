@@ -64,7 +64,11 @@ public class FONUtils {
 
 	public static boolean isOIWifi(String ssid, String bssid) {
 		ssid = FONUtils.cleanSSID(ssid);
-		return ssid != null && ssid.toUpperCase().equalsIgnoreCase("OI_WIFI_FON");
+		boolean res = false;
+		if (ssid != null) {
+			res = ssid.toUpperCase().startsWith("OI_WIFI_FON") || ssid.equalsIgnoreCase("OI WIFI FON");
+		}
+		return res;
 	}
 
 	public static boolean isSBPublicFonera(String ssid, String bssid) {
