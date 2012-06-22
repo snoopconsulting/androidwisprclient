@@ -18,7 +18,7 @@ public class NeufLogger extends HTTPLogger {
 	private static String TAG = NeufLogger.class.getName();
 
 	public NeufLogger() {
-		targetURL = "https://hotspot.neuf.fr/nb4_crypt.php";
+		targetURL = "https://hotspot.wifi.sfr.fr/nb4_crypt.php";
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class NeufLogger extends HTTPLogger {
 	private Map<String, String> parseForm(String html) {
 		Map<String, String> data = new HashMap<String, String>();
 		int start = html
-				.indexOf("<form id=\"portal\" name=\"portal\" action=\"https://hotspot.neuf.fr/nb4_crypt.php\" method=\"post\">");
+				.indexOf("<form id=\"portal\" name=\"portal\" action=\"https://hotspot.wifi.sfr.fr/nb4_crypt.php\" method=\"post\">");
 
 		int end = html.indexOf("</form>", start) + 7;
 		if (start > -1 && end > -1) {

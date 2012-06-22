@@ -27,6 +27,7 @@ public class FONUtils {
 		validSuffix.add(".fon.com");
 		validSuffix.add(".btfon.com");
 		validSuffix.add(".neuf.fr");
+		validSuffix.add(".sfr.fr");
 		validSuffix.add(".livedoor.com");
 	}
 
@@ -64,7 +65,7 @@ public class FONUtils {
 
 	public static boolean isOIWifi(String ssid, String bssid) {
 		ssid = FONUtils.cleanSSID(ssid);
-		return ssid != null && ssid.toUpperCase().equalsIgnoreCase("OI_WIFI_FON");
+		return ssid != null && (ssid.toUpperCase().startsWith("OI_WIFI_FON") || ssid.equalsIgnoreCase("OI WIFI FON"));
 	}
 
 	public static boolean isSBPublicFonera(String ssid, String bssid) {
@@ -86,11 +87,16 @@ public class FONUtils {
 	public static boolean isBtHub(String ssid, String bssid) {
 		ssid = FONUtils.cleanSSID(ssid);
 		boolean result = false;
-		if (ssid != null && bssid != null) {
-			result = ssid.equalsIgnoreCase("BTFON") && !bssid.startsWith(FON_MAC_PREFIX);
-		}
-		if (!result && ssid != null) {
-			result = ssid.equalsIgnoreCase("BTOpenzone-H");
+		if (ssid != null) {
+			if (bssid != null) {
+				result = ssid.equalsIgnoreCase("BTFON") && !bssid.startsWith(FON_MAC_PREFIX);
+			}
+			if (!result) {
+				result = ssid.equalsIgnoreCase("BTOpenzone-H");
+			}
+			if (!result) {
+				result = ssid.equalsIgnoreCase("“BTWiFi-with-FON");
+			}
 		}
 
 		return result;

@@ -1,7 +1,9 @@
 package com.oakley.fon.util;
 
+import android.annotation.TargetApi;
 import android.app.backup.SharedPreferencesBackupHelper;
 
+@TargetApi(8)
 public class BackupAgent extends BackupAgentHelperWrapper {
 
 	@Override
