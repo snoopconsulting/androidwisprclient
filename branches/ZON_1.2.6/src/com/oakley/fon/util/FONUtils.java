@@ -159,14 +159,23 @@ public class FONUtils {
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 
 		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
-			if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
-					&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
-				if (!cleanSSID(connectionInfo.getSSID()).equals(cleanSSID(wifiConfiguration.SSID))) {
-					boolean removeNetwork = wm.removeNetwork(wifiConfiguration.networkId);
-					Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->"
-							+ removeNetwork);
-				}
+			if (shouldBeCleaned(wifiConfiguration, connectionInfo)) {
+				boolean removeNetwork = wm.removeNetwork(wifiConfiguration.networkId);
+				Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->"
+						+ removeNetwork);
 			}
 		}
+	}
+
+	public static boolean shouldBeCleaned(WifiConfiguration wifiConfiguration, WifiInfo connectionInfo) {
+		boolean res = false;
+		if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
+				&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
+			if (!cleanSSID(connectionInfo.getSSID()).equals(cleanSSID(wifiConfiguration.SSID))) {
+				res = true;
+			}
+		}
+
+		return res;
 	}
 }
