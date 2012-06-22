@@ -51,8 +51,7 @@ public class WISPrLoggerService extends IntentService {
 		notifyConnectionResult(this, result, ssid);
 		saveLogOffUrl(this, result);
 		if (result.hasSucceded()) {
-			// Comented because is not enough tested
-			// FONUtils.cleanNetworks(this);
+			FONUtils.cleanNetworks(this);
 		}
 	}
 
