@@ -10,6 +10,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
@@ -154,14 +155,17 @@ public class FONUtils {
 
 	public static void cleanNetworks(Context context) {
 		WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo connectionInfo = wm.getConnectionInfo();
 		List<WifiConfiguration> configuredNetworks = wm.getConfiguredNetworks();
 
 		for (WifiConfiguration wifiConfiguration : configuredNetworks) {
 			if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
 					&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
-				boolean removeNetwork = wm.removeNetwork(wifiConfiguration.networkId);
-				Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->"
-						+ removeNetwork);
+				if (!cleanSSID(connectionInfo.getSSID()).equals(cleanSSID(wifiConfiguration.SSID))) {
+					boolean removeNetwork = wm.removeNetwork(wifiConfiguration.networkId);
+					Log.v(TAG, "Removed network " + wifiConfiguration.SSID + ":" + wifiConfiguration.BSSID + "->"
+							+ removeNetwork);
+				}
 			}
 		}
 	}
