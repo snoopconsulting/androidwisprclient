@@ -2,6 +2,7 @@ package com.oakley.fon.util;
 
 import java.io.IOException;
 
+import android.annotation.TargetApi;
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
@@ -17,6 +18,7 @@ import android.util.Log;
  * 
  * @author erickok
  */
+@TargetApi(8)
 public class BackupAgentHelperWrapper extends BackupAgentHelper {
 	private static String TAG = BackupAgentHelperWrapper.class.getName();
 

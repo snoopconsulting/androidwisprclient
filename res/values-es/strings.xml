@@ -35,14 +35,11 @@
 
 	<string name="ok">OK</string> 
 
-	<string name="status">Estado de la conexión:</string>
-	<string name="status_connected">Conectado</string>
-	<string name="status_disconnected">Desconectado</string>
-	<string name="status_error">Error</string>
-	
 	<string name="menu_close">Cerrar</string>
 	<string name="menu_logOff">Desconectar</string>
 	<string name="menu_advanced">Preferencias Avanzadas</string>
 	<string name="menu_back">Volver</string>
 	<string name="menu_help">Ayuda</string>
+	
+	<string name="banner">Banner</string>
 </resources>
