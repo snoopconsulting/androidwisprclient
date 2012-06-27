@@ -169,10 +169,16 @@ public class FONUtils {
 
 	public static boolean shouldBeCleaned(WifiConfiguration wifiConfiguration, WifiInfo connectionInfo) {
 		boolean res = false;
-		if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
-				&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
-			if (!cleanSSID(connectionInfo.getSSID()).equals(cleanSSID(wifiConfiguration.SSID))) {
-				res = true;
+		if (wifiConfiguration != null && connectionInfo != null) {
+			if (wifiConfiguration.status != WifiConfiguration.Status.CURRENT
+					&& FONUtils.isSupportedNetwork(wifiConfiguration.SSID, wifiConfiguration.BSSID)) {
+				String connectionInfoSSID = cleanSSID(connectionInfo.getSSID());
+				String wifiConfigurationSSID = cleanSSID(wifiConfiguration.SSID);
+				if (connectionInfoSSID != null && wifiConfigurationSSID != null) {
+					if (!connectionInfoSSID.equalsIgnoreCase(wifiConfigurationSSID)) {
+						res = true;
+					}
+				}
 			}
 		}
 
