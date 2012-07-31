@@ -1,3 +1,19 @@
+/*
+ * This file is part of FONAccess.
+ * 
+ * FONAccess is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * FONAccess is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with FONAccess. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.oakley.fon.handler;
 
 import org.xml.sax.Attributes;
@@ -10,15 +26,15 @@ public class WISPrResponseHandler extends DefaultHandler {
 
 	private Tag actualTag;
 
-	private StringBuilder responseCode = new StringBuilder();
+	private final StringBuilder responseCode = new StringBuilder();
 
-	private StringBuilder fonResponseCode = new StringBuilder();
+	private final StringBuilder fonResponseCode = new StringBuilder();
 
-	private StringBuilder logoffURL = new StringBuilder();
+	private final StringBuilder logoffURL = new StringBuilder();
 
-	private StringBuilder replyMessage = new StringBuilder();
+	private final StringBuilder replyMessage = new StringBuilder();
 
-	private StringBuilder messageType = new StringBuilder();
+	private final StringBuilder messageType = new StringBuilder();
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
