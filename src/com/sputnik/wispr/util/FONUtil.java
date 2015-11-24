@@ -12,10 +12,19 @@ public class FONUtil {
 
 		if (ssid != null) {
 			res = isFonera(ssid, bssid) || isNeufBox(ssid, bssid) || isBtFonera(ssid, bssid) || isBtHub(ssid, bssid)
-					|| isLivedoor(ssid, bssid) || isSBPublicFonera(ssid, bssid);
+					|| isLivedoor(ssid, bssid) || isSBPublicFonera(ssid, bssid) || isLinkTel(ssid, bssid);
 		}
 
 		return res;
+	}
+
+	public static boolean isLinkTel(String ssid, String bssid) {
+		ssid = FONUtil.cleanSSID(ssid);
+		boolean found = ssid != null && (ssid.equalsIgnoreCase("Linktel Wifi"));
+		if ( found ) {
+			System.out.println("Encontré linktel");
+		}
+		return found;
 	}
 
 	public static boolean isNeufBox(String ssid, String bssid) {

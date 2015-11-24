@@ -37,7 +37,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 			// We look if it's a FON Access Point
 			if (FONUtil.isSupportedNetwork(ssid, bssid)) {
 				boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
-				if (active) {
+				if (active) { //SI el autologin
 					String username = getPreferences(context).getString(context.getString(R.string.pref_username), "");
 					String password = getPreferences(context).getString(context.getString(R.string.pref_password), "");
 					if (username.length() > 0 && password.length() > 0) {

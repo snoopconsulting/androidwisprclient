@@ -45,7 +45,7 @@ public class WISPrLogger implements WebLogger {
 					}
 				} else {
 					// Log.d(TAG, "XML NOT FOUND : " + blockedUrlText);
-					res = new LoggerResult(WISPrConstants.WISPR_NOT_PRESENT, null);
+					res = new LoggerResult(WISPrConstants.WISPR_NOT_PRESENT, null); //Pasa por acá, no encuentra ese gateway en el HTML
 				}
 			} else {
 				res = new LoggerResult(WISPrConstants.ALREADY_CONNECTED, DEFAULT_LOGOFF_URL);

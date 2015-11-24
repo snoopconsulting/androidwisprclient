@@ -51,7 +51,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 							// Log.d(TAG, "Scan result found:" + fonScanResult);
 							WifiConfiguration fonNetwork = lookupConfigurationByScanResult(wm.getConfiguredNetworks(),
 									fonScanResult);
-							// Log.d(TAG, "FON Network found:" + fonNetwork);
+							 Log.d(TAG, "FON Network found:" + fonNetwork);
 							if (fonNetwork == null) {
 								fonNetwork = new WifiConfiguration();
 								fonNetwork.SSID = '"' + fonScanResult.SSID + '"';
@@ -153,7 +153,7 @@ public class NetworkScanReceiver extends BroadcastReceiver {
 				// We load the SSIDs of the available networks
 				for (ScanResult scanResult : scanResults) {
 					scanResultsKeys.add(FONUtil.cleanSSID(scanResult.SSID));
-					// Log.v(TAG, "Adding scanResultKey:" + FONUtil.cleanSSID(scanResult.SSID));
+					 Log.v(TAG, "Adding scanResultKey:" + FONUtil.cleanSSID(scanResult.SSID));
 				}
 
 				Iterator<WifiConfiguration> it = configuredNetworks.iterator();
