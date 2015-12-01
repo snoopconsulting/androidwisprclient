@@ -43,7 +43,12 @@ public class LinkTelWISPrLogger implements WebLogger {
 	public LoggerResult login(String user, String password) {
 		LoggerResult res = new LoggerResult(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR, null);
 		try {
-			String blockedUrlText = HttpUtils.getUrlFollowRedirects(BLOCKED_URL,2);
+			//String blockedUrlText = HttpUtils.getUrlFollowRedirects(BLOCKED_URL,2);
+			//FIXME para probar el proceso de login uso este url que devuelve el redirect del wispr, pero el proceso correcto
+			// es corregir el cliente para que llame a un "Arbitrary URL" y siga el proxy de WISPr
+			String blockedUrlText = HttpUtils.getUrlFollowRedirects(URL_ALTERNATIVO,2);
+			
+			
 			//FIXME El BLOCKED_URL devuelve este texto ( CONNECTED ). Es un poco frágil, apuntarlo a algo más permanente
 			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {  
 				//Quiere decir que no pudo acceder al recurso entonces se fija si se tiene que loguear
@@ -69,6 +74,18 @@ public class LinkTelWISPrLogger implements WebLogger {
 						// Este devuelve el código del error, por ejemplo si falló el login lo maneja el cliente
 						// en este ejemplo el WISPrLovverService.notifyConnectionResult
 						// ver p. 30 de la spec
+						
+						//TODO podríamos implementar un keepalive que use esto:
+						
+						/*
+						 * 7.12 WISPr Status
+Once a response code Login succeeded (50) has been received by the client software, and until the client software issues a logoff request, the client software MAY request the access gateway to return the status of the session.
+To initiate a status query the client software SHALL perform a WISPr request to the <StatusURL> returned in either the <AuthenticationReply> or < EAPAuthenticationReply > message.
+The access gateway shall return a WISPr response with a <StatusReply> message to the status query request.
+
+						 * 
+						 */
+						
 						
 					} else if (wisprInfo.getMessageType().equals(WISPrConstants.WISPR_MESSAGE_TYPE_PROXY_NOTIFICATION)
 							&& wisprInfo.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_PROXY_DETECTION)) {
