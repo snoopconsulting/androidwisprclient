@@ -5,15 +5,17 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
@@ -37,6 +39,34 @@ public class HttpUtils {
 
 	public static String getUrl(String url) throws IOException {
 		return getUrl(url, DEFAULT_MAX_RETRIES);
+	}
+
+	public static String getUrlFollowRedirects(String url, int maxRetries) throws IOException {
+		String result = null;
+		int retries = 0;
+		DefaultHttpClient httpclient = new DefaultHttpClient(defaultHttpParams);
+		//Agregado para LinkTel
+		httpclient.setRedirectHandler(new DefaultRedirectHandler());
+		httpclient.setCookieStore(new BasicCookieStore());
+		HttpGet httpget = new HttpGet(url);
+		while (retries <= maxRetries && result == null) {
+			try {
+				retries++;
+				HttpEntity entity = httpclient.execute(httpget).getEntity();
+
+				if (entity != null) {
+					result = EntityUtils.toString(entity).trim();
+				}
+			} catch (SocketException se) {
+				if (retries > maxRetries) {
+					throw se;
+				} else {
+					Log.v(TAG, "SocketException, retrying " + retries);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public static String getUrl(String url, int maxRetries) throws IOException {

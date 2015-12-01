@@ -38,6 +38,9 @@ public class WISPrResponseHandler extends DefaultHandler {
 			replyMessage += chars;
 		} else if (actualTag.equals(Tag.messagetype)) {
 			messageType += chars;
+		} else {
+			//FIXME loggear
+			System.out.println("TAG no parseado: " + actualTag + " valor: " + chars);
 		}
 	}
 

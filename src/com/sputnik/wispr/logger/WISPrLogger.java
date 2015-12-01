@@ -32,7 +32,12 @@ public class WISPrLogger implements WebLogger {
 		LoggerResult res = new LoggerResult(WISPrConstants.WISPR_RESPONSE_CODE_INTERNAL_ERROR, null);
 		try {
 			String blockedUrlText = HttpUtils.getUrl(BLOCKED_URL);
-			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {
+			if (!blockedUrlText.equalsIgnoreCase(CONNECTED)) {  
+				//Quiere decir que no pudo acceder al recurso entonces se fija si se tiene que loguear
+				
+				//Busco si está el tag de Wispr ( "WISPAccessGatewayParam" )
+				// https://msdn.microsoft.com/en-us/library/windows/hardware/dn408679.aspx
+				
 				String WISPrXML = WISPrUtil.getWISPrXML(blockedUrlText);
 				if (WISPrXML != null) {
 					// Log.d(TAG, "XML Found:" + WISPrXML);

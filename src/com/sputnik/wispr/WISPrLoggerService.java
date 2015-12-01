@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.sputnik.wispr.logger.BTFonLogger;
+import com.sputnik.wispr.logger.LinkTelWISPrLogger;
 import com.sputnik.wispr.logger.LivedoorLogger;
 import com.sputnik.wispr.logger.LoggerResult;
 import com.sputnik.wispr.logger.NeufLogger;
@@ -37,7 +38,9 @@ public class WISPrLoggerService extends IntentService {
 		String bssid = intent.getStringExtra(this.getString(R.string.pref_bssid));
 
 		WebLogger logger = null;
-		if (FONUtil.isNeufBox(ssid, bssid)) {
+		if (FONUtil.isLinkTel(ssid, bssid)) {
+			logger = new LinkTelWISPrLogger();
+		} else if (FONUtil.isNeufBox(ssid, bssid)) {
 			logger = new NeufLogger();
 		} else if (FONUtil.isBtHub(ssid, bssid)) {
 			logger = new BTFonLogger();

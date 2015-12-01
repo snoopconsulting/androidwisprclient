@@ -1,0 +1,141 @@
+curl -A "CaptiveNetworkSupport/1.0 wispr" -v -k -L https://portal.linktelwifi.com.br/user/login/signup
+
+> GET /user/login/signup HTTP/1.1
+> Host: portal.linktelwifi.com.br
+> User-Agent: CaptiveNetworkSupport/1.0 wispr
+> Accept: */*
+>
+< HTTP/1.1 302 Found
+< Date: Wed, 25 Nov 2015 17:22:40 GMT
+< Server: Apache
+< Expires: Thu, 19 Nov 1981 08:52:00 GMT
+< Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+< Pragma: no-cache
+< Set-Cookie: linktel=f76go678blaeim4e56cfve4640; path=/
+< Set-Cookie: linktel=vurg69jshhdhis7d0378b9rlf1; path=/
+< Location: /user/login/empty-container
+< Transfer-Encoding: chunked
+< Content-Type: text/html; charset=UTF-8
+<
+
+Acá curl sigue el redirect:
+
+> GET /user/login/empty-container HTTP/1.1
+> Host: portal.linktelwifi.com.br
+> User-Agent: CaptiveNetworkSupport/1.0 wispr
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Date: Wed, 25 Nov 2015 17:22:41 GMT
+< Server: Apache
+< Expires: Thu, 19 Nov 1981 08:52:00 GMT
+< Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+< Pragma: no-cache
+< Set-Cookie: linktel=4hd2imh37on2tspd6n8t49v9l0; path=/
+< Set-Cookie: linktel=6473tkpvl7a9jm69h9j2a8gdk7; path=/
+< Set-Cookie: CookieTest=OK
+< Transfer-Encoding: chunked
+< Content-Type: text/html; charset=UTF-8
+<
+
+<meta charset="utf-8">
+        <title>Linktel WiFi</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Le styles -->
+        <link href="/css/airport.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/bootstrap-theme.min.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/style.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+        <!-- Scripts -->
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+<!--[if lt IE 9]><script type="text/javascript" src="/js/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="/js/respond.min.js"></script><![endif]-->
+<script type="text/javascript" src="/js/jQuery-Mask/jquery.mask.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-xs-0 col-sm-0 col-md-2 col-lg-3"></div>&nbsp;
+            	<div class="row" style="text-align: center">
+    			    <div class="col-xs-0 col-sm-0 col-md-2 col-lg-3"></div>
+    			    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+        			    <div class="panel">
+        			       <img src="/img/logo_linktelwifi.png" class="brand">
+    			           <!-- Container -->
+                            <div class="content-body">
+                                <div style="margin: 50px 10px 50px 10px;" class="text-center">
+                                    <h5>Ops! Não consegue se conectar? Vamos fazer um teste:</h5>                                            <a href="empty-container?test=cookie" class="btn btn-master">Teste de cookie</a>
+                                                                        </div>
+                            </div>
+                            <br>
+                            <!-- ./Container -->
+                        </div>
+                     </div>
+    		   </div>
+            <div class="col-xs-0 col-sm-0 col-md-2 col-lg-3"></div>
+    	</div>
+    		<div id="cadastro" class="text-center">
+    		   <img src="/img/logo_linktel_wifi.png">
+    		</div>
+    		<hr>
+                <footer>
+                    <p class="text-center">&copy; 2005 - 2015 by Linktel Corporate Todos os direitos reservados.</p>
+                </footer>
+
+        </div> <!-- /container -->
+
+    </body>
+
+<!--[if !IE]> -->
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<WISPAccessGatewayParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.wballiance.net/wispr_2_0.xsd">
+<Redirect>
+<MessageType>100</MessageType>
+<ResponseCode>0</ResponseCode>
+<VersionHigh>2.0</VersionHigh>
+<VersionLow>1.0</VersionLow>
+<AccessProcedure>1.0</AccessProcedure>
+<AccessLocation>LINKTEL:BR, Linktel WiFi</AccessLocation>
+<LocationName>Linktel WiFi</LocationName>
+<LoginURL>https://secure.linktelwifi.com.br:1112/usg/process</LoginURL>
+<AbortLoginURL>http://www.linktelcorp.com/</AbortLoginURL>
+</Redirect>
+</WISPAccessGatewayParam>
+-->
+<!-- <![endif]-->
+
+
+Cómo se interpreta:
+
+Parece ser el 6.1 successful case, vuelve un WISPR Redirect con un URL para enviar las credenciales via POST
+Una vez que envíe esto me va a devolver un logoff URL
+
+100: Initial redirect message
+0: No error
+
+Soporta WISPr 2.0
+
+AccessLocation: Indicates a key that uniquely identify a hotspot or group of hotspots to which the user is connected to
+LocationName: Indicates a textual description of the hotspot or group of hotspots to which the user is connected to
+LoginURL: Indicates the URL that must be requested to open a session (authenticate the user)
+AbortLoginURL: Indicates the URL that can be requested to abort a login request when the access gateway is using the polling mechanism.
+
+Ver sección 7.9
+
+Al enviar un request directamente al https no respetamos lo que dice la 7.7 del Arbitrary URL "The client software SHALL use unsecure HTTP to perform the initial HTTP GET. The client software SHALL NOT use any other HTTP Method than GET to trigger the WISPr protocol.
+"
+Por esto creo que devuelve un Redirect directamente, porque mandamos el URL a linktel
+
+
+

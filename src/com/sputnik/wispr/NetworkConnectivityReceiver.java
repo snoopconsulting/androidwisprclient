@@ -45,6 +45,7 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 						// the login intent
 						Intent logIntent = new Intent(context, WISPrLoggerService.class);
 						logIntent.setAction("LOG");
+						//FIXME Sacarlo de los parámetros de fzone
 						logIntent.putExtra(context.getString(R.string.pref_username), username);
 						logIntent.putExtra(context.getString(R.string.pref_password), password);
 						logIntent.putExtra(context.getString(R.string.pref_ssid), ssid);

@@ -1,0 +1,47 @@
+
+curl -v http://ubuntuone.com/p/F6b/
+
+> GET /p/F6b/ HTTP/1.1
+> Host: ubuntuone.com
+> User-Agent: curl/7.43.0
+> Accept: */*
+>
+
+< HTTP/1.0 302 RD
+< Location: https://portal.linktelwifi.com.br/captive.php?UI=02a3b8&NI=0050e802a3b8&UIP=201.54.224.241&MA=E0F84715DEB8&RN=LinktelWiFi_Aptilo_Grat&PORT=503&RAD=yes&CC=no&PMS=no&SIP=192.0.3.206&OS=http://ubuntuone.com/p/F6b/
+< Content-Length: 703
+<
+<HTML>
+<!--access procedure=nx.1-->
+<!--ndxid=02a3b8-->
+<!--protocol=https-->
+<!--ndxhost=secure.linktelwifi.com.br-->
+<!--ndxport=1112-->
+<!--<?xml version="1.0" encoding="UTF-8"?>
+<WISPAccessGatewayParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.acmewisp.com/WISPAccessGatewayParam.xsd">
+<Proxy>
+<MessageType>110</MessageType>
+<ResponseCode>200</ResponseCode>
+<NextURL><![CDATA[https://portal.linktelwifi.com.br/captive.php?UI=02a3b8&NI=0050e802a3b8&UIP=201.54.224.241&MA=E0F84715DEB8&RN=LinktelWiFi_Aptilo_Grat&PORT=503&RAD=yes&CC=no&PMS=no&SIP=192.0.3.206&OS=http://ubuntuone.com/p/F6b/]]></NextURL>
+</Proxy>
+</WISPAccessGatewayParam>-->
+
+
+Cómo se interpreta:
+
+Parece ser el 6.1 successful case with proxy reply, vuelve un WISPR Proxy con un URL seguirlo, si mando eso caigo en el WISPR Reply 
+donde puedo enviar las credenciales via POST
+Una vez que envíe esto me va a devolver un logoff URL
+
+
+<MessageType>110</MessageType> quiere decir Proxy notification ( ver p 18 )
+<ResponseCode>200</ResponseCode> Proxy detection/repeat operation
+
+Ver sección 7.8:
+
+The access gateway, as the result of the trigger on an arbitrary URL, MAY return a WISPr response with a <Proxy> message to indicate to the client software where to fetch the <Redirect> message.
+
+If the <Proxy> message includes a <NextURL> element, the client software SHALL use the URL value contained in the <NextURL> element for the next WISPr request. This implements a URL “redirect” at the WISPr application layer. The <Proxy> message can be used to redirect the client software to a different gateway page set without changing the normal, browser-oriented gateway page sequence.
+
+The next URL MAY be different in each <Proxy> message. If no <NextURL> element is present in the <Proxy> message, the client software SHALL use the last-used URL value for the next WISPr request.
+
