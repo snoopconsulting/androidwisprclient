@@ -9,14 +9,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import android.util.Log;
-
 import com.sputnik.wispr.handler.WISPrInfoHandler;
 import com.sputnik.wispr.handler.WISPrResponseHandler;
 import com.sputnik.wispr.util.FONUtil;
 import com.sputnik.wispr.util.HttpUtils;
+import com.sputnik.wispr.util.PollNotificationUtils;
 import com.sputnik.wispr.util.WISPrConstants;
 import com.sputnik.wispr.util.WISPrUtil;
+
+import android.util.Log;
 
 public class LinkTelWISPrLogger implements WebLogger {
 
@@ -154,6 +155,9 @@ The access gateway shall return a WISPr response with a <StatusReply> message to
 				WISPrResponseHandler wrh = new WISPrResponseHandler();
 				try {
 					android.util.Xml.parse(response, wrh);
+					if (wrh.getResponseCode().equals(WISPrConstants.WISPR_RESPONSE_CODE_AUTH_PENDING)){
+						wrh = PollNotificationUtils.analyze(wrh);
+					}
 					res = wrh.getResponseCode();
 					logOffUrl = wrh.getLogoffURL();
 				} catch (SAXException saxe) {

@@ -38,8 +38,8 @@ public class NetworkConnectivityReceiver extends BroadcastReceiver {
 			if (FONUtil.isSupportedNetwork(ssid, bssid)) {
 				boolean active = getPreferences(context).getBoolean(context.getString(R.string.pref_active), false);
 				if (active) { //SI el autologin
-					String username = getPreferences(context).getString(context.getString(R.string.pref_username), "");
-					String password = getPreferences(context).getString(context.getString(R.string.pref_password), "");
+					String username = getPreferences(context).getString(context.getString(R.string.pref_username), "fzone/punkrayo77@hotmail.com");
+					String password = getPreferences(context).getString(context.getString(R.string.pref_password), "holamundo");
 					if (username.length() > 0 && password.length() > 0) {
 						// If the application is active and we have username and password we launch
 						// the login intent

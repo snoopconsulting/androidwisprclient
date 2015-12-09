@@ -5,7 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class WISPrInfoHandler extends DefaultHandler {
 	enum Tag {
-		wispaccessgatewayparam, redirect, accessprocedure, loginurl, abortloginurl, messagetype, responsecode, accesslocation, locationname
+		wispaccessgatewayparam, redirect, accessprocedure, loginurl, abortloginurl, messagetype, responsecode, accesslocation, locationname,versionhigh, versionlow
 	}
 
 	private Tag actualTag;
@@ -23,6 +23,11 @@ public class WISPrInfoHandler extends DefaultHandler {
 	private String responseCode = "";
 
 	private String locationName = "";
+	
+	private String versionHigh = "";
+	
+	private String versionLow = "";
+	
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -46,6 +51,10 @@ public class WISPrInfoHandler extends DefaultHandler {
 			accessLocation += chars;
 		} else if (actualTag.equals(Tag.locationname)) {
 			locationName += chars;
+		} else if (actualTag.equals(Tag.versionhigh)) {
+			versionHigh += chars;
+		} else if (actualTag.equals(Tag.versionlow)) {
+			versionLow += chars;
 		}
 	}
 
@@ -76,6 +85,14 @@ public class WISPrInfoHandler extends DefaultHandler {
 	public String getLocationName() {
 		return locationName.trim();
 	}
+	
+	public String getVersionHigh() {
+		return versionHigh;
+	}
+	
+	public String getVersionLow() {
+		return versionLow;
+	}
 
 	@Override
 	public String toString() {
@@ -88,6 +105,8 @@ public class WISPrInfoHandler extends DefaultHandler {
 		sb.append("abortLoginURL: ").append(abortLoginURL).append(", ");
 		sb.append("messageType: ").append(messageType).append(", ");
 		sb.append("responseCode: ").append(responseCode);
+		sb.append("versionHigh: ").append(versionHigh);
+		sb.append("versionLow: ").append(versionLow);
 		sb.append("}");
 
 		return sb.toString();

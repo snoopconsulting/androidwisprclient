@@ -5,7 +5,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class WISPrResponseHandler extends DefaultHandler {
 	enum Tag {
-		wispaccessgatewayparam, redirect, responsecode, fonresponsecode, logoffurl, replymessage, authenticationpollreply, messagetype, authenticationreply
+		wispaccessgatewayparam, redirect, responsecode, fonresponsecode, logoffurl, replymessage, authenticationpollreply, messagetype, authenticationreply,
+		loginresultsurl, delay
 	}
 
 	private Tag actualTag;
@@ -19,6 +20,10 @@ public class WISPrResponseHandler extends DefaultHandler {
 	private String replyMessage = "";
 
 	private String messageType = "";
+	
+	private String loginResultUrl= "";
+	
+	private String delay= "";
 
 	@Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
@@ -38,6 +43,10 @@ public class WISPrResponseHandler extends DefaultHandler {
 			replyMessage += chars;
 		} else if (actualTag.equals(Tag.messagetype)) {
 			messageType += chars;
+		} else if (actualTag.equals(Tag.loginresultsurl)) {
+			loginResultUrl += chars;
+		} else if (actualTag.equals(Tag.delay)) {
+			delay += chars;
 		} else {
 			//FIXME loggear
 			System.out.println("TAG no parseado: " + actualTag + " valor: " + chars);
@@ -63,6 +72,14 @@ public class WISPrResponseHandler extends DefaultHandler {
 	public String getMessageType() {
 		return messageType.trim();
 	}
+	
+	public String getLoginResultUrl() {
+		return loginResultUrl.trim();
+	}
+	
+	public String getDelay() {
+		return delay.trim();
+	}
 
 	@Override
 	public String toString() {
@@ -73,6 +90,8 @@ public class WISPrResponseHandler extends DefaultHandler {
 		sb.append("logoffURL: ").append(logoffURL).append(", ");
 		sb.append("replyMessage: ").append(replyMessage).append(", ");
 		sb.append("messageType: ").append(messageType);
+		sb.append("loginResultUrl: ").append(loginResultUrl);
+		sb.append("delay: ").append(delay);
 		sb.append("}");
 
 		return sb.toString();
